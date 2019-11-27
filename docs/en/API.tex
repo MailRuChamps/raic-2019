@@ -1,0 +1,283 @@
+\chapter{API description}
+
+\section{MyStrategy}
+
+In language pack for your programming language you can find file named \texttt{MyStrategy/my\_strategy.<ext>}.
+This file contains class \texttt{MyStrategy} with \texttt{get\_action} method, where your strategy's logic should be implemented.
+
+This method will be called each tick, separately for each of your units.
+
+The method takes following arguments:
+
+\begin{itemize}
+    \item Current unit for which to compute next action ($Unit$ object)
+    \item Current game state ($Game$ object)
+    \item Debug helper object ($Debug$ object). This object allows you to do custom rendering from inside your strategy code.
+        Note that using this has no effect when testing your strategy on the server,
+        so use it for local debugging only, otherwise it will cause additional time overhead.
+\end{itemize}
+
+The method should return $UnitAction$ object, defining the desired action for specified unit.
+
+\section{Objects description}
+
+In this section, some fields may be absent (denoted as $Optional \langle type \rangle$).
+The way this is implemented depends on the language used.
+If possible, a dedicated optional (nullable) type would be used,
+otherwise other methods may be used (like a nullable pointer type).
+
+Some objects may take one of several forms. The way it is implemented depends on the language.
+If possible, a dedicated sum (algebraic) data type is used,
+otherwise other methods may be used (like variants being classes inherited from abstract base class).
+
+$float32$ --- 32-bit floating point number, is called $float$, and $float64$ is called $double$ in some languages.
+
+\subsection{Bullet}
+Defines a bullet. Fields:
+\begin{itemize}
+    \item $weapon\_type : WeaponType$ --- type of the weapon the bullet was shot from
+    \item $unit\_id : int$ --- id of unit who shot the bullet
+    \item $player\_id : int$ --- id of player of the shooter
+    \item $position : Vec2 \langle float64 \rangle$ --- bullet's position (center of the bullet)
+    \item $velocity : Vec2 \langle float64 \rangle$ --- bullet's velocity (in units per second)
+    \item $damage : int$ --- damage that will be dealt to a unit when hit
+    \item $size : float64$ --- bullet's size (side length of square that defines the bullet)
+    \item $explosion\_params : Optional \langle ExplosionParams \rangle$ --- explosion parameters, if applicable
+\end{itemize}
+
+\subsection{BulletParams}
+Parameters used to create a bullet when shooting a weapon. Fields:
+\begin{itemize}
+    \item $speed : float64$ --- bullet's speed (length of velocity vector)
+    \item $size : float64$ --- bullet's size
+    \item $damage : int$ --- bullet's damage
+\end{itemize}
+
+\subsection{Color}
+Defines color (used for debug rendering). Fields:
+\begin{itemize}
+    \item $r : float32$ --- red component
+    \item $g : float32$ --- green component
+    \item $b : float32$ --- blue component
+    \item $a : float32$ --- alpha component (opacity)
+\end{itemize}
+
+\subsection{ColoredVertex}
+Defines a vertex (used for debug rendering). Fields:
+\begin{itemize}
+    \item $position : Vec2 \langle float32 \rangle$ --- vertex position
+    \item $color : Color$ --- vertex color
+\end{itemize}
+
+\subsection{CustomData}
+Defines custom data sent to $Debug$ object (used for debug rendering).
+May take one of the following forms:
+\begin{itemize}
+    \item $Log$ --- used for logging text. Fields:
+        \begin{itemize}
+            \item $text : string$ --- text to display
+        \end{itemize}
+    \item $Rect$ --- draw a rectangle. Fields:
+        \begin{itemize}
+            \item $pos : Vec2 \langle float32 \rangle$ --- rect's position (bottom left corner)
+            \item $size : Vec2 \langle float32 \rangle$ --- rect's size
+            \item $color : Color$ --- filling color
+        \end{itemize}
+    \item $Line$ --- draw a line segment. Fields:
+        \begin{itemize}
+            \item $p1 : Vec2 \langle float32 \rangle$ --- first end point
+            \item $p2 : Vec2 \langle float32 \rangle$ --- second end point
+            \item $width : float32$ --- line width
+            \item $color : Color$ --- line color
+        \end{itemize}
+    \item $Polygon$ --- draw a convex polygon.
+        Each vertex may be colored separately --- color will be interpolated between vertices. Fields:
+        \begin{itemize}
+            \item $vertices : List \langle ColoredVertex \rangle$ --- list of vertices
+        \end{itemize}
+\end{itemize}
+
+\subsection{ExplosionParams}
+Parameters of explosion from a mine or an exploding bullet. Fields:
+\begin{itemize}
+    \item $radius : float64$ --- radius of explosion (half of side length of explosion's square area)
+    \item $damage : int$ --- damage dealt by explosion
+\end{itemize}
+
+\subsection{Game}
+Defines current game state. Fields:
+\begin{itemize}
+    \item $current\_tick : int$ --- current tick index
+    \item $properties : Properties$ --- game's properties (constants)
+    \item $level : Level$ --- level (map)
+    \item $players : List \langle Player \rangle$ --- list of players (strategies) partitipating in the game
+    \item $units : List \langle Unit \rangle$ --- list of alive units
+    \item $bullets : List \langle Bullet \rangle$ --- list of flying bullets
+    \item $mines : List \langle Mine \rangle$ --- list of \textbf{planted} mines
+    \item $loot\_boxes : List \langle LootBox \rangle$ --- list of loot boxes
+\end{itemize}
+
+\subsection{Item}
+Defines an item contained in a loot box.
+May take one of the following forms:
+\begin{itemize}
+    \item $HealthPack$ --- health pack. Fields:
+        \begin{itemize}
+            \item $health : int$ --- health restored
+        \end{itemize}
+    \item $Weapon$ --- a weapon. Fields:
+        \begin{itemize}
+            \item $weapon\_type : WeaponType$ --- type of the weapon
+        \end{itemize}
+    \item $Mine$ --- a mine. No fields.
+\end{itemize}
+
+\subsection{JumpState}
+Defines unit's jump state. Fields:
+\begin{itemize}
+    \item $can\_jump : boolean$ --- whether unit can start/continue jumping
+    \item $speed : float64$ --- jump speed (in units per second)
+    \item $max\_time : float64$ --- max jump time (in seconds)
+    \item $can\_cancel : boolean$ --- whether current jump can be canceled
+\end{itemize}
+
+\subsection{Level}
+Defines the level. Fields:
+\begin{itemize}
+    \item $tiles : List \langle List \langle Tile \rangle \rangle$ --- 2d list of level tiles
+\end{itemize}
+
+\subsection{LootBox}
+Defines a loot box. Fields:
+\begin{itemize}
+    \item $position : Vec2 \langle float64 \rangle$ --- loot box's position (bottom middle point)
+    \item $size : Vec2 \langle float64 \rangle$ --- loot box's size
+    \item $item : Item$ --- item contained in this loot box
+\end{itemize}
+
+\subsection{Mine}
+Defines a \textbf{planted} mine. Fields:
+\begin{itemize}
+    \item $player\_id : int$ --- id of player whos unit planted the mine
+    \item $position : Vec2 \langle float64 \rangle$ --- mine's position (bottom middle point)
+    \item $size : Vec2 \langle float64 \rangle$ --- mine's size
+    \item $state : MineState$ --- current mine state
+    \item $timer : Optional \langle float64 \rangle$ --- time left until state change. May be absent
+    \item $trigger\_radius : float64$ --- mine's triggering radius
+    \item $explosion\_params : ExplosionParams$ --- explosion params
+\end{itemize}
+
+\subsection{MineState}
+Defines mine's state. Variants:
+\begin{itemize}
+    \item Preparing
+    \item Idle
+    \item Triggered
+\end{itemize}
+
+\subsection{Player}
+Defines player (strategy) participating in the game. Fields:
+\begin{itemize}
+    \item $id : int$ --- player's id
+    \item $score : int$ --- current player's score
+\end{itemize}
+
+\subsection{Properties}
+Defines game's properties (constants). Fields:
+\begin{itemize}
+    \item $max\_tick\_count : int$ --- max game duration in ticks
+    \item $ticks\_per\_second : float64$ --- number of ticks per ``second''
+    \item $updates\_per\_tick : int$ --- number of updates per tick.
+        Each update advances game time by $\frac{1}{ticks\_per\_second \times updates\_per\_tick}$
+    \item $loot\_box\_size : Vec2 \langle float64 \rangle$ --- size of all loot boxes
+    \item $unit\_size : Vec2 \langle float64 \rangle$ --- size of all units
+    \item $unit\_max\_horizontal\_speed : float64$ --- max horizontal speed of a unit
+    \item $unit\_fall\_speed : float64$ --- unit's fall speed
+    \item $unit\_jump\_time : float64$ --- unit's regular jump time
+    \item $unit\_jump\_speed : float64$ --- unit's regular jump speed
+    \item $jump\_pad\_jump\_time : float64$ --- unit's jump time off a jump pad
+    \item $jump\_pad\_jump\_speed : float64$ --- unit's jump speed off a jump pad
+    \item $unit\_max\_health : int$ --- max (starting) unit's health
+    \item $weapon\_params : Map \langle WeaponType \rightarrow WeaponParams \rangle$ --- weapon parameters by weapon type
+    \item $mine\_size : Vec2 \langle float64 \rangle$ --- size of \textbf{planted} mines
+    \item $mine\_explosion\_params : ExplosionParams$ --- explosion params for mines
+    \item $mine\_prepare\_time : float64$ --- mine preparing time
+    \item $mine\_trigger\_time : float64$ --- mine triggering time
+    \item $mine\_trigger\_radius : float64$ --- mine triggering radius
+    \item $kill\_score : int$ --- score given for each unit killed
+\end{itemize}
+
+\subsection{Tile}
+Defines level's tile. Variants:
+\begin{itemize}
+    \item Empty
+    \item Wall
+    \item Platform
+    \item Ladder
+    \item JumpPad
+\end{itemize}
+
+\subsection{Unit}
+Defines a unit. Fields:
+\begin{itemize}
+    \item $player\_id : int$ --- owner player's id
+    \item $id : int$ --- unit's id
+    \item $health : int$ --- unit's health
+    \item $position : Vec2 \langle float64 \rangle$ --- unit's position (bottom middle point)
+    \item $size : Vec2 \langle float64 \rangle$ --- unit's size
+    \item $jump\_state : JumpState$ --- current unit's jump state
+    \item $mines : int$ --- number of mines in unit's inventory
+    \item $weapon : Optional \langle Weapon \rangle$ --- current unit's weapon, if any
+\end{itemize}
+
+\subsection{UnitAction}
+Defines unit's action. Fields:
+\begin{itemize}
+    \item $velocity : float64$ --- target horizontal velocity
+    \item $jump : boolean$ --- whether to start/continue jumping or go up ladders
+    \item $jump\_down : boolean$ --- whether to jump down through planforms/go down ladders
+    \item $aim : Vec2 \langle float64 \rangle$ --- aiming direction. Ignored if length is less than $0.5$
+    \item $shoot : boolean$ --- controls shooting/reloading
+    \item $swap\_weapon : boolean$ --- whether to swap weapon with the one in a loot box
+    \item $plant\_mine : boolean$ --- controls planting mines
+\end{itemize}
+
+\subsection{Vec2}
+Defines a 2d vector. Fields:
+\begin{itemize}
+    \item $x : float$
+    \item $y : float$
+\end{itemize}
+
+\subsection{Weapon}
+Defines unit's weapon. Fields:
+\begin{itemize}
+    \item $type : WeaponType$ --- weapon's type
+    \item $params : WeaponParams$ --- weapon parameters
+    \item $magazine : int$ --- current magazine size
+    \item $spread : float64$ --- current spread value
+    \item $fire\_timer : Optional \langle float64 \rangle$ --- time until next possible shot (absent if shooting is possible already)
+    \item $last\_angle : Optional \langle float64 \rangle$ --- last aiming angle (absent upon pickup)
+\end{itemize}
+
+\subsection{WeaponParams}
+Defines weapon parameters (constants). Fields:
+\begin{itemize}
+    \item $magazine\_size : int$ --- max magazine size
+    \item $fire\_rate : float64$ --- time between consequent shots
+    \item $reload\_time : float64$ --- time required for reloading
+    \item $min\_spread : float64$ --- min spread value
+    \item $max\_spread : float64$ --- max spread value
+    \item $recoil : float64$ --- recoil value
+    \item $aim\_speed : float64$ --- aiming speed
+    \item $bullet : BulletParams$ --- bullet parameters
+    \item $explosion : Optional \langle ExplosionParams \rangle$ --- bullet's explosion parameters (if applicable)
+\end{itemize}
+
+\subsection{WeaponType}
+Variants:
+\begin{itemize}
+    \item Pistol
+    \item AssaultRifle
+    \item RocketLauncher
+\end{itemize}

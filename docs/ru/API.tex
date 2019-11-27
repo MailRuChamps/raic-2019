@@ -1,0 +1,284 @@
+\chapter{Описание API}
+
+\section{MyStrategy}
+
+В пакете для вашего языка программирования вы можете найти файл \texttt{MyStrategy/my\_strategy.<ext>}.
+Этот файл содержит класс \texttt{MyStrategy} с методом \texttt{get\_action}, где должна быть реализована логика вашей стратегии.
+
+Этот метод будет вызываться каждый тик, отдельно для каждого из ваших юнитов.
+
+Метод принимает следующие аргументы:
+
+\begin{itemize}
+    \item Текущий юнит для которого надо вычислить действие (объект $Unit$)
+    \item Текущее состояние игрового мира (объект $Game$)
+    \item Вспомогательный отладочный объект (объект $Debug$).
+        Этот объект позволяет вам отрисовывать отладочную информацию прямо из кода вашей стратегии.
+        Заметьте, что использование этого объекта не имеет эффекта при тестировании на сервере,
+        поэтому использовать его стоит только для локальной отладки.
+\end{itemize}
+
+Метод должен вернуть объект $UnitAction$, определяющий действие для заданного юнита.
+
+\section{Описание объектов}
+
+В этой секции, некоторые поля могут быть опциональными (обозначается как $Optional \langle type \rangle$).
+Способ реализации зависит от языка.
+При возможности используется специальный опциональный (nullable) тип,
+иначе другие методы могут быть использованы (например nullable указатели).
+
+Некоторые объекты могут принимать несколько различных форм. Способ реализации зависит от языка.
+Если возможно, используется специальный (алгебраический) тип данных,
+иначе другие методы могут быть использованы (например варианты представлены классами унаследованными от абстрактного базового класса).
+
+$float32$ --- 32-битный вещественный тип данных, может называться $float$, и $float64$ может называться $double$ в некоторых языках.
+
+\subsection{Bullet}
+Определяет пулю. Поля:
+\begin{itemize}
+    \item $weapon\_type : WeaponType$ --- тип оружия из которого выстрелена пуля
+    \item $unit\_id : int$ --- id выстрелившего юнита
+    \item $player\_id : int$ --- id игрока выстрелившего юнита
+    \item $position : Vec2 \langle float64 \rangle$ --- позиция пули (центр)
+    \item $velocity : Vec2 \langle float64 \rangle$ --- скорость пули (в единицах в секунду)
+    \item $damage : int$ --- урон наносимый юниту при попадании
+    \item $size : float64$ --- размер пули (сторона квадрата определяющего пулю)
+    \item $explosion\_params : Optional \langle ExplosionParams \rangle$ --- параметры взрыва, если применимо
+\end{itemize}
+
+\subsection{BulletParams}
+Параметры определяющие способ создания пули при выстреле. Поля:
+\begin{itemize}
+    \item $speed : float64$ --- скорость (длина вектора скорости)
+    \item $size : float64$ --- размер
+    \item $damage : int$ --- урон
+\end{itemize}
+
+\subsection{Color}
+Цвет (используется для отладочной отрисовки). Поля:
+\begin{itemize}
+    \item $r : float32$ --- красная компонента
+    \item $g : float32$ --- зеленая компонента
+    \item $b : float32$ --- синяя компонента
+    \item $a : float32$ --- альфа компонента (непрозрачность)
+\end{itemize}
+
+\subsection{ColoredVertex}
+Вершина полигона (используется для отладочной отрисовки). Поля:
+\begin{itemize}
+    \item $position : Vec2 \langle float32 \rangle$ --- положение
+    \item $color : Color$ --- цвет
+\end{itemize}
+
+\subsection{CustomData}
+Тип данных используемый для отправки через объект $Debug$ (используется для отладочной отрисовки).
+Может принимать следующие формы:
+\begin{itemize}
+    \item $Log$ --- логгирование. Поля:
+        \begin{itemize}
+            \item $text : string$ --- текст для отображения
+        \end{itemize}
+    \item $Rect$ --- прямоугольник. Поля:
+        \begin{itemize}
+            \item $pos : Vec2 \langle float32 \rangle$ --- положение (левый нижний угол)
+            \item $size : Vec2 \langle float32 \rangle$ --- размер
+            \item $color : Color$ --- цвет для заполнения
+        \end{itemize}
+    \item $Line$ --- отрезок. Поля:
+        \begin{itemize}
+            \item $p1 : Vec2 \langle float32 \rangle$ --- первая точка
+            \item $p2 : Vec2 \langle float32 \rangle$ --- вторая точка
+            \item $width : float32$ --- ширина
+            \item $color : Color$ --- цвет
+        \end{itemize}
+    \item $Polygon$ --- выпуклый полигон.
+        Каждая вершина может быть покрашена отдельно --- цвет будет интерполирован между вершинами. Поля:
+        \begin{itemize}
+            \item $vertices : List \langle ColoredVertex \rangle$ --- список вершин
+        \end{itemize}
+\end{itemize}
+
+\subsection{ExplosionParams}
+Параметры взрыва от мины или от взрывной пули. Поля:
+\begin{itemize}
+    \item $radius : float64$ --- радиус взрыва (половина стороны квадрата области взрыва)
+    \item $damage : int$ --- урон
+\end{itemize}
+
+\subsection{Game}
+Текущее состояние игры. Поля:
+\begin{itemize}
+    \item $current\_tick : int$ --- индекс текущего тика
+    \item $properties : Properties$ --- параметры игры (константы)
+    \item $level : Level$ --- уровень (карта)
+    \item $players : List \langle Player \rangle$ --- список игроков (стратегий), участвующих в игре
+    \item $units : List \langle Unit \rangle$ --- список живых юнитов
+    \item $bullets : List \langle Bullet \rangle$ --- список летящих пуль
+    \item $mines : List \langle Mine \rangle$ --- список \textbf{установленных} мин
+    \item $loot\_boxes : List \langle LootBox \rangle$ --- список объектов лута
+\end{itemize}
+
+\subsection{Item}
+Предмет, являющийся лутом.
+Может принимать следующие формы
+\begin{itemize}
+    \item $HealthPack$ --- аптечка. Поля:
+        \begin{itemize}
+            \item $health : int$ --- пополняемое здоровье
+        \end{itemize}
+    \item $Weapon$ --- оружие. Поля:
+        \begin{itemize}
+            \item $weapon\_type : WeaponType$ --- тип оружия
+        \end{itemize}
+    \item $Mine$ --- мина. Без полей.
+\end{itemize}
+
+\subsection{JumpState}
+Состояние прыжка юнита. Поля:
+\begin{itemize}
+    \item $can\_jump : boolean$ --- может ли юнит начать/продолжить прыжок
+    \item $speed : float64$ --- скорость прыжка (в единицах в секунду)
+    \item $max\_time : float64$ --- максимальная длительность прыжка (в секундах)
+    \item $can\_cancel : boolean$ --- можно ли отменить текущий прыжок
+\end{itemize}
+
+\subsection{Level}
+Уровень (карта). Поля:
+\begin{itemize}
+    \item $tiles : List \langle List \langle Tile \rangle \rangle$ --- двумерный список тайлов уровня
+\end{itemize}
+
+\subsection{LootBox}
+Лут. Поля:
+\begin{itemize}
+    \item $position : Vec2 \langle float64 \rangle$ --- положение (середина нижней границы)
+    \item $size : Vec2 \langle float64 \rangle$ --- размер
+    \item $item : Item$ --- предмет
+\end{itemize}
+
+\subsection{Mine}
+Defines a \textbf{planted} mine. Fields:
+\begin{itemize}
+    \item $player\_id : int$ --- id игрока, установившего мину
+    \item $position : Vec2 \langle float64 \rangle$ --- положение (середина нижней границы)
+    \item $size : Vec2 \langle float64 \rangle$ --- размер
+    \item $state : MineState$ --- текущее состояние
+    \item $timer : Optional \langle float64 \rangle$ --- время до смены состояния. Может отсутствовать
+    \item $trigger\_radius : float64$ --- радиус запуска
+    \item $explosion\_params : ExplosionParams$ --- параметры взрыва
+\end{itemize}
+
+\subsection{MineState}
+Состояние мины. Варианты:
+\begin{itemize}
+    \item Preparing --- Подготовка
+    \item Idle --- Ожидание
+    \item Triggered --- Запуск
+\end{itemize}
+
+\subsection{Player}
+Игрок (стратегия), участвующая в игре. Поля:
+\begin{itemize}
+    \item $id : int$
+    \item $score : int$ --- текущий счет
+\end{itemize}
+
+\subsection{Properties}
+Параметры игры (константы). Поля:
+\begin{itemize}
+    \item $max\_tick\_count : int$ --- максимальная длительность игры в тиках
+    \item $ticks\_per\_second : float64$ --- количество тиков в ``секунду''
+    \item $updates\_per\_tick : int$ --- количество обновлений в тик.
+        Каждое обновление продвигает игровое время на $\frac{1}{ticks\_per\_second \times updates\_per\_tick}$
+    \item $loot\_box\_size : Vec2 \langle float64 \rangle$ --- размер коробок с лутом
+    \item $unit\_size : Vec2 \langle float64 \rangle$ --- размер юнитов
+    \item $unit\_max\_horizontal\_speed : float64$ --- максимальная горизонтальная скорость юнитов
+    \item $unit\_fall\_speed : float64$ --- скорость падения юнитов
+    \item $unit\_jump\_time : float64$ --- обычное время прыжка
+    \item $unit\_jump\_speed : float64$ --- обычная скорость прыжка
+    \item $jump\_pad\_jump\_time : float64$ --- время прыжка с трамплина
+    \item $jump\_pad\_jump\_speed : float64$ --- скорость прыжка с трамплина
+    \item $unit\_max\_health : int$ --- максимальное (стартовое) здоровье юнита
+    \item $weapon\_params : Map \langle WeaponType \rightarrow WeaponParams \rangle$ --- параметры для каждого типа оружия
+    \item $mine\_size : Vec2 \langle float64 \rangle$ --- размер \textbf{установленных} мин
+    \item $mine\_explosion\_params : ExplosionParams$ --- параметры взрыва мин
+    \item $mine\_prepare\_time : float64$ --- время подготовки мины
+    \item $mine\_trigger\_time : float64$ --- время запуска мины
+    \item $mine\_trigger\_radius : float64$ --- радиус запуска мины
+    \item $kill\_score : int$ --- очки за уничтожение вражеского юнита
+\end{itemize}
+
+\subsection{Tile}
+Тайл уровня. Варианты:
+\begin{itemize}
+    \item Empty --- пусто
+    \item Wall --- стена
+    \item Platform --- платформа
+    \item Ladder --- лестница
+    \item JumpPad --- трамплин
+\end{itemize}
+
+\subsection{Unit}
+Юнит. Поля:
+\begin{itemize}
+    \item $player\_id : int$ --- id игрока
+    \item $id : int$ --- id юнита
+    \item $health : int$ --- здоровье
+    \item $position : Vec2 \langle float64 \rangle$ --- позиция (середина нижней границы)
+    \item $size : Vec2 \langle float64 \rangle$ --- размер
+    \item $jump\_state : JumpState$ --- текущее состояние прыжка
+    \item $mines : int$ --- количество мин в инвентаре
+    \item $weapon : Optional \langle Weapon \rangle$ --- текущее оружие, если есть
+\end{itemize}
+
+\subsection{UnitAction}
+Действие юнита. Поля:
+\begin{itemize}
+    \item $velocity : float64$ --- целевая горизонтальная скорость
+    \item $jump : boolean$ --- начать/продолжить прыжок/вверх по лестнице
+    \item $jump\_down : boolean$ --- спрыгивать с/сквозь платформы/вниз по лестнице
+    \item $aim : Vec2 \langle float64 \rangle$ --- направление прицеливания. Игнорируется если длина меньше $0.5$
+    \item $shoot : boolean$ --- контролирует стрельбу/перезарядку
+    \item $swap\_weapon : boolean$ --- поменять оружие
+    \item $plant\_mine : boolean$ --- установить мину
+\end{itemize}
+
+\subsection{Vec2}
+Двумерный вектор. Поля:
+\begin{itemize}
+    \item $x : float$
+    \item $y : float$
+\end{itemize}
+
+\subsection{Weapon}
+Оружие в руках юнита. Поля:
+\begin{itemize}
+    \item $type : WeaponType$ --- тип оружия
+    \item $params : WeaponParams$ --- параметры (константы)
+    \item $magazine : int$ --- текущая обойма
+    \item $spread : float64$ --- текущее значение разброса
+    \item $fire\_timer : Optional \langle float64 \rangle$ --- время до следующего выстрела (отсутствует если выстрел возможен)
+    \item $last\_angle : Optional \langle float64 \rangle$ --- последний угол прицеливания (отсутствует при подборе)
+\end{itemize}
+
+\subsection{WeaponParams}
+Параметры оружия (константы). Поля:
+\begin{itemize}
+    \item $magazine\_size : int$ --- максимальный размер обоймы
+    \item $fire\_rate : float64$ --- время между выстрелами
+    \item $reload\_time : float64$ --- время перезарядки
+    \item $min\_spread : float64$ --- минимальный разброс
+    \item $max\_spread : float64$ --- максимальный разброс
+    \item $recoil : float64$ --- значение отдачи
+    \item $aim\_speed : float64$ --- скорость прицеливания
+    \item $bullet : BulletParams$ --- параметры пуль
+    \item $explosion : Optional \langle ExplosionParams \rangle$ --- параметры взрыва пуль (если применимо)
+\end{itemize}
+
+\subsection{WeaponType}
+Variants:
+\begin{itemize}
+    \item Pistol
+    \item AssaultRifle
+    \item RocketLauncher
+\end{itemize}

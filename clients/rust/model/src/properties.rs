@@ -1,0 +1,25 @@
+use crate::*;
+#[derive(Clone, Debug, trans::Trans)]
+pub struct Properties {
+    pub max_tick_count: i32,
+    pub team_size: i32,
+    pub ticks_per_second: f64,
+    pub updates_per_tick: i32,
+    pub loot_box_size: Vec2F64,
+    pub unit_size: Vec2F64,
+    pub unit_max_horizontal_speed: f64,
+    pub unit_fall_speed: f64,
+    pub unit_jump_time: f64,
+    pub unit_jump_speed: f64,
+    pub jump_pad_jump_time: f64,
+    pub jump_pad_jump_speed: f64,
+    pub unit_max_health: i32,
+    pub health_pack_health: i32,
+    pub weapon_params: std::collections::HashMap<WeaponType, WeaponParams>,
+    pub mine_size: Vec2F64,
+    pub mine_explosion_params: ExplosionParams,
+    pub mine_prepare_time: f64,
+    pub mine_trigger_time: f64,
+    pub mine_trigger_radius: f64,
+    pub kill_score: i32,
+}

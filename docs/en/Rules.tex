@@ -1,0 +1,241 @@
+\chapter{About CodeSide 2019 world}
+
+\section{General concept of the game and the rules of the tournament}
+
+This competition gives you an opportunity to test your programming skills,
+by creating an artificial intelligence (strategy)
+controlling a team of units in a special world
+(you can learn about details of the CodeSide 2019 world in later sections).
+
+In each game you are to compete against another player's strategy.
+You team's goal --- is to gain score by killing or doing damage to your opponent.
+Team who has more score is the winner.
+Game can also be tied if both teams have same score in the end.
+
+Time in the game is discrete and is measured in ``ticks’’.
+At the beginning of each tick, the game simulator transmits the world state data to the participants' strategies,
+receives actions from them and updates the state of the world in accordance with these actions and the limitations of the world.
+Then makes calculation of the change of the world and objects in it for this tick, and the process is repeated again with the updated data.
+The maximum duration of any game is equal to $10000$ ticks, but the game can be terminated prematurely if all strategies have ``crashed’’.
+
+The ``crashed’’ strategy can no longer control its units. The strategy is considered as ``crashed’’ in the following cases:
+\begin{itemize}
+\item The process in which the strategy is started has unexpectedly terminated,
+      or an error has occurred in the protocol of interaction between the strategy and game server.
+\item The strategy exceeded one (any) of the time constraints assigned to it.
+      Strategy for one tick is allocated not more than $1$ seconds of real time.
+      But in sum for the whole game the strategy process is given
+      \begin{equation}
+      20\times\textit{<duration\_of\_game\_in\_ticks>}+20000
+      \end{equation}
+      milliseconds of real time.
+      The formula takes into account the maximum duration of the game. The time limit remains the same, even if
+      the actual duration of the game is different from this value. All time limits apply not only to the participant code, but
+      on the interaction of the client-shell strategy with the game simulator.
+\item The strategy exceeded the memory limit. At any point in time the strategy process should not consume more than 256 MB of RAM.
+\end{itemize}
+
+The tournament is held in several stages preceded by a qualification in the Sandbox.
+Sandbox is a competition that takes place throughout the championship.
+The player has a certain rating value -- an indicator of how successful
+his strategy is involved in games within each stage.
+
+The initial value of the rating in the Sandbox is $1200$. At the end of the game this value can both be increased and decreased. At the same time victory
+over a weak (with a low rating) opponent gives a small increase, also the defeat from a strong opponent slightly decreases your
+rating. Over time the rating in the Sandbox becomes more and more inert, which makes it possible to decrease the impact of random long series of victories or
+defeats on the participant's place, but at the same time makes it difficult to change his position with a significant improvement in strategy. To cancel such effect
+the participant can reset the variability of the rating to the initial state when sending a new strategy, including the corresponding
+option. If the new strategy is adopted, the rating system of the participant will fall dramatically after the next game in the Sandbox, however,
+further participation in games will quickly recover and even become higher if your strategy has really become more effective. It is not recommended
+to use this option with minor, incremental improvements to your strategy, as well as in cases where a new strategy
+insufficiently tested and the effect of changes in it is not known reliably.
+
+The initial value of the rating at each main stage of the tournament is $0$. For each game the participant receives a certain number of rating points
+depending on the occupied place (a system similar to that used in the championship ``Formula-1’’). If two or more participants share
+some place, then the total number of rating points for this place and for the following $\texttt{number\_of\_such\_members}-1$ of places is shared
+equally among these participants. For example, if two participants share the first place, then each of them will receive half of the rating points number
+for the first and second places. When sharing rounding always takes place in a smaller direction. More detailed information about the stages of the tournament will be
+provided in the announcements on the project website.
+
+First all participants can participate only in the games that take place in the Sandbox. Players can send their strategies to the Sandbox, and
+the last one taken from them is taken by the system for participation in qualifying games. Each player participates in approximately one qualifying
+game for an hour. The jury reserves the right to change this interval based on the throughput of the testing system, but for
+the majority of participants it remains constant. There are a number of criteria by which the interval of participation in qualifying games
+can be increased for a specific player. For every N-th full week that has elapsed since the player sent the last strategy, the interval
+of participation for this player is increased by N basic test intervals. Only the strategies adopted by the system are taken into account. An additional penalty which is equal to $20\%$ from the basic testing interval is charged in the Sandbox for each strategy ``crash’’ in $10$ last games.
+More details about the causes of the strategy ``crashing’’ can be found in the following sections. The player’s participation interval in the Sandbox can not become bigger than a day.
+
+Games in the Sandbox are held according to a set of rules corresponding to the rules of an accidental past stage of the tournament or to the rules of the next
+(current) stage. At the same time, the closer the rating value of the two players rating within the Sandbox, the more likely that they will be in the
+one game. The Sandbox starts before the start of the first stage of the tournament and ends after some time after the final stage (see the schedule
+of stages to clarify the details). In addition, the Sandbox is frozen during the stages of the tournament. Following the results of the games in the Sandbox
+there is a selection for participation in Round 1, which will involve $1080$ of participants with the highest rating at the beginning of this stage of the tournament
+(if the rating is equal, priority is given to the player who previously sent the latest version of his strategy), as well as an additional selection to
+the next stages of the tournament, including the Finals.
+
+Tournament stages:
+\begin{itemize}
+      \item
+            In \textbf{Round 1} you will learn the rules of the game.
+            You are given $1$ unit, same as your opponent. The level is pretty simple so no advanced pathfinding is needed.
+            The task is --- deal as much damage as you can! It's simple.
+            Round 1, as all further stages, consists of two parts, between which there will be a short break (with the renewal of the Sandbox work), which
+            allows to improve its strategy. The last strategy sent by the player before the beginning of this part is selected for the games in each part.
+            Games are conducted in waves. In each wave, each player participates exactly in one game. The number of waves in each part is determined by
+            the capabilities of the testing system, but it is guaranteed that it will not be less than ten. $300$ highest rated participants
+            will be held in Round 2. Also in Round 2 there will be an additional selection of $60$ participants with the highest rating in the Sandbox (at the moment
+            of Round 2 beginning) among those who did not passed according to the results of Round 1.
+      \item
+            In \textbf{Round 2} you have to learn teamwork.
+            Now you have $2$ units in your team.
+            The task is further complicated
+            that after summarizing the Round 1, the part of the weak strategies will be eliminated and you will have to confront stronger opponents. According
+            to the results of Round 2 of the best $50$ strategies will reach the Finals. Also in the Finals there will be an additional selection of $10$ participants with
+            the highest rating in the Sandbox (at the beginning of the Finals) from those who did not go through the main tournament.
+      \item
+            \textbf{Finals} is the most important stage. After the selection, held following the results of the first two stages, the strongest participants will be remained.
+            Also, the level is going to be more complex now, so more advances pathfinding techniques must be used.
+            The system of holding the Finals has its own peculiarities. The stage is still
+            divided into two parts, but they will no longer consist of waves. In each part of the stage, games will be played between all pairs
+            of Finals participants. If the time and capabilities of the testing system permit, the operation will be repeated.
+\end{itemize}
+
+All finalists are ranked according to the non-increase in the rating after the end of the Finals. If the ratings are equal, a higher place is taken by that finalist, whose strategy, which was part of the Final, was sent out earlier. Prizes for the Final are distributed based on the occupied place after this
+ordering.
+
+After the completion of the Sandbox, all its participants, except for the Finals winners, are ranked according to the non-increase in the rating. If the ratings are equal 
+a higher place is taken by the participant who sent the latest version of his strategy earlier. Prizes for the Sandbox are distributed on the basis of
+occupied place after this ordering.
+
+\section{Description of the game world}
+
+The game world is two dimensional.
+$X$ axis is horizontal, $Y$ axis is vertical, directed up.
+The level consists of tiles, which have different collision mechanics.
+All entities (units, bullets, explosions, loot boxes, level tiles) are rectangular, with sides parallel to $X$ and $Y$ axis.
+
+In the beginning of each game, units are placed on their spawn points and have no weapon.
+Loot boxes spawn on the level containing weapons, health packs and mines.
+
+Game is being updated several times each tick.
+Each update advances game time by $\frac{1}{ticks per second * updated per tick}$.
+
+\section{Level}
+
+The level is represented by a grid of tiles. Each tile can be one of:
+\begin{itemize}
+      \item Empty.
+      \item Wall --- blocks all movement and bullets.
+      \item Platform --- can be used to stand on, but can be moved through.
+      \item Ladder --- can be used to freely move vertically.
+            Unit is considered to be on ladder if the line from center of unit to top middle point of unit intersects with the tile.
+      \item Jump pad --- gives higher jump. Activated if unit is intersecting with the tile.
+            Jumps off jump pads are not cancellable.
+\end{itemize}
+
+\section{Movement}
+
+Units have no acceleration, and horizontal / vertical movements are independent.
+Each update, first horizontal movement is performed, then vertical movement.
+
+Horizontal movement speed is set in the action by your strategy.
+On game update, your unit's $X$ position is changing by velocity set, until there is a tile or other unit blocking movement.
+
+Vertical movement is a little more complicated. Unit can be either in falling, or in jumping state.
+Jumping can be cancelled any time unless jumped off a jump pad.
+
+If the unit is in falling state, he moves down with constant speed.
+If falling is blocked by some level tile or other unit, falling stops.
+Which tiles are blocking depends on whether you set ``jump\_down'' or not.
+If set, only walls block falling. If not set, platforms and ladders also block.
+If falling is blocked, unit goes into jumping state.
+When on ladder, falling state is always changed to jumping state.
+Jumping state may be reverted immediately if ``jump'' is not set in your strategy.
+
+If unit is in jumping state, he moves up with constant speed.
+Jumping state is limited by certain time. After that time state is changed to falling.
+When jumping, unit's $Y$ position is changing by constant velocity.
+If jumping is blocked by wall tile or other unit, state is changed to falling.
+Jumping state can be reverted to falling if ``jump'' is not set in your strategy.
+
+Jumping time and speed can be different depending on what caused the jump.
+Jumping can be started manually after hitting ground or by jump pad tiles.
+In case jump is cause by jump pad, the jump is not cancellable.
+This means, that jumping state will only be reverted to falling if unit hits ceiling or jump time has passed.
+
+\section{Looting}
+
+When game starts, loot boxes are randomly spawned on the level. A loot box may contain:
+\begin{itemize}
+      \item Health pack. Picked up only if unit is not max health currently.
+            Increases health instantly.
+      \item Weapon. Picked up if unit has no weapon equipped currently.
+            It's also possible to swap unit's current weapon with the one in the box.
+      \item Mine. Units have inventory with mines, and they can be placed and activated later.
+\end{itemize}
+
+Loot box can be interacted with if it intersects with the unit.
+
+\section{Shooting}
+
+If unit has a weapon, he can aim and shoot enemies. Each weapon type has following parameters:
+\begin{itemize}
+      \item Magazine size. Weapons have infinite ammo, but they should be reloaded once magazine is used.
+      \item Fire rate. Time between shots.
+      \item Reload time.
+      \item Min and max spread. Weapons have current spread value which is between min and max.
+            Bullets shot from the weapon will be shot at angle modified randomly by current spread value.
+      \item Recoil. Current weapon spread value increases by recoil each time a bullet is fired.
+      \item Aim speed. Speed of decreasing weapon's current spread value.
+      \item Bullet parameters --- speed, size and damage of a bullet.
+      \item Explosion parameters --- may be absent.
+            If present, bullets explode, dealing explosion's damage in given radius.
+\end{itemize}
+
+Bullets are squares, and they hit other units if they intersect with them.
+Bullets can also hit wall tiles of the level.
+In any case, bullet dissapears immediatly, dealing damage if hit a unit.
+Also, if explosion parameters are present, an explosion is created,
+dealing damage to all units that intersect with a square with center at the bullet's position and given radius
+(so, size of explosion's square is twice the radius).
+
+These parameters are constant for each weapon type. There are also varying parameters of a weapon:
+\begin{itemize}
+      \item Magazine --- ammo left in current magazine.
+      \item Spread --- current spread. Initially is equal to min spread.
+            Bullets' angle is modified randomly in range $[-spread, spread]$.
+      \item Fire timer --- time until next shot. May be absent if shooting is already possible.
+      \item Last angle --- last aiming angle. When you change aiming direction,
+            current spread value increases by the angle difference.
+            For the first tick upon picking a weapon, this value is absent.
+\end{itemize}
+
+Reloading a weapon happens automatically. First, when the weapon is just picked up.
+Then, if ammo in current magazine reaches zero,
+or if your strategy tells the unit to stop shooting while the magazine is not full,
+unit also reloads the weapon.
+
+\section{Mines}
+
+Mines can only be planted if unit is currently on ground.
+Upon planting, some time is required to prepare. During this time the mine can't be triggered.
+Then mine goes to idle state, waiting for a unit to come close (within its trigger radius).
+After been triggerd, some time will pass and then the mine will explode, deaing damage to all units in specified explosion radius.
+
+\section{Control}
+
+Controlling the unit is done via properly setting up the $Action$ returned from your strategy.
+
+By setting $velocity$ you control horizontal speed of the unit. The value is clamped to be less than unit's max horizontal speed.
+
+By setting $jump$ to $true$ you tell the unit to start or continue jumping.
+If it is set to $false$ and current unit's jump is cancellable, the unit stops jumping.
+
+By setting $jump\_down$ to $true$, unit starts moving down ladders and jumping down from or falling through the platforms.
+
+The $aim$ property controls where the unit is aiming. If unit has no weapon, this property does nothing.
+Set $shoot$ to $true$ to start shooting.
+
+Setting $swap\_weapon$ to $true$ will make unit swap his current weapon with the one in the loot box near him, if any.
+
+Finally, $plant\_mine$ will cause unit to plant a mine in his current position, if unit has mines in inventory.

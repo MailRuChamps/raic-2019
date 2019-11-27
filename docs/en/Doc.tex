@@ -1,0 +1,49 @@
+\documentclass[a4paper]{report}
+
+\usepackage{amssymb,latexsym,amsmath,amscd,mathtext,ifthen}
+\usepackage[unicode]{hyperref}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage[top = 2.0cm]{geometry}
+\usepackage[T1,T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{ifthen}
+\usepackage{color}
+
+\setlength{\parskip}{0.125in}
+\def\bl{\mbox{}\newline\mbox{}\newline{}}
+\input glyphtounicode
+\pdfgentounicode=1
+\setlength{\skip\footins}{0.5cm}
+\setlength{\footnotesep}{0.5cm}
+\newcommand\abs[1]{\left|#1\right|}
+
+\date{December 2019}
+
+\title{
+\includegraphics[scale=0.2]{../images/aicup-logo.jpg}\\
+\vspace{0.61in}
+\textsc{\Huge CodeSide 2019}\\
+\vspace{0.50in}
+\textsc{\LARGE Rules}\\
+\textsc{\small Version 0.1.0}\\
+\vspace{2.75in}
+}
+
+\begin{document}
+\maketitle
+\sloppy
+\raggedright
+\tableofcontents
+
+\markboth{qqq}{{\footnotesize CodeSide 2019}}
+
+\setlength{\parskip}{0.125in}
+
+\input{Rules.tex}
+\input{API.tex}
+
+\end{document}
