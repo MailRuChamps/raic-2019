@@ -2,7 +2,7 @@ import model.*;
 
 public class MyStrategy {
   static double distanceSqr(Vec2Double a, Vec2Double b) {
-    return (a.getX() - b.getX()) * (a.getX() - b.getX()) + (a.getY() - b.getX()) * (a.getY() - b.getY());
+    return (a.getX() - b.getX()) * (a.getX() - b.getX()) + (a.getY() - b.getY()) * (a.getY() - b.getY());
   }
 
   public UnitAction getAction(Unit unit, Game game, Debug debug) {

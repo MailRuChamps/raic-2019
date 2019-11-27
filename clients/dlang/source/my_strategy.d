@@ -7,7 +7,7 @@ class MyStrategy {
     UnitAction getAction(Unit unit, Game game, Debugger debugger) {
         double distanceSqr(Vec2Double a, Vec2Double b) {
             return (a.x - b.x) * (a.x - b.x) +
-                   (a.y - b.x) * (a.y - b.y);
+                   (a.y - b.y) * (a.y - b.y);
         }
         Nullable!Unit nearestEnemy;
         foreach (other; game.units) {

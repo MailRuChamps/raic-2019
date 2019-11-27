@@ -6,7 +6,7 @@ namespace AiCup2019
     {
         static double DistanceSqr(Vec2Double a, Vec2Double b)
         {
-            return (a.X - b.X) * (a.X - b.X) + (a.Y - b.X) * (a.Y - b.Y);
+            return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
         }
         public UnitAction GetAction(Unit unit, Game game, Debug debug)
         {

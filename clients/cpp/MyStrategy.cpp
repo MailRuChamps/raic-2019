@@ -3,7 +3,7 @@
 MyStrategy::MyStrategy() {}
 
 double distanceSqr(Vec2Double a, Vec2Double b) {
-  return (a.x - b.x) * (a.x - b.x) + (a.y - b.x) * (a.y - b.y);
+  return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
 }
 
 UnitAction MyStrategy::getAction(const Unit &unit, const Game &game,

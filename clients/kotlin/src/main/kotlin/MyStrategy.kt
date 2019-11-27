@@ -53,7 +53,7 @@ class MyStrategy {
 
     companion object {
         internal fun distanceSqr(a: Vec2Double, b: Vec2Double): Double {
-            return (a.x - b.x) * (a.x - b.x) + (a.y - b.x) * (a.y - b.y)
+            return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y)
         }
     }
 }

@@ -10,7 +10,7 @@ func NewMyStrategy() MyStrategy {
 }
 
 func distanceSqr(a Vec2Float64, b Vec2Float64) float64 {
-	return (a.X - b.X) * (a.X - b.X) + (a.Y - b.X) * (a.Y - b.Y)
+	return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y)
 }
 
 func (strategy MyStrategy) getAction(unit Unit, game Game, debug Debug) UnitAction {
