@@ -9,5 +9,4 @@ if [ "$1" != "base" ]; then
     fi
 fi
 
-dotnet build -c Release
-cp bin/Release/netcoreapp2.1/* /output/
+dotnet publish -c Release -o output
