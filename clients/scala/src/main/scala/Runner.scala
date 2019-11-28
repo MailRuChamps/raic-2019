@@ -31,7 +31,7 @@ object Runner extends App {
         case None => return
         case Some(playerView) =>
           val actions = playerView.game.units
-            .filter(_.id == playerView.myId)
+            .filter(_.playerId == playerView.myId)
             .map(x => (x.id, myStrategy.getAction(x, playerView.game, debug)))
             .toMap
 

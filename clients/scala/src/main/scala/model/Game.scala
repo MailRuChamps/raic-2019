@@ -34,11 +34,11 @@ object Game {
       StreamUtil.readInt(stream),
       model.Properties.readFrom(stream),
       model.Level.readFrom(stream),
-      (0 to StreamUtil.readInt(stream)).map { _ => model.Player.readFrom(stream) },
-      (0 to StreamUtil.readInt(stream)).map { _ => model.Unit.readFrom(stream) },
-      (0 to StreamUtil.readInt(stream)).map { _ => model.Bullet.readFrom(stream) },
-      (0 to StreamUtil.readInt(stream)).map { _ => model.Mine.readFrom(stream) },
-      (0 to StreamUtil.readInt(stream)).map { _ => model.LootBox.readFrom(stream) }
+      (0 until StreamUtil.readInt(stream)).map { _ => model.Player.readFrom(stream) },
+      (0 until StreamUtil.readInt(stream)).map { _ => model.Unit.readFrom(stream) },
+      (0 until StreamUtil.readInt(stream)).map { _ => model.Bullet.readFrom(stream) },
+      (0 until StreamUtil.readInt(stream)).map { _ => model.Mine.readFrom(stream) },
+      (0 until StreamUtil.readInt(stream)).map { _ => model.LootBox.readFrom(stream) }
     )
   }
 

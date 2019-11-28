@@ -71,7 +71,7 @@ object Properties {
       StreamUtil.readDouble(stream),
       StreamUtil.readInt(stream),
       StreamUtil.readInt(stream),
-      (0 to StreamUtil.readInt(stream)).map(_ => (WeaponType.readFrom(stream), model.WeaponParams.readFrom(stream))).toMap,
+      (0 until StreamUtil.readInt(stream)).map(_ => (WeaponType.readFrom(stream), model.WeaponParams.readFrom(stream))).toMap,
       model.Vec2Double.readFrom(stream),
       model.ExplosionParams.readFrom(stream),
       StreamUtil.readDouble(stream),

@@ -4,28 +4,29 @@ import util.StreamUtil
 
 sealed trait CustomData {
   def writeTo(stream: java.io.OutputStream)
+
 }
 
 object CustomData {
   def readFrom(stream: java.io.InputStream): CustomData = {
     StreamUtil.readInt(stream) match {
-      case Log.tag => Log.readFrom(stream)
-      case Rect.tag => Rect.readFrom(stream)
-      case Line.tag => Line.readFrom(stream)
-      case Polygon.tag => Polygon.readFrom(stream)
+      case Log.TAG => Log.readFrom(stream)
+      case Rect.TAG => Rect.readFrom(stream)
+      case Line.TAG => Line.readFrom(stream)
+      case Polygon.TAG => Polygon.readFrom(stream)
       case _ => throw new java.io.IOException("Unexpected discriminant value")
     }
   }
 
   case class Log(text: String = "") extends CustomData {
     override def writeTo(stream: java.io.OutputStream) {
-      StreamUtil.writeInt(stream, Log.tag)
+      StreamUtil.writeInt(stream, Log.TAG)
       StreamUtil.writeString(stream, text)
     }
   }
 
-  case object Log extends Tagged {
-    override val tag: Int = 0
+  case object Log {
+    val TAG: Int = 0
 
     def readFrom(stream: java.io.InputStream): Log = Log(StreamUtil.readString(stream))
   }
@@ -36,14 +37,14 @@ object CustomData {
     extends CustomData {
 
     override def writeTo(stream: java.io.OutputStream) {
-      StreamUtil.writeInt(stream, Rect.tag)
+      StreamUtil.writeInt(stream, Rect.TAG)
       pos.writeTo(stream)
       size.writeTo(stream)
       color.writeTo(stream)
     }
   }
-  case object Rect extends Tagged {
-    override val tag: Int = 1
+  case object Rect {
+    val TAG: Int = 1
 
     def readFrom(stream: java.io.InputStream): Rect = {
       Rect(
@@ -60,7 +61,7 @@ object CustomData {
     extends CustomData {
 
     override def writeTo(stream: java.io.OutputStream) {
-      StreamUtil.writeInt(stream, Line.tag)
+      StreamUtil.writeInt(stream, Line.TAG)
       p1.writeTo(stream)
       p2.writeTo(stream)
       StreamUtil.writeFloat(stream, width)
@@ -68,8 +69,8 @@ object CustomData {
     }
   }
 
-  case object Line extends Tagged {
-    override val tag: Int = 2
+  case object Line {
+    val TAG: Int = 2
 
     def readFrom(stream: java.io.InputStream): Line = Line(
       model.Vec2Float.readFrom(stream),
@@ -82,16 +83,16 @@ object CustomData {
 
   case class Polygon(vertices: Seq[model.ColoredVertex] = Seq.empty) extends CustomData {
     override def writeTo(stream: java.io.OutputStream) {
-      StreamUtil.writeInt(stream, Polygon.tag)
+      StreamUtil.writeInt(stream, Polygon.TAG)
       StreamUtil.writeInt(stream, vertices.size)
       vertices.foreach(_.writeTo(stream))
     }
   }
 
-  case object Polygon extends Tagged {
-    override val tag: Int = 3
+  case object Polygon {
+    val TAG: Int = 3
 
-    def readFrom(stream: java.io.InputStream): Polygon = Polygon((0 to StreamUtil.readInt(stream)).map { _ => model.ColoredVertex.readFrom(stream) })
+    def readFrom(stream: java.io.InputStream): Polygon = Polygon((0 until StreamUtil.readInt(stream)).map { _ => model.ColoredVertex.readFrom(stream) })
   }
 
 }
