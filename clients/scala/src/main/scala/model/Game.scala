@@ -2,16 +2,14 @@ package model
 
 import util.StreamUtil
 
-case class Game(
-                 currentTick: Int = 0,
-                 properties: model.Properties = Properties(),
-                 level: model.Level = Level(),
-                 players: Seq[model.Player] = Seq.empty,
-                 units: Seq[model.Unit] = Seq.empty,
-                 bullets: Seq[model.Bullet] = Seq.empty,
-                 mines: Seq[model.Mine] = Seq.empty,
-                 lootBoxes: Seq[model.LootBox] = Seq.empty
-               ) {
+case class Game(currentTick: Int = 0,
+                properties: model.Properties = Properties(),
+                level: model.Level = Level(),
+                players: Seq[model.Player] = Seq.empty,
+                units: Seq[model.Unit] = Seq.empty,
+                bullets: Seq[model.Bullet] = Seq.empty,
+                mines: Seq[model.Mine] = Seq.empty,
+                lootBoxes: Seq[model.LootBox] = Seq.empty) {
   def writeTo(stream: java.io.OutputStream) {
     StreamUtil.writeInt(stream, currentTick)
     properties.writeTo(stream)

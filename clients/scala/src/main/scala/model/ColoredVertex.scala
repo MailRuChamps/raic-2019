@@ -1,8 +1,7 @@
 package model
 
-case class ColoredVertex(
-                          position: model.Vec2Float = Vec2Float(),
-                          color: model.ColorFloat = ColorFloat(0)) {
+case class ColoredVertex(position: model.Vec2Float = Vec2Float(),
+                         color: model.ColorFloat = ColorFloat()) {
 
   def writeTo(stream: java.io.OutputStream) {
     position.writeTo(stream)

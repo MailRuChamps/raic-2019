@@ -71,14 +71,7 @@ object Properties {
       StreamUtil.readDouble(stream),
       StreamUtil.readInt(stream),
       StreamUtil.readInt(stream),
-      (0 to StreamUtil.readInt(stream)).map { _ =>
-        (StreamUtil.readInt(stream) match {
-          case 0 => model.WeaponType.PISTOL
-          case 1 => model.WeaponType.ASSAULT_RIFLE
-          case 2 => model.WeaponType.ROCKET_LAUNCHER
-          case _ => throw new java.io.IOException("Unexpected discriminant value")
-        }, model.WeaponParams.readFrom(stream))
-      }.toMap,
+      (0 to StreamUtil.readInt(stream)).map(_ => (WeaponType.readFrom(stream), model.WeaponParams.readFrom(stream))).toMap,
       model.Vec2Double.readFrom(stream),
       model.ExplosionParams.readFrom(stream),
       StreamUtil.readDouble(stream),

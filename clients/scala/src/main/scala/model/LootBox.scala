@@ -1,10 +1,8 @@
 package model
 
-case class LootBox(
-                    position: model.Vec2Double,
-                    size: model.Vec2Double,
-                    item: model.Item
-                  ) {
+case class LootBox(position: model.Vec2Double,
+                   size: model.Vec2Double,
+                   item: model.Item) {
 
   def writeTo(stream: java.io.OutputStream) {
     position.writeTo(stream)

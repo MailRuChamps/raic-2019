@@ -43,12 +43,7 @@ case class Weapon(typ: model.WeaponType = WeaponType.PISTOL,
 
 object Weapon {
   def readFrom(stream: java.io.InputStream): Weapon = Weapon(
-    StreamUtil.readInt(stream) match {
-      case 0 => model.WeaponType.PISTOL
-      case 1 => model.WeaponType.ASSAULT_RIFLE
-      case 2 => model.WeaponType.ROCKET_LAUNCHER
-      case _ => throw new java.io.IOException("Unexpected discriminant value")
-    },
+    WeaponType.readFrom(stream),
     model.WeaponParams.readFrom(stream),
     StreamUtil.readInt(stream),
     StreamUtil.readBoolean(stream),

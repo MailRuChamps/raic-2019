@@ -2,29 +2,28 @@ package model
 
 import util.StreamUtil
 
-abstract class PlayerMessageGame {
+sealed trait PlayerMessageGame {
   def writeTo(stream: java.io.OutputStream)
 }
 
 object PlayerMessageGame {
-
   def readFrom(stream: java.io.InputStream): PlayerMessageGame = {
     StreamUtil.readInt(stream) match {
-      case CustomDataMessage.TAG => CustomDataMessage.readFrom(stream)
-      case ActionMessage.TAG => ActionMessage.readFrom(stream)
+      case CustomDataMessage.tag => CustomDataMessage.readFrom(stream)
+      case ActionMessage.tag => ActionMessage.readFrom(stream)
       case _ => throw new java.io.IOException("Unexpected discriminant value")
     }
   }
 
   case class CustomDataMessage(data: model.CustomData) extends PlayerMessageGame {
     override def writeTo(stream: java.io.OutputStream) {
-      StreamUtil.writeInt(stream, CustomDataMessage.TAG)
+      StreamUtil.writeInt(stream, CustomDataMessage.tag)
       data.writeTo(stream)
     }
   }
 
-  object CustomDataMessage {
-    val TAG = 0
+  case object CustomDataMessage extends Tagged {
+    override val tag: Int = 0
 
     def readFrom(stream: java.io.InputStream): CustomDataMessage =
       CustomDataMessage(model.CustomData.readFrom(stream))
@@ -34,7 +33,7 @@ object PlayerMessageGame {
   case class ActionMessage(action: Map[Int, model.UnitAction]) extends PlayerMessageGame {
 
     override def writeTo(stream: java.io.OutputStream) {
-      StreamUtil.writeInt(stream, ActionMessage.TAG)
+      StreamUtil.writeInt(stream, ActionMessage.tag)
       StreamUtil.writeInt(stream, action.size)
       action.foreach { case (key, action) =>
         StreamUtil.writeInt(stream, key)
@@ -43,8 +42,8 @@ object PlayerMessageGame {
     }
   }
 
-  object ActionMessage {
-    val TAG = 1
+  case object ActionMessage extends Tagged {
+    override val tag: Int = 0
 
     def readFrom(stream: java.io.InputStream): ActionMessage = {
       ActionMessage(

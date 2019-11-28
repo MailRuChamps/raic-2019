@@ -2,15 +2,13 @@ package model
 
 import util.StreamUtil
 
-case class Mine(
-                 playerId: Int = 0,
-                 position: model.Vec2Double = Vec2Double(),
-                 size: model.Vec2Double = Vec2Double(),
-                 state: model.MineState = MineState.IDLE,
-                 timer: Option[Double] = None,
-                 triggerRadius: Double = 0.0,
-                 explosionParams: model.ExplosionParams = ExplosionParams()
-               ) {
+case class Mine(playerId: Int = 0,
+                position: model.Vec2Double = Vec2Double(),
+                size: model.Vec2Double = Vec2Double(),
+                state: model.MineState = MineState.IDLE,
+                timer: Option[Double] = None,
+                triggerRadius: Double = 0.0,
+                explosionParams: model.ExplosionParams = ExplosionParams()) {
 
   def writeTo(stream: java.io.OutputStream) {
     StreamUtil.writeInt(stream, playerId)

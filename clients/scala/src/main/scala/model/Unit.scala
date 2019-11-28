@@ -2,19 +2,18 @@ package model
 
 import util.StreamUtil
 
-case class Unit(
-                 playerId: Int = 0,
-                 id: Int = 0,
-                 health: Int = 0,
-                 position: model.Vec2Double = model.Vec2Double(),
-                 size: model.Vec2Double = model.Vec2Double(),
-                 jumpState: model.JumpState = model.JumpState(),
-                 walkedRight: Boolean = false,
-                 stand: Boolean = false,
-                 onGround: Boolean = false,
-                 onLadder: Boolean = false,
-                 mines: Int = 0,
-                 weapon: Option[model.Weapon] = None) {
+case class Unit(playerId: Int = 0,
+                id: Int = 0,
+                health: Int = 0,
+                position: model.Vec2Double = model.Vec2Double(),
+                size: model.Vec2Double = model.Vec2Double(),
+                jumpState: model.JumpState = model.JumpState(),
+                walkedRight: Boolean = false,
+                stand: Boolean = false,
+                onGround: Boolean = false,
+                onLadder: Boolean = false,
+                mines: Int = 0,
+                weapon: Option[model.Weapon] = None) {
 
   def writeTo(stream: java.io.OutputStream) {
     StreamUtil.writeInt(stream, playerId)

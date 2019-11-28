@@ -19,14 +19,7 @@ object Level {
     Level(
       (0 to StreamUtil.readInt(stream)).map { _ =>
         (0 to StreamUtil.readInt(stream)).map { _ =>
-          StreamUtil.readInt(stream) match {
-            case 0 => model.Tile.EMPTY
-            case 1 => model.Tile.WALL
-            case 2 => model.Tile.PLATFORM
-            case 3 => model.Tile.LADDER
-            case 4 => model.Tile.JUMP_PAD
-            case _ => throw new java.io.IOException("Unexpected discriminant value")
-          }
+          Tile.readFrom(stream)
         }.toList
       }.toList
     )
