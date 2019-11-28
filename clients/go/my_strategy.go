@@ -15,10 +15,10 @@ func distanceSqr(a Vec2Float64, b Vec2Float64) float64 {
 
 func (strategy MyStrategy) getAction(unit Unit, game Game, debug Debug) UnitAction {
 	var nearestEnemy *Unit
-	for _, other := range game.Units {
-		if other.PlayerId != unit.PlayerId {
-			if nearestEnemy == nil || distanceSqr(unit.Position, other.Position) < distanceSqr(unit.Position, nearestEnemy.Position) {
-				nearestEnemy = &other
+	for i := 0; i < len(game.Units); i++ {
+		if game.Units[i].PlayerId != unit.PlayerId {
+			if nearestEnemy == nil || distanceSqr(unit.Position, game.Units[i].Position) < distanceSqr(unit.Position, nearestEnemy.Position) {
+				nearestEnemy = &game.Units[i]
 			}
 		}
 	}
