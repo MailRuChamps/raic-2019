@@ -59,7 +59,7 @@ namespace AiCup2019.Model
             Position.WriteTo(writer);
             Size.WriteTo(writer);
             writer.Write((int) (State));
-            if (Timer.HasValue)
+            if (!Timer.HasValue)
             {
                 writer.Write(false);
             } else

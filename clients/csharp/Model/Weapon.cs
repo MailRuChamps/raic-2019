@@ -72,7 +72,7 @@ namespace AiCup2019.Model
             writer.Write(Magazine);
             writer.Write(WasShooting);
             writer.Write(Spread);
-            if (FireTimer.HasValue)
+            if (!FireTimer.HasValue)
             {
                 writer.Write(false);
             } else
@@ -80,7 +80,7 @@ namespace AiCup2019.Model
                 writer.Write(true);
                 writer.Write(FireTimer.Value);
             }
-            if (LastAngle.HasValue)
+            if (!LastAngle.HasValue)
             {
                 writer.Write(false);
             } else
@@ -88,7 +88,7 @@ namespace AiCup2019.Model
                 writer.Write(true);
                 writer.Write(LastAngle.Value);
             }
-            if (LastFireTick.HasValue)
+            if (!LastFireTick.HasValue)
             {
                 writer.Write(false);
             } else

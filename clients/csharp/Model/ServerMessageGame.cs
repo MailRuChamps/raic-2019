@@ -21,7 +21,7 @@ namespace AiCup2019.Model
         }
         public void WriteTo(System.IO.BinaryWriter writer)
         {
-            if (PlayerView.HasValue)
+            if (!PlayerView.HasValue)
             {
                 writer.Write(false);
             } else

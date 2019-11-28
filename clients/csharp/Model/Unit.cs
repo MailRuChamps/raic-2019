@@ -65,7 +65,7 @@ namespace AiCup2019.Model
             writer.Write(OnGround);
             writer.Write(OnLadder);
             writer.Write(Mines);
-            if (Weapon.HasValue)
+            if (!Weapon.HasValue)
             {
                 writer.Write(false);
             } else

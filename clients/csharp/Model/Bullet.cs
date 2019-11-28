@@ -62,7 +62,7 @@ namespace AiCup2019.Model
             Velocity.WriteTo(writer);
             writer.Write(Damage);
             writer.Write(Size);
-            if (ExplosionParameters.HasValue)
+            if (!ExplosionParameters.HasValue)
             {
                 writer.Write(false);
             } else

@@ -53,7 +53,7 @@ namespace AiCup2019.Model
             writer.Write(Recoil);
             writer.Write(AimSpeed);
             Bullet.WriteTo(writer);
-            if (Explosion.HasValue)
+            if (!Explosion.HasValue)
             {
                 writer.Write(false);
             } else
