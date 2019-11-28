@@ -46,6 +46,6 @@ class MyStrategy {
   }
 
   private def distanceSqr(a: Vec2Double, b: Vec2Double): Double = {
-    (a.x - b.x) * (a.x - b.x) + (a.y - b.x) * (a.y - b.y)
+    (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y)
   }
 }
