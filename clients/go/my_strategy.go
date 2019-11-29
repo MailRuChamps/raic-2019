@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	mModel "./model"
+	"fmt"
 )
 
 //MyStrategy -- object to send in LocalRunner

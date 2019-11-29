@@ -1,8 +1,8 @@
 package model
 
 import (
-	"io"
 	mStream "../stream"
+	"io"
 )
 
 //Player -- object of player on game field

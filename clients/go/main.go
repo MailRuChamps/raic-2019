@@ -1,12 +1,12 @@
 package main
 
 import (
+	mModel "./model"
+	mStream "./stream"
 	"bufio"
 	"net"
 	"os"
 	"strconv"
-	mStream "./stream"
-	mModel "./model"
 )
 
 //Runner -- net connection for my_strategy to LocalRunner

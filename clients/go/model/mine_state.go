@@ -1,8 +1,8 @@
 package model
 
 import (
-	"io"
 	mStream "../stream"
+	"io"
 )
 
 type MineState int32
