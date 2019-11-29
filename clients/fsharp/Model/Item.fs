@@ -3,50 +3,42 @@
 type ItemType = HealthPack = 0 | Weapon = 1 | Mine = 2
 
 module Item = 
-    [<AbstractClass>]
-    type T() =
-        abstract member writeTo: System.IO.BinaryWriter -> unit
-
-    type HealthPackItem(health) =
-        inherit T()
-        member this.Health : int = health
-
-        override this.writeTo (writer: System.IO.BinaryWriter) =
+    type HealthPackItem = {Health: int} with
+        member this.writeTo (writer: System.IO.BinaryWriter) =
             writer.Write (int ItemType.HealthPack)
             writer.Write this.Health
+        
+        static member readFrom (reader: System.IO.BinaryReader) = { Health = reader.ReadInt32()}
 
-        static member readFrom (reader: System.IO.BinaryReader) = new HealthPackItem(reader.ReadInt32())
-
-    type WeaponItem(weaponType) =
-        inherit T()
-        member this.WeaponType : WeaponType = weaponType
-
-        override this.writeTo (writer: System.IO.BinaryWriter) =
+    type WeaponItem = {WeaponType: WeaponType} with
+        member this.writeTo (writer: System.IO.BinaryWriter) =
             writer.Write (int ItemType.Weapon)
             writer.Write (int this.WeaponType)
-
+        
         static member readFrom (reader: System.IO.BinaryReader) =
-            new WeaponItem(match reader.ReadInt32() with
-                        | 0 -> WeaponType.Pistol
-                        | 1 -> WeaponType.AssaultRifle
-                        | 2 -> WeaponType.RocketLauncher
-                        | x -> failwith (sprintf "Unexpected WeaponType %d" x))
+            { 
+                WeaponType = match reader.ReadInt32() with
+                                | 0 -> WeaponType.Pistol
+                                | 1 -> WeaponType.AssaultRifle
+                                | 2 -> WeaponType.RocketLauncher
+                                | x -> failwith (sprintf "Unexpected WeaponType %d" x)
+            }
 
-    type MineItem() =
-        inherit T()
-
-        override this.writeTo (writer: System.IO.BinaryWriter) =
-            writer.Write (int ItemType.Mine)
+    type MineItem = struct end with
+        member this.writeTo (writer: System.IO.BinaryWriter) = writer.Write (int ItemType.Mine)
 
         static member readFrom (reader: System.IO.BinaryReader) = new MineItem()
-
-    type T with
-        static member readFrom (reader: System.IO.BinaryReader) =
-            match reader.ReadInt32() |> enum with
-                | ItemType.HealthPack -> HealthPackItem.readFrom reader :> T
-                | ItemType.Weapon -> WeaponItem.readFrom reader :> T
-                | ItemType.Mine -> MineItem.readFrom reader :> T
-                | x -> failwith (sprintf "Unexpected ItemType %d" (int x))
     
+    type T = HealthPack of HealthPackItem | WeaponItem of WeaponItem | Mine of MineItem with
+        member this.writeTo (writer: System.IO.BinaryWriter) =
+            match this with
+                | HealthPack x -> x.writeTo writer
+                | WeaponItem x -> x.writeTo writer
+                | Mine x -> x.writeTo writer
 
-
+    let readFrom (reader: System.IO.BinaryReader)  =
+        match reader.ReadInt32() |> enum with
+            | ItemType.HealthPack -> HealthPack (HealthPackItem.readFrom reader)
+            | ItemType.Weapon -> WeaponItem (WeaponItem.readFrom reader)
+            | ItemType.Mine -> Mine (MineItem.readFrom reader)
+            | x -> failwith (sprintf "Unexpected ItemType %d" (int x))

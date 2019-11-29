@@ -18,8 +18,8 @@ module Runner =
             writer.Flush()
 
         member this.run =
-            let myStrategy = new MyStrategy.T()
-            let debug = new Debug.T(writer)
+            let myStrategy = new MyStrategy()
+            let debug = new Debug(writer)
 
             let rec loop() = 
                 let message = Model.ServerMessageGame.readFrom reader
@@ -32,7 +32,7 @@ module Runner =
                                             (x.Id, myStrategy.getAction(x, playerView.Game, debug))) 
                                         |> Map.ofArray                                                       
 
-                   (new Model.ActionMessage.T(actions) :> Model.PlayerMessageGame.T).writeTo writer
+                   (Model.PlayerMessageGame.ActionMessage {Action = actions}).writeTo writer
                    writer.Flush()
                 loop()
 

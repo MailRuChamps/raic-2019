@@ -1,29 +1,28 @@
 ﻿namespace AiCup2019.Model
 
-module Mine = 
-    type T = 
-        {
-            PlayerId: int
-            Position: Vec2Double.T
-            Size: Vec2Double.T
-            State: MineState
-            Timer: option<double>
-            TriggerRadius: double
-            ExplosionParameters: ExplosionParameters.T
-        } with
-        member this.writeTo (writer: System.IO.BinaryWriter) =
-            writer.Write this.PlayerId
-            this.Position.writeTo writer
-            this.Size.writeTo writer
-            writer.Write (int this.State)
-            match this.Timer with
-                | Some x -> writer.Write true
-                            writer.Write x
-                | None -> writer.Write false
-            writer.Write this.TriggerRadius
-            this.ExplosionParameters.writeTo writer
+type Mine = 
+    {
+        PlayerId: int
+        Position: Vec2Double
+        Size: Vec2Double
+        State: MineState
+        Timer: option<double>
+        TriggerRadius: double
+        ExplosionParameters: ExplosionParameters
+    } with
+    member this.writeTo (writer: System.IO.BinaryWriter) =
+        writer.Write this.PlayerId
+        this.Position.writeTo writer
+        this.Size.writeTo writer
+        writer.Write (int this.State)
+        match this.Timer with
+            | Some x -> writer.Write true
+                        writer.Write x
+            | None -> writer.Write false
+        writer.Write this.TriggerRadius
+        this.ExplosionParameters.writeTo writer
 
-    let readFrom (reader: System.IO.BinaryReader) =
+    static member readFrom (reader: System.IO.BinaryReader) =
         {
             PlayerId = reader.ReadInt32()
             Position = Vec2Double.readFrom reader
@@ -40,5 +39,3 @@ module Mine =
             TriggerRadius = reader.ReadDouble()
             ExplosionParameters = ExplosionParameters.readFrom reader
         }
-
-

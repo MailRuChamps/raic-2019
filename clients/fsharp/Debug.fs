@@ -1,8 +1,7 @@
 ﻿namespace AiCup2019
 
-module Debug =
-    type T(writer) =
-        member this.draw(customData) =
-           (new Model.CustomDataMessage.T(customData) :> Model.PlayerMessageGame.T).writeTo writer
-           writer.Flush()
-
+type Debug(writer) =
+    member this.draw(customData) =
+        let message : Model.CustomDataMessage = {CustomData = customData}
+        message.writeTo writer
+        writer.Flush()

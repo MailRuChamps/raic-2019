@@ -1,14 +1,13 @@
 ﻿namespace AiCup2019.Model
 
-module ColorFloat =
-    type T = {R: single; G: single; B: single; A: single} with
-        member this.writeTo (writer: System.IO.BinaryWriter) =
-            writer.Write this.R
-            writer.Write this.G
-            writer.Write this.B
-            writer.Write this.A
+type ColorFloat = {R: single; G: single; B: single; A: single} with
+    member this.writeTo (writer: System.IO.BinaryWriter) =
+        writer.Write this.R
+        writer.Write this.G
+        writer.Write this.B
+        writer.Write this.A
 
-    let readFrom (reader: System.IO.BinaryReader) =
+    static member readFrom (reader: System.IO.BinaryReader) =
         {
             R = reader.ReadSingle()
             G = reader.ReadSingle()
