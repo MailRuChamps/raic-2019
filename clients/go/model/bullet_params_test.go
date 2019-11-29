@@ -121,6 +121,8 @@ func TestBulletParams(test *mTest.T) {
 	_Negative()
 }
 
-func init(){
+func init() {
 	writer = &tWriter{}
+	reader = &tReader{}
+	reader2 = &tReader2{}
 }

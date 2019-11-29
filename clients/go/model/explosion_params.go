@@ -1,6 +1,12 @@
 package model
 
+/*
+	DO NOT CHANGE this module.
+	Its automatic replaced on games server
+*/
+
 import (
+	"fmt"
 	"io"
 
 	mStream "../stream"
@@ -14,6 +20,12 @@ type ExplosionParams struct {
 
 //NewExplosionParams -- return link to new ExplosionParams
 func NewExplosionParams(radius float64, damage int32) *ExplosionParams {
+	if radius < 0 {
+		panic(fmt.Errorf("NewExplosionParams(): FATAL ERROR radius(%v)<0", radius))
+	}
+	if damage < 0 {
+		panic(fmt.Errorf("NewExplosionParams(): FATAL ERROR damage(%v)<0", damage))
+	}
 	return &ExplosionParams{
 		Radius: radius,
 		Damage: damage,
@@ -22,9 +34,17 @@ func NewExplosionParams(radius float64, damage int32) *ExplosionParams {
 
 //ReadExplosionParams -- read from net ExplosionParams from LocalRunners
 func ReadExplosionParams(reader io.Reader) *ExplosionParams {
+	radius := mStream.ReadFloat64(reader)
+	if radius < 0 {
+		panic(fmt.Errorf("ReadExplosionParams(): FATAL ERROR radius(%v)<0", radius))
+	}
+	damage := mStream.ReadInt32(reader)
+	if damage < 0 {
+		panic(fmt.Errorf("ReadExplosionParams(): FATAL ERROR damage(%v)<0", damage))
+	}
 	return &ExplosionParams{
-		Radius: mStream.ReadFloat64(reader),
-		Damage: mStream.ReadInt32(reader),
+		Radius: radius,
+		Damage: damage,
 	}
 }
 
