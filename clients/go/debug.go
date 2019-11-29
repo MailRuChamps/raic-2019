@@ -1,14 +1,19 @@
 package main
 
-import . "aicup2019/model"
-import "bufio"
+import (
+	"bufio"
 
+	mMod "./model"
+)
+
+//Debug -- screen print for debug my_strategy on LocalRunner
 type Debug struct {
 	Writer *bufio.Writer
 }
 
-func (debug Debug) Draw(data CustomData) {
-	PlayerMessageGameCustomDataMessage {
+//Draw -- draw text on screen of LocalRunner
+func (debug *Debug) Draw(data mMod.CustomData) {
+	PlayerMessageGameCustomDataMessage{
 		Data: data,
 	}.Write(debug.Writer)
 	err := debug.Writer.Flush()
