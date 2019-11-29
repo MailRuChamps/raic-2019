@@ -11,20 +11,29 @@ import (
 type iReader interface {
 	Read()
 }
-type iWriter interface {
+type iReader2 interface {
+	Read()
 }
+type iWriter interface{}
 
-type tReader struct {}
-type tWriter struct {}
+type tReader struct{}
+type tReader2 struct{}
+type tWriter struct{}
 
 var (
-	reader *tReader
-	writer *tWriter
+	reader  *tReader
+	reader2 *tReader2
+	writer  *tWriter
 )
 
 func (tr *tReader) Read(pBytes []byte) (int, error) {
 	pBytes = []byte{1, 2, 3}
 	return 3, nil
+}
+
+func (tr *tReader2) Read(pBytes []byte) (int, error) {
+	pBytes = []byte{1, 2, 3}
+	return -1, nil
 }
 
 func (tw *tWriter) Write([]byte) (int, error) {
@@ -61,7 +70,7 @@ func TestBulletParams(test *mTest.T) {
 				test.Errorf("_NewBulParam(): ERROR in damage(0)=%v", bp.Damage)
 			}
 		}
-		_WriteNet:=func(){
+		_WriteNet := func() {
 			bp := NewBulletParams(1, 2, 3)
 			bp.Write(writer)
 		}
@@ -87,8 +96,26 @@ func TestBulletParams(test *mTest.T) {
 			}()
 			NewBulletParams(1, 1, -1)
 		}
+		_NegativeSize2 := func() {
+			defer func() {
+				if pan := recover(); pan == nil {
+					test.Errorf("_NegativeSize2(): ERROR in panic")
+				}
+			}()
+			bp := ReadBulletParams(reader2)
+			if bp.Speed != 0 {
+				test.Errorf("_NegativeSize2(): ERROR in speed(0)=%v", bp.Speed)
+			}
+			if bp.Size != 0 {
+				test.Errorf("_NegativeSize2(): ERROR in size(0)=%v", bp.Size)
+			}
+			if bp.Damage != 0 {
+				test.Errorf("_NegativeSize2(): ERROR in damage(0)=%v", bp.Damage)
+			}
+		}
 		_NegativeSize()
 		_NegativeDamage()
+		_NegativeSize2()
 	}
 	_Posiiv()
 	_Negative()

@@ -9,6 +9,7 @@ import (
 	//"golang.org/cmd/go/internal/module"
 	"fmt"
 	"io"
+
 	mStream "../stream"
 )
 
@@ -36,12 +37,19 @@ func NewBulletParams(pSpeed float64, pSize float64, pDamage int32) *BulletParams
 
 //ReadBulletParams -- read BulletParams from net connection from LocalRunner
 func ReadBulletParams(reader io.Reader) *BulletParams {
-	result := &BulletParams{
-		Speed:  mStream.ReadFloat64(reader),
-		Size:   mStream.ReadFloat64(reader),
-		Damage: mStream.ReadInt32(reader),
+	size := mStream.ReadFloat64(reader)
+	if size < 0 {
+		panic(fmt.Errorf("ReadBulletParams(): FATAL ERROR size(%v)<0", size))
 	}
-	return result
+	damage := mStream.ReadInt32(reader)
+	if damage < 0 {
+		panic(fmt.Errorf("ReadBulletParams(): FATAL ERROR damage(%v)<0", size))
+	}
+	return &BulletParams{
+		Speed:  mStream.ReadFloat64(reader),
+		Size:   size,
+		Damage: damage,
+	}
 }
 
 //Write -- write BulletParams to net connection to LocalRunner
