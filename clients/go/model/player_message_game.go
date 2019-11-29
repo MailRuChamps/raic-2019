@@ -40,24 +40,21 @@ func (value PlayerMessageGameCustomDataMessage) Write(writer io.Writer) {
 }
 
 type PlayerMessageGameActionMessage struct {
-	Action map[int32]UnitAction
+	Action map[int32]*UnitAction
 }
 
-func NewPlayerMessageGameActionMessage(action map[int32]UnitAction) PlayerMessageGameActionMessage {
-	return PlayerMessageGameActionMessage{
+func NewPlayerMessageGameActionMessage(action map[int32]*UnitAction) *PlayerMessageGameActionMessage {
+	return &PlayerMessageGameActionMessage{
 		Action: action,
 	}
 }
-func ReadPlayerMessageGameActionMessage(reader io.Reader) PlayerMessageGameActionMessage {
-	result := PlayerMessageGameActionMessage{}
+func ReadPlayerMessageGameActionMessage(reader io.Reader) *PlayerMessageGameActionMessage {
+	result := &PlayerMessageGameActionMessage{}
 	ActionSize := mStream.ReadInt32(reader)
-	result.Action = make(map[int32]UnitAction)
+	result.Action = make(map[int32]*UnitAction)
 	for i := int32(0); i < ActionSize; i++ {
-		var ActionKey int32
-		ActionKey = mStream.ReadInt32(reader)
-		var ActionValue UnitAction
-		ActionValue = ReadUnitAction(reader)
-		result.Action[ActionKey] = ActionValue
+		ActionKey := mStream.ReadInt32(reader)
+		result.Action[ActionKey] = ReadUnitAction(reader)
 	}
 	return result
 }

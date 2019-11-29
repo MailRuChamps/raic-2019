@@ -2,6 +2,8 @@ package model
 
 import (
 	"io"
+
+	mStream "../stream"
 )
 
 type Vec2Float64 struct {
@@ -17,11 +19,11 @@ func NewVec2Float64(x float64, y float64) *Vec2Float64 {
 }
 func ReadVec2Float64(reader io.Reader) *Vec2Float64 {
 	return &Vec2Float64{
-		X: ReadFloat64(reader),
-		Y: ReadFloat64(reader),
+		X: mStream.ReadFloat64(reader),
+		Y: mStream.ReadFloat64(reader),
 	}
 }
 func (value *Vec2Float64) Write(writer io.Writer) {
-	WriteFloat64(writer, value.X)
-	WriteFloat64(writer, value.Y)
+	mStream.WriteFloat64(writer, value.X)
+	mStream.WriteFloat64(writer, value.Y)
 }

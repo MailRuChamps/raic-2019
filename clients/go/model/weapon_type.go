@@ -2,6 +2,7 @@ package model
 
 import (
 	"io"
+	mStream "../stream"
 )
 
 type WeaponType int32
@@ -13,7 +14,7 @@ const (
 )
 
 func ReadWeaponType(reader io.Reader) WeaponType {
-	switch ReadInt32(reader) {
+	switch mStream.ReadInt32(reader) {
 	case 0:
 		return WeaponTypePistol
 	case 1:

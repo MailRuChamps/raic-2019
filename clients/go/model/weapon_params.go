@@ -2,6 +2,8 @@ package model
 
 import (
 	"io"
+
+	mStream "../stream"
 )
 
 type WeaponParams struct {
@@ -17,7 +19,7 @@ type WeaponParams struct {
 }
 
 func NewWeaponParams(magazineSize int32, fireRate float64, reloadTime float64, minSpread float64,
-	maxSpread float64, recoil float64, aimSpeed float64, bullet BulletParams, explosion *ExplosionParams) *WeaponParams {
+	maxSpread float64, recoil float64, aimSpeed float64, bullet *BulletParams, explosion *ExplosionParams) *WeaponParams {
 	return &WeaponParams{
 		MagazineSize: magazineSize,
 		FireRate:     fireRate,
@@ -32,36 +34,35 @@ func NewWeaponParams(magazineSize int32, fireRate float64, reloadTime float64, m
 }
 func ReadWeaponParams(reader io.Reader) *WeaponParams {
 	result := &WeaponParams{
-		MagazineSize: ReadInt32(reader),
-		FireRate:     ReadFloat64(reader),
-		ReloadTime:   ReadFloat64(reader),
-		MinSpread:    ReadFloat64(reader),
-		MaxSpread:    ReadFloat64(reader),
-		Recoil:       ReadFloat64(reader),
-		AimSpeed:     ReadFloat64(reader),
+		MagazineSize: mStream.ReadInt32(reader),
+		FireRate:     mStream.ReadFloat64(reader),
+		ReloadTime:   mStream.ReadFloat64(reader),
+		MinSpread:    mStream.ReadFloat64(reader),
+		MaxSpread:    mStream.ReadFloat64(reader),
+		Recoil:       mStream.ReadFloat64(reader),
+		AimSpeed:     mStream.ReadFloat64(reader),
 		Bullet:       ReadBulletParams(reader),
 	}
-	if ReadBool(reader) {
-		ExplosionValue := ReadExplosionParams(reader)
-		result.Explosion = &ExplosionValue
+	if mStream.ReadBool(reader) {
+		result.Explosion = ReadExplosionParams(reader)
 	} else {
 		result.Explosion = nil
 	}
 	return result
 }
 func (value WeaponParams) Write(writer io.Writer) {
-	WriteInt32(writer, value.MagazineSize)
-	WriteFloat64(writer, value.FireRate)
-	WriteFloat64(writer, value.ReloadTime)
-	WriteFloat64(writer, value.MinSpread)
-	WriteFloat64(writer, value.MaxSpread)
-	WriteFloat64(writer, value.Recoil)
-	WriteFloat64(writer, value.AimSpeed)
+	mStream.WriteInt32(writer, value.MagazineSize)
+	mStream.WriteFloat64(writer, value.FireRate)
+	mStream.WriteFloat64(writer, value.ReloadTime)
+	mStream.WriteFloat64(writer, value.MinSpread)
+	mStream.WriteFloat64(writer, value.MaxSpread)
+	mStream.WriteFloat64(writer, value.Recoil)
+	mStream.WriteFloat64(writer, value.AimSpeed)
 	value.Bullet.Write(writer)
 	if value.Explosion == nil {
-		WriteBool(writer, false)
+		mStream.WriteBool(writer, false)
 	} else {
-		WriteBool(writer, true)
+		mStream.WriteBool(writer, true)
 		(*value.Explosion).Write(writer)
 	}
 }

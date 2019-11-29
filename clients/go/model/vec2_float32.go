@@ -2,6 +2,8 @@ package model
 
 import (
 	"io"
+
+	mStream "../stream"
 )
 
 //Vec2Float32 -- universal struct for geometry
@@ -21,13 +23,13 @@ func NewVec2Float32(x float32, y float32) *Vec2Float32 {
 //ReadVec2Float32 -- read Vec2Float32 from net from LocalRunner
 func ReadVec2Float32(reader io.Reader) *Vec2Float32 {
 	return &Vec2Float32{
-		X: ReadFloat32(reader),
-		Y: ReadFloat32(reader),
+		X: mStream.ReadFloat32(reader),
+		Y: mStream.ReadFloat32(reader),
 	}
 }
 
 //Write -- write Vec2Float32 to net to LocalRunner
 func (value *Vec2Float32) Write(writer io.Writer) {
-	WriteFloat32(writer, value.X)
-	WriteFloat32(writer, value.Y)
+	mStream.WriteFloat32(writer, value.X)
+	mStream.WriteFloat32(writer, value.Y)
 }

@@ -8,17 +8,17 @@ import (
 
 type Weapon struct {
 	Typ          WeaponType
-	Params       WeaponParams
+	Params       *WeaponParams
 	Magazine     int32
 	WasShooting  bool
 	Spread       float64
-	FireTimer    *float64
-	LastAngle    *float64
-	LastFireTick *int32
+	FireTimer    float64
+	LastAngle    float64
+	LastFireTick int32
 }
 
-func NewWeapon(typ WeaponType, params WeaponParams, magazine int32, wasShooting bool, spread float64,
-	fireTimer *float64, lastAngle *float64, lastFireTick *int32) *Weapon {
+func NewWeapon(typ WeaponType, params *WeaponParams, magazine int32, wasShooting bool, spread float64,
+	fireTimer float64, lastAngle float64, lastFireTick int32) *Weapon {
 	return &Weapon{
 		Typ:          typ,
 		Params:       params,
@@ -39,20 +39,20 @@ func ReadWeapon(reader io.Reader) *Weapon {
 		Spread:      mStream.ReadFloat64(reader),
 	}
 
-	if ReadBool(reader) {
+	if mStream.ReadBool(reader) {
 		result.FireTimer = mStream.ReadFloat64(reader)
 	} else {
-		result.FireTimer = nil
+		result.FireTimer = -1
 	}
-	if ReadBool(reader) {
+	if mStream.ReadBool(reader) {
 		result.LastAngle = mStream.ReadFloat64(reader)
 	} else {
-		result.LastAngle = nil
+		result.LastAngle = -1
 	}
-	if ReadBool(reader) {
+	if mStream.ReadBool(reader) {
 		result.LastFireTick = mStream.ReadInt32(reader)
 	} else {
-		result.LastFireTick = nil
+		result.LastFireTick = -1
 	}
 	return result
 }
@@ -62,22 +62,22 @@ func (value Weapon) Write(writer io.Writer) {
 	mStream.WriteInt32(writer, value.Magazine)
 	mStream.WriteBool(writer, value.WasShooting)
 	mStream.WriteFloat64(writer, value.Spread)
-	if value.FireTimer == nil {
+	if value.FireTimer == -1 {
 		mStream.WriteBool(writer, false)
 	} else {
 		mStream.WriteBool(writer, true)
-		mStream.WriteFloat64(writer, (*value.FireTimer))
+		mStream.WriteFloat64(writer, value.FireTimer)
 	}
-	if value.LastAngle == nil {
+	if value.LastAngle == -1 {
 		mStream.WriteBool(writer, false)
 	} else {
 		mStream.WriteBool(writer, true)
-		mStream.riteFloat64(writer, (*value.LastAngle))
+		mStream.WriteFloat64(writer, value.LastAngle)
 	}
-	if value.LastFireTick == nil {
+	if value.LastFireTick == -1 {
 		mStream.WriteBool(writer, false)
 	} else {
 		mStream.WriteBool(writer, true)
-		mStream.WriteInt32(writer, (*value.LastFireTick))
+		mStream.WriteInt32(writer, value.LastFireTick)
 	}
 }
