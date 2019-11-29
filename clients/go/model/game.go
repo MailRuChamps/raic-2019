@@ -1,6 +1,12 @@
 package model
 
+/*
+	DO NOT CHANGE this module.
+	Its automatic replaced on games server
+*/
+
 import (
+	"fmt"
 	"io"
 
 	mStream "../stream"
@@ -21,6 +27,30 @@ type Game struct {
 //NewGame -- return link to new Game
 func NewGame(currentTick int32, properties *Properties, level *Level, players []*Player,
 	units []*Unit, bullets []*Bullet, mines []*Mine, lootBoxes []*LootBox) *Game {
+	if currentTick < 0 {
+		panic(fmt.Errorf("NewGame(): FATAL ERROR currentTick(%v)<0", currentTick))
+	}
+	if properties == nil {
+		panic(fmt.Errorf("NewGame(): FATAL ERROR properties==nil"))
+	}
+	if level == nil {
+		panic(fmt.Errorf("NewGame(): FATAL ERROR level==nil"))
+	}
+	if players == nil {
+		panic(fmt.Errorf("NewGame(): FATAL ERROR players==nil"))
+	}
+	if units == nil {
+		panic(fmt.Errorf("NewGame(): FATAL ERROR units==nil"))
+	}
+	if bullets == nil {
+		panic(fmt.Errorf("NewGame(): FATAL ERROR bullets==nil"))
+	}
+	if mines == nil {
+		panic(fmt.Errorf("NewGame(): FATAL ERROR mines==nil"))
+	}
+	if lootBoxes == nil {
+		panic(fmt.Errorf("NewGame(): FATAL ERROR lootBoxes==nil"))
+	}
 	return &Game{
 		CurrentTick: currentTick,
 		Properties:  properties,
@@ -35,10 +65,22 @@ func NewGame(currentTick int32, properties *Properties, level *Level, players []
 
 //ReadGame -- read from net Game from LocalRunner
 func ReadGame(reader io.Reader) *Game {
+	curTick := mStream.ReadInt32(reader)
+	if curTick < 0 {
+		panic(fmt.Errorf("ReadGame(): FATAL ERROR currentTick(%v)<0", curTick))
+	}
+	prop := ReadProperties(reader)
+	if prop == nil {
+		panic(fmt.Errorf("ReadGame(): FATAL ERROR prop==nil"))
+	}
+	level := ReadLevel(reader)
+	if level == nil {
+		panic(fmt.Errorf("ReadGame(): FATAL ERROR level==nil"))
+	}
 	result := &Game{
-		CurrentTick: mStream.ReadInt32(reader),
-		Properties:  ReadProperties(reader),
-		Level:       ReadLevel(reader),
+		CurrentTick: curTick,
+		Properties:  prop,
+		Level:       level,
 		Players:     make([]*Player, mStream.ReadInt32(reader)),
 	}
 	for i := range result.Players {
