@@ -1,6 +1,12 @@
 package model
 
+/*
+	DO NOT CHANGE this module.
+	Its automatic replaced on games server
+*/
+
 import (
+	"fmt"
 	"io"
 
 	mStream "../stream"
@@ -16,6 +22,18 @@ type ColorFloat32 struct {
 
 //NewColorFloat32 -- return link to new ColorFloat32
 func NewColorFloat32(r float32, g float32, b float32, a float32) *ColorFloat32 {
+	if r < 0 {
+		panic(fmt.Errorf("NewColorFloat32(): FATAL ERROR r(%v)<0", r))
+	}
+	if g < 0 {
+		panic(fmt.Errorf("NewColorFloat32(): FATAL ERROR g(%v)<0", g))
+	}
+	if b < 0 {
+		panic(fmt.Errorf("NewColorFloat32(): FATAL ERROR b(%v)<0", b))
+	}
+	if a < 0 {
+		panic(fmt.Errorf("NewColorFloat32(): FATAL ERROR a(%v)<0", a))
+	}
 	return &ColorFloat32{
 		R: r,
 		G: g,
@@ -26,13 +44,28 @@ func NewColorFloat32(r float32, g float32, b float32, a float32) *ColorFloat32 {
 
 //ReadColorFloat32 -- read color from net connection from LocalRunner
 func ReadColorFloat32(reader io.Reader) *ColorFloat32 {
-	result := &ColorFloat32{
-		R: mStream.ReadFloat32(reader),
-		G: mStream.ReadFloat32(reader),
-		B: mStream.ReadFloat32(reader),
-		A: mStream.ReadFloat32(reader),
+	r := mStream.ReadFloat32(reader)
+	if r < 0 {
+		panic(fmt.Errorf("ReadColorFloat32(): FATAL ERROR r(%v)<0", r))
 	}
-	return result
+	g := mStream.ReadFloat32(reader)
+	if g < 0 {
+		panic(fmt.Errorf("ReadColorFloat32(): FATAL ERROR g(%v)<0", g))
+	}
+	b := mStream.ReadFloat32(reader)
+	if b < 0 {
+		panic(fmt.Errorf("ReadColorFloat32(): FATAL ERROR b(%v)<0", b))
+	}
+	a := mStream.ReadFloat32(reader)
+	if a < 0 {
+		panic(fmt.Errorf("ReadColorFloat32(): FATAL ERROR a(%v)<0", a))
+	}
+	return &ColorFloat32{
+		R: r,
+		G: g,
+		B: b,
+		A: a,
+	}
 }
 
 //Write -- write to net connection color to LocalRunner
