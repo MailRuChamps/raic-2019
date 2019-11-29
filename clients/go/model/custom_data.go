@@ -1,6 +1,12 @@
 package model
 
+/*
+	DO NOT CHANGE this module.
+	Its automatic replaced on games server
+*/
+
 import (
+	"fmt"
 	"io"
 
 	mStream "../stream"
@@ -19,18 +25,23 @@ const (
 )
 
 //ReadCustomData -- reads ICustomData from net from LocalRunner
-func ReadCustomData(reader io.Reader) ICustomData {
+func ReadCustomData(reader io.Reader) (cd ICustomData) {
 	switch mStream.ReadInt32(reader) {
 	case iDataLog:
-		return ReadCustomDataLog(reader)
+		cd = ReadCustomDataLog(reader)
 	case iDataRect:
-		return ReadCustomDataRect(reader)
+		cd = ReadCustomDataRect(reader)
 	case iDataLine:
-		return ReadCustomDataLine(reader)
+		cd = ReadCustomDataLine(reader)
 	case iDataPolygon:
-		return ReadCustomDataPolygon(reader)
+		cd = ReadCustomDataPolygon(reader)
+	default:
+		panic("Unexpected discriminant value")
 	}
-	panic("Unexpected discriminant value")
+	if cd == nil {
+		panic(fmt.Errorf("ReadCustomData(): FATAL ERROR cd==nil"))
+	}
+	return cd
 }
 
 //CustomDataLog -- custom log for data
@@ -67,6 +78,15 @@ type CustomDataRect struct {
 
 //NewCustomDataRect -- return link to new CustomDataRect
 func NewCustomDataRect(pos *Vec2Float32, size *Vec2Float32, color *ColorFloat32) *CustomDataRect {
+	if pos == nil {
+		panic(fmt.Errorf("NewCustomDataRect(): FATAL ERROR pos==nil"))
+	}
+	if size == nil {
+		panic(fmt.Errorf("NewCustomDataRect(): FATAL ERROR size==nil"))
+	}
+	if color == nil {
+		panic(fmt.Errorf("NewCustomDataRect(): FATAL ERROR color==nil"))
+	}
 	return &CustomDataRect{
 		Pos:   pos,
 		Size:  size,
@@ -76,10 +96,22 @@ func NewCustomDataRect(pos *Vec2Float32, size *Vec2Float32, color *ColorFloat32)
 
 //ReadCustomDataRect -- read from net CustomDataRect from LocalRunner
 func ReadCustomDataRect(reader io.Reader) *CustomDataRect {
+	pos := ReadVec2Float32(reader)
+	if pos == nil {
+		panic(fmt.Errorf("ReadCustomDataRect(): FATAL ERROR pos==nil"))
+	}
+	size := ReadVec2Float32(reader)
+	if size == nil {
+		panic(fmt.Errorf("ReadCustomDataRect(): FATAL ERROR size==nil"))
+	}
+	color := ReadColorFloat32(reader)
+	if color == nil {
+		panic(fmt.Errorf("ReadCustomDataRect(): FATAL ERROR color==nil"))
+	}
 	return &CustomDataRect{
-		Pos:   ReadVec2Float32(reader),
-		Size:  ReadVec2Float32(reader),
-		Color: ReadColorFloat32(reader),
+		Pos:   pos,
+		Size:  size,
+		Color: color,
 	}
 }
 
@@ -101,6 +133,18 @@ type CustomDataLine struct {
 
 //NewCustomDataLine -- return link to new CustomDataLine
 func NewCustomDataLine(p1 *Vec2Float32, p2 *Vec2Float32, width float32, color *ColorFloat32) *CustomDataLine {
+	if p1 == nil {
+		panic(fmt.Errorf("NewCustomDataLine(): FATAL ERROR p1==nil"))
+	}
+	if p2 == nil {
+		panic(fmt.Errorf("NewCustomDataLine(): FATAL ERROR p2==nil"))
+	}
+	if width < 0 {
+		panic(fmt.Errorf("NewCustomDataLine(): FATAL ERROR width(%v)<0", width))
+	}
+	if color == nil {
+		panic(fmt.Errorf("NewCustomDataLine(): FATAL ERROR color==nil"))
+	}
 	return &CustomDataLine{
 		P1:    p1,
 		P2:    p2,
@@ -111,11 +155,27 @@ func NewCustomDataLine(p1 *Vec2Float32, p2 *Vec2Float32, width float32, color *C
 
 //ReadCustomDataLine -- read CustomDataLine from net  from LocalRunner
 func ReadCustomDataLine(reader io.Reader) *CustomDataLine {
+	p1 := ReadVec2Float32(reader)
+	if p1 == nil {
+		panic(fmt.Errorf("ReadCustomDataLine(): FATAL ERROR p1==nil"))
+	}
+	p2 := ReadVec2Float32(reader)
+	if p2 == nil {
+		panic(fmt.Errorf("ReadCustomDataLine(): FATAL ERROR p2==nil"))
+	}
+	width := mStream.ReadFloat32(reader)
+	if width < 0 {
+		panic(fmt.Errorf("ReadCustomDataLine(): FATAL ERROR width(%v)<0", width))
+	}
+	color := ReadColorFloat32(reader)
+	if color == nil {
+		panic(fmt.Errorf("ReadCustomDataLine(): FATAL ERROR color==nil"))
+	}
 	return &CustomDataLine{
-		P1:    ReadVec2Float32(reader),
-		P2:    ReadVec2Float32(reader),
-		Width: mStream.ReadFloat32(reader),
-		Color: ReadColorFloat32(reader),
+		P1:    p1,
+		P2:    p2,
+		Width: width,
+		Color: color,
 	}
 }
 
@@ -135,6 +195,9 @@ type CustomDataPolygon struct {
 
 //NewCustomDataPolygon -- return link to new CustomDataPolygon
 func NewCustomDataPolygon(vertices []*ColoredVertex) *CustomDataPolygon {
+	if vertices == nil {
+		panic(fmt.Errorf("NewCustomDataPolygon(): FATAL ERROR vertices==nil"))
+	}
 	return &CustomDataPolygon{
 		Vertices: vertices,
 	}
