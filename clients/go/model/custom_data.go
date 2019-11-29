@@ -46,7 +46,7 @@ func NewCustomDataLog(text string) *CustomDataLog {
 }
 
 //ReadCustomDataLog -- read CustomDataLog from net from LocalRunner
-func ReadCustomDataLog(reader io.Reader) *CustomDataLog {
+func ReadCustomDataLog(reader io.Reader) ICustomData {
 	return &CustomDataLog{
 		Text: mStream.ReadString(reader),
 	}

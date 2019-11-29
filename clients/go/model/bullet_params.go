@@ -20,7 +20,7 @@ type BulletParams struct {
 }
 
 //NewBulletParams -- return link to new BulletParams
-func NewBulletParams(speed float64, pSize float64, pDamage int32) *BulletParams {
+func NewBulletParams(pSpeed float64, pSize float64, pDamage int32) *BulletParams {
 	if pSize < 0 {
 		panic(fmt.Errorf("NewBulletParams(): FATAL ERROR pSize(%v)<0", pSize))
 	}
@@ -28,7 +28,7 @@ func NewBulletParams(speed float64, pSize float64, pDamage int32) *BulletParams 
 		panic(fmt.Errorf("NewBulletParams(): FATAL ERROR pDamage(%v)<0", pDamage))
 	}
 	return &BulletParams{
-		Speed:  speed,
+		Speed:  pSpeed,
 		Size:   pSize,
 		Damage: pDamage,
 	}

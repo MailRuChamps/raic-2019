@@ -5,6 +5,8 @@ import (
 	"net"
 	"os"
 	"strconv"
+	mStream "./stream"
+	mModel "./model"
 )
 
 //Runner -- net connection for my_strategy to LocalRunner
@@ -21,7 +23,7 @@ func NewRunner(host string, port uint16, token string) *Runner {
 		panic(err)
 	}
 	writer := bufio.NewWriter(conn)
-	WriteString(writer, token)
+	mStream.WriteString(writer, token)
 	err = writer.Flush()
 	if err != nil {
 		panic(err)
@@ -41,18 +43,18 @@ func (runner *Runner) Run() {
 		Writer: runner.writer,
 	}
 	for {
-		message := ReadServerMessageGame(runner.reader)
+		message := mModel.ReadServerMessageGame(runner.reader)
 		if message.PlayerView == nil {
 			break
 		}
 		playerView := *message.PlayerView
-		actions := make(map[int32]UnitAction)
+		actions := make(map[int32]*mModel.UnitAction)
 		for _, unit := range playerView.Game.Units {
 			if unit.PlayerId == playerView.MyId {
 				actions[unit.Id] = myStrategy.getAction(unit, playerView.Game, debug)
 			}
 		}
-		PlayerMessageGameActionMessage{
+		mModel.PlayerMessageGameActionMessage{
 			Action: actions,
 		}.Write(runner.writer)
 		err := runner.writer.Flush()

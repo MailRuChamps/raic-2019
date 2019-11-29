@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 
-	mMod "./model"
+	mModel "./model"
 )
 
 //Debug -- screen print for debug my_strategy on LocalRunner
@@ -12,8 +12,8 @@ type Debug struct {
 }
 
 //Draw -- draw text on screen of LocalRunner
-func (debug *Debug) Draw(data mMod.CustomData) {
-	PlayerMessageGameCustomDataMessage{
+func (debug *Debug) Draw(data mModel.ICustomData) {
+	mModel.PlayerMessageGameCustomDataMessage{
 		Data: data,
 	}.Write(debug.Writer)
 	err := debug.Writer.Flush()
