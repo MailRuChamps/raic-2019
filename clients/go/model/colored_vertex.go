@@ -2,23 +2,30 @@ package model
 
 import "io"
 
+//ColoredVertex -- colored vertex for drawing
 type ColoredVertex struct {
-    Position Vec2Float32
-    Color ColorFloat32
+	Position Vec2Float32
+	Color    ColorFloat32
 }
-func NewColoredVertex(position Vec2Float32, color ColorFloat32) ColoredVertex {
-    return ColoredVertex {
-        Position: position,
-        Color: color,
-    }
+
+//NewColoredVertex -- return link to new ColoredVertex
+func NewColoredVertex(position Vec2Float32, color ColorFloat32) *ColoredVertex {
+	return &ColoredVertex{
+		Position: position,
+		Color:    color,
+	}
 }
-func ReadColoredVertex(reader io.Reader) ColoredVertex {
-    result := ColoredVertex {}
-    result.Position = ReadVec2Float32(reader)
-    result.Color = ReadColorFloat32(reader)
-    return result
+
+//ReadColoredVertex -- read from net connection ColoredVertex
+func ReadColoredVertex(reader io.Reader) *ColoredVertex {
+	return &ColoredVertex{
+		Position: ReadVec2Float32(reader),
+		Color:    ReadColorFloat32(reader),
+	}
 }
-func (value ColoredVertex) Write(writer io.Writer) {
-    value.Position.Write(writer)
-    value.Color.Write(writer)
+
+//Write -- write ColoredVertex to net connection to LocalRunner
+func (value *ColoredVertex) Write(writer io.Writer) {
+	value.Position.Write(writer)
+	value.Color.Write(writer)
 }
