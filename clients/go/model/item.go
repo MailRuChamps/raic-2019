@@ -1,40 +1,61 @@
 package model
 
+/*
+	DO NOT CHANGE this module.
+	Its automatic replaced on games server
+*/
+
 import (
-	mStream "../stream"
+	"fmt"
 	"io"
+
+	mStream "../stream"
 )
 
 type IItem interface {
 	Write(writer io.Writer)
 }
 
-func ReadItem(reader io.Reader) IItem {
+func ReadItem(reader io.Reader) (item IItem) {
 	switch mStream.ReadInt32(reader) {
 	case 0:
-		return ReadItemHealthPack(reader)
+		item = ReadItemHealthPack(reader)
 	case 1:
-		return ReadItemWeapon(reader)
+		item = ReadItemWeapon(reader)
 	case 2:
-		return ReadItemMine(reader)
+		item = ReadItemMine(reader)
+	default:
+		panic("Unexpected discriminant value")
 	}
-	panic("Unexpected discriminant value")
+	if item == nil {
+		panic(fmt.Errorf("ReadItem(): FATAL ERROR item==nil"))
+	}
+	return item
 }
 
 type ItemHealthPack struct {
 	Health int32
 }
 
-func NewItemHealthPack(health int32) ItemHealthPack {
-	return ItemHealthPack{
+func NewItemHealthPack(health int32) *ItemHealthPack {
+	if health < 0 {
+		panic(fmt.Errorf("NewItemHealthPack(): FATAL ERROR health(%v)<0", health))
+	}
+	return &ItemHealthPack{
 		Health: health,
 	}
 }
-func ReadItemHealthPack(reader io.Reader) ItemHealthPack {
-	result := ItemHealthPack{}
-	result.Health = mStream.ReadInt32(reader)
-	return result
+
+func ReadItemHealthPack(reader io.Reader) *ItemHealthPack {
+	healt := mStream.ReadInt32(reader)
+	if healt < 0 {
+		panic(fmt.Errorf("ReadItemHealthPack(): FATAL ERROR healt(%v)<0", healt))
+	}
+	return &ItemHealthPack{
+		Health: healt,
+	}
 }
+
 func (value ItemHealthPack) Write(writer io.Writer) {
 	mStream.WriteInt32(writer, 0)
 	mStream.WriteInt32(writer, value.Health)
@@ -44,16 +65,25 @@ type ItemWeapon struct {
 	WeaponType WeaponType
 }
 
-func NewItemWeapon(weaponType WeaponType) ItemWeapon {
-	return ItemWeapon{
+func NewItemWeapon(weaponType WeaponType) *ItemWeapon {
+	if !(WeaponTypePistol <= weaponType && weaponType <= WeaponTypeRocketLauncher) {
+		panic(fmt.Errorf("NewItemWeapon(): FATAL ERROR 0<=weaponType(%v)<=2", weaponType))
+	}
+	return &ItemWeapon{
 		WeaponType: weaponType,
 	}
 }
-func ReadItemWeapon(reader io.Reader) ItemWeapon {
-	result := ItemWeapon{}
-	result.WeaponType = ReadWeaponType(reader)
-	return result
+
+func ReadItemWeapon(reader io.Reader) *ItemWeapon {
+	weap := ReadWeaponType(reader)
+	if !(WeaponTypePistol <= weap && weap <= WeaponTypeRocketLauncher) {
+		panic(fmt.Errorf("ReadItemWeapon(): FATAL ERROR 0<=weap(%v)<=2", weap))
+	}
+	return &ItemWeapon{
+		WeaponType: weap,
+	}
 }
+
 func (value ItemWeapon) Write(writer io.Writer) {
 	mStream.WriteInt32(writer, 1)
 	mStream.WriteInt32(writer, int32(value.WeaponType))
@@ -62,12 +92,11 @@ func (value ItemWeapon) Write(writer io.Writer) {
 type ItemMine struct {
 }
 
-func NewItemMine() ItemMine {
-	return ItemMine{}
+func NewItemMine() *ItemMine {
+	return &ItemMine{}
 }
-func ReadItemMine(reader io.Reader) ItemMine {
-	result := ItemMine{}
-	return result
+func ReadItemMine(reader io.Reader) *ItemMine {
+	return &ItemMine{}
 }
 func (value ItemMine) Write(writer io.Writer) {
 	mStream.WriteInt32(writer, 2)
