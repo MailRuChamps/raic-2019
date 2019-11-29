@@ -120,3 +120,7 @@ func TestBulletParams(test *mTest.T) {
 	_Posiiv()
 	_Negative()
 }
+
+func init(){
+	writer = &tWriter{}
+}

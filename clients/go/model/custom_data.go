@@ -219,6 +219,8 @@ func (value *CustomDataPolygon) Write(writer io.Writer) {
 	mStream.WriteInt32(writer, 3)
 	mStream.WriteInt32(writer, int32(len(value.Vertices)))
 	for _, VerticesElement := range value.Vertices {
-		VerticesElement.Write(writer)
+		if VerticesElement != nil {
+			VerticesElement.Write(writer)
+		}
 	}
 }
