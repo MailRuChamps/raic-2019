@@ -2,8 +2,6 @@ package model
 
 import (
 	"io"
-
-	. "../stream"
 )
 
 //ColorFloat32 -- 32 bts color for drawing
@@ -25,12 +23,13 @@ func NewColorFloat32(r float32, g float32, b float32, a float32) *ColorFloat32 {
 }
 
 //ReadColorFloat32 -- read color from net connection from LocalRunner
-func ReadColorFloat32(reader io.Reader) ColorFloat32 {
-	result := ColorFloat32{}
-	result.R = ReadFloat32(reader)
-	result.G = ReadFloat32(reader)
-	result.B = ReadFloat32(reader)
-	result.A = ReadFloat32(reader)
+func ReadColorFloat32(reader io.Reader) *ColorFloat32 {
+	result := &ColorFloat32{
+		R: ReadFloat32(reader),
+		G: ReadFloat32(reader),
+		B: ReadFloat32(reader),
+		A: ReadFloat32(reader),
+	}
 	return result
 }
 
