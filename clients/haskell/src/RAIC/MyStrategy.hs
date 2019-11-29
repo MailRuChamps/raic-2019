@@ -1,4 +1,4 @@
-module RAIC.MyStrategy where
+module RAIC.MyStrategy ( getAction )where
 
-get_action :: Int -> ()
-get_action _ = ()
+-- getAction :: Unit -> Game -> Debug -> UnitAction
+getAction unit game debug = undefined
