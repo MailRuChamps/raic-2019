@@ -16,6 +16,8 @@ func ReadCustomData(reader io.Reader) CustomData {
             return ReadCustomDataLine(reader)
         case 3:
             return ReadCustomDataPolygon(reader)
+        case 4:
+            return ReadCustomDataPlacedText(reader)
     }
     panic("Unexpected discriminant value")
 }
@@ -116,4 +118,38 @@ func (value CustomDataPolygon) Write(writer io.Writer) {
     for _, VerticesElement := range value.Vertices {
         VerticesElement.Write(writer)
     }
+}
+
+type CustomDataPlacedText struct {
+    Text string
+    Pos Vec2Float32
+    Alignment TextAlignment
+    Size float32
+    Color ColorFloat32
+}
+func NewCustomDataPlacedText(text string, pos Vec2Float32, alignment TextAlignment, size float32, color ColorFloat32) CustomDataPlacedText {
+    return CustomDataPlacedText {
+        Text: text,
+        Pos: pos,
+        Alignment: alignment,
+        Size: size,
+        Color: color,
+    }
+}
+func ReadCustomDataPlacedText(reader io.Reader) CustomDataPlacedText {
+    result := CustomDataPlacedText {}
+    result.Text = ReadString(reader)
+    result.Pos = ReadVec2Float32(reader)
+    result.Alignment = ReadTextAlignment(reader)
+    result.Size = ReadFloat32(reader)
+    result.Color = ReadColorFloat32(reader)
+    return result
+}
+func (value CustomDataPlacedText) Write(writer io.Writer) {
+    WriteInt32(writer, 4)
+    WriteString(writer, value.Text)
+    value.Pos.Write(writer)
+    WriteInt32(writer, int32(value.Alignment))
+    WriteFloat32(writer, value.Size)
+    value.Color.Write(writer)
 }

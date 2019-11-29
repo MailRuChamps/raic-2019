@@ -15,6 +15,8 @@ abstract class CustomData {
                 return Line.readFrom(reader);
             case Polygon.TAG:
                 return Polygon.readFrom(reader);
+            case PlacedText.TAG:
+                return PlacedText.readFrom(reader);
             default:
                 throw new Exception("Unexpected discriminant value");
         }
@@ -139,6 +141,61 @@ abstract class CustomData {
         override string toString() const {
             return "Polygon" ~ "(" ~
                 to!string(vertices) ~
+                ")";
+        }
+    }
+
+    static class PlacedText : CustomData {
+        static const int TAG = 4;
+        string text;
+        Vec2Float pos;
+        TextAlignment alignment;
+        float size;
+        ColorFloat color;
+        this() {}
+        this(string text, Vec2Float pos, TextAlignment alignment, float size, ColorFloat color) {
+            this.text = text;
+            this.pos = pos;
+            this.alignment = alignment;
+            this.size = size;
+            this.color = color;
+        }
+        static PlacedText readFrom(Stream reader) {
+            auto result = new PlacedText();
+            result.text = reader.readString();
+            result.pos = Vec2Float.readFrom(reader);
+            switch (reader.readInt()) {
+            case 0:
+                result.alignment = TextAlignment.Left;
+                break;
+            case 1:
+                result.alignment = TextAlignment.Center;
+                break;
+            case 2:
+                result.alignment = TextAlignment.Right;
+                break;
+            default:
+                throw new Exception("Unexpected discriminant value");
+            }
+            result.size = reader.readFloat();
+            result.color = ColorFloat.readFrom(reader);
+            return result;
+        }
+        override void writeTo(Stream writer) const {
+            writer.write(TAG);
+            writer.write(text);
+            pos.writeTo(writer);
+            writer.write(cast(int)(alignment));
+            writer.write(size);
+            color.writeTo(writer);
+        }
+        override string toString() const {
+            return "PlacedText" ~ "(" ~
+                to!string(text) ~
+                to!string(pos) ~
+                to!string(alignment) ~
+                to!string(size) ~
+                to!string(color) ~
                 ")";
         }
     }

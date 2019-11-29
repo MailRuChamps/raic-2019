@@ -10,6 +10,8 @@ class CustomData:
             return CustomData.Line.read_from(stream)
         if discriminant == Polygon.TAG:
             return CustomData.Polygon.read_from(stream)
+        if discriminant == PlacedText.TAG:
+            return CustomData.PlacedText.read_from(stream)
         raise Exception("Unexpected discriminant value")
 
 class Log(CustomData):
@@ -108,3 +110,38 @@ class Polygon(CustomData):
             repr(self.vertices) + \
             ")"
 CustomData.Polygon = Polygon
+from .vec2_float import Vec2Float
+from .text_alignment import TextAlignment
+from .color_float import ColorFloat
+class PlacedText(CustomData):
+    TAG = 4
+    def __init__(self, text, pos, alignment, size, color):
+        self.text = text
+        self.pos = pos
+        self.alignment = alignment
+        self.size = size
+        self.color = color
+    @staticmethod
+    def read_from(stream):
+        text = stream.read_string()
+        pos = Vec2Float.read_from(stream)
+        alignment = TextAlignment(stream.read_int())
+        size = stream.read_float()
+        color = ColorFloat.read_from(stream)
+        return PlacedText(text, pos, alignment, size, color)
+    def write_to(self, stream):
+        stream.write_int(self.TAG)
+        stream.write_string(self.text)
+        self.pos.write_to(stream)
+        stream.write_int(self.alignment)
+        stream.write_float(self.size)
+        self.color.write_to(stream)
+    def __repr__(self):
+        return "PlacedText(" + \
+            repr(self.text) + "," + \
+            repr(self.pos) + "," + \
+            repr(self.alignment) + "," + \
+            repr(self.size) + "," + \
+            repr(self.color) + \
+            ")"
+CustomData.PlacedText = PlacedText

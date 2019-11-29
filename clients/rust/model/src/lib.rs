@@ -8,6 +8,9 @@ pub use self::color_f32::*;
 mod colored_vertex;
 pub use self::colored_vertex::*;
 
+mod text_alignment;
+pub use self::text_alignment::*;
+
 mod custom_data;
 pub use self::custom_data::*;
 

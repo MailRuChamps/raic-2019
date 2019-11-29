@@ -1,6 +1,7 @@
 from .vec2_float import Vec2Float
 from .color_float import ColorFloat
 from .colored_vertex import ColoredVertex
+from .text_alignment import TextAlignment
 from .custom_data import CustomData
 from .vec2_double import Vec2Double
 from .unit_action import UnitAction

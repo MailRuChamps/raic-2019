@@ -15,6 +15,8 @@ namespace AiCup2019.Model
                     return Line.ReadFrom(reader);
                 case Polygon.TAG:
                     return Polygon.ReadFrom(reader);
+                case PlacedText.TAG:
+                    return PlacedText.ReadFrom(reader);
                 default:
                     throw new System.Exception("Unexpected discriminant value");
             }
@@ -135,6 +137,59 @@ namespace AiCup2019.Model
                 {
                     VerticesElement.WriteTo(writer);
                 }
+            }
+        }
+
+        public class PlacedText : CustomData
+        {
+            public const int TAG = 4;
+            public string Text { get; set; }
+            public Model.Vec2Float Pos { get; set; }
+            public Model.TextAlignment Alignment { get; set; }
+            public float Size { get; set; }
+            public Model.ColorFloat Color { get; set; }
+            public PlacedText() {}
+            public PlacedText(string text, Model.Vec2Float pos, Model.TextAlignment alignment, float size, Model.ColorFloat color)
+            {
+                this.Text = text;
+                this.Pos = pos;
+                this.Alignment = alignment;
+                this.Size = size;
+                this.Color = color;
+            }
+            public static new PlacedText ReadFrom(System.IO.BinaryReader reader)
+            {
+                var result = new PlacedText();
+                result.Text = System.Text.Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadInt32()));
+                result.Pos = Model.Vec2Float.ReadFrom(reader);
+                switch (reader.ReadInt32())
+                {
+                case 0:
+                    result.Alignment = Model.TextAlignment.Left;
+                    break;
+                case 1:
+                    result.Alignment = Model.TextAlignment.Center;
+                    break;
+                case 2:
+                    result.Alignment = Model.TextAlignment.Right;
+                    break;
+                default:
+                    throw new System.Exception("Unexpected discriminant value");
+                }
+                result.Size = reader.ReadSingle();
+                result.Color = Model.ColorFloat.ReadFrom(reader);
+                return result;
+            }
+            public override void WriteTo(System.IO.BinaryWriter writer)
+            {
+                writer.Write(TAG);
+                var TextData = System.Text.Encoding.UTF8.GetBytes(Text);
+                writer.Write(TextData.Length);
+                writer.Write(TextData);
+                Pos.WriteTo(writer);
+                writer.Write((int) (Alignment));
+                writer.Write(Size);
+                Color.WriteTo(writer);
             }
         }
     }

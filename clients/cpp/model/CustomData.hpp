@@ -24,6 +24,12 @@
 #include "Vec2Float.hpp"
 #include <stdexcept>
 #include "ColorFloat.hpp"
+#include <stdexcept>
+#include "Vec2Float.hpp"
+#include <stdexcept>
+#include "TextAlignment.hpp"
+#include <stdexcept>
+#include "ColorFloat.hpp"
 
 class CustomData {
 public:
@@ -31,6 +37,7 @@ public:
     class Rect;
     class Line;
     class Polygon;
+    class PlacedText;
 
     static std::shared_ptr<CustomData> readFrom(InputStream& stream);
     virtual void writeTo(OutputStream& stream) const = 0;
@@ -86,6 +93,22 @@ public:
     Polygon();
     Polygon(std::vector<ColoredVertex> vertices);
     static Polygon readFrom(InputStream& stream);
+    void writeTo(OutputStream& stream) const;
+    std::string toString() const override;
+};
+
+class CustomData::PlacedText : public CustomData {
+public:
+    static const int TAG = 4;
+public:
+    std::string text;
+    Vec2Float pos;
+    TextAlignment alignment;
+    float size;
+    ColorFloat color;
+    PlacedText();
+    PlacedText(std::string text, Vec2Float pos, TextAlignment alignment, float size, ColorFloat color);
+    static PlacedText readFrom(InputStream& stream);
     void writeTo(OutputStream& stream) const;
     std::string toString() const override;
 };
