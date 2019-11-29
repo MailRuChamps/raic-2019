@@ -2,6 +2,7 @@ package model
 
 import (
 	"io"
+	mStream "../stream"
 )
 
 //Player -- object of player on game field
@@ -21,13 +22,13 @@ func NewPlayer(id int32, score int32) *Player {
 //ReadPlayer -- read Player from net connection from LocalRunner
 func ReadPlayer(reader io.Reader) *Player {
 	result := &Player{}
-	result.Id = ReadInt32(reader)
-	result.Score = ReadInt32(reader)
+	result.Id = mStream.ReadInt32(reader)
+	result.Score = mStream.ReadInt32(reader)
 	return result
 }
 
 //Write -- write Player to net connection to LocalRunner
 func (value *Player) Write(writer io.Writer) {
-	WriteInt32(writer, value.Id)
-	WriteInt32(writer, value.Score)
+	mStream.WriteInt32(writer, value.Id)
+	mStream.WriteInt32(writer, value.Score)
 }

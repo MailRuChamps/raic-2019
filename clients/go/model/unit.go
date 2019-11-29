@@ -3,7 +3,7 @@ package model
 import (
 	"io"
 
-	. "../stream"
+	mStream "../stream"
 )
 
 //Unit -- unit on games field
@@ -11,9 +11,9 @@ type Unit struct {
 	PlayerId    int32
 	Id          int32
 	Health      int32
-	Position    Vec2Float64
-	Size        Vec2Float64
-	JumpState   JumpState
+	Position    *Vec2Float64
+	Size        *Vec2Float64
+	JumpState   *JumpState
 	WalkedRight bool
 	Stand       bool
 	OnGround    bool
@@ -23,7 +23,9 @@ type Unit struct {
 }
 
 //NewUnit -- return link to new Unit
-func NewUnit(playerId int32, id int32, health int32, position Vec2Float64, size Vec2Float64, jumpState JumpState, walkedRight bool, stand bool, onGround bool, onLadder bool, mines int32, weapon *Weapon) *Unit {
+func NewUnit(playerId int32, id int32, health int32, position *Vec2Float64, size *Vec2Float64,
+	jumpState *JumpState, walkedRight bool, stand bool, onGround bool, onLadder bool,
+	mines int32, weapon *Weapon) *Unit {
 	return &Unit{
 		PlayerId:    playerId,
 		Id:          id,
@@ -42,22 +44,21 @@ func NewUnit(playerId int32, id int32, health int32, position Vec2Float64, size 
 
 //ReadUnit -- retrun link to Unit from net connection from LocalRunner
 func ReadUnit(reader io.Reader) *Unit {
-	result := &Unit{}
-	result.PlayerId = ReadInt32(reader)
-	result.Id = ReadInt32(reader)
-	result.Health = ReadInt32(reader)
-	result.Position = ReadVec2Float64(reader)
-	result.Size = ReadVec2Float64(reader)
-	result.JumpState = ReadJumpState(reader)
-	result.WalkedRight = ReadBool(reader)
-	result.Stand = ReadBool(reader)
-	result.OnGround = ReadBool(reader)
-	result.OnLadder = ReadBool(reader)
-	result.Mines = ReadInt32(reader)
-	if ReadBool(reader) {
-		var WeaponValue Weapon
-		WeaponValue = ReadWeapon(reader)
-		result.Weapon = &WeaponValue
+	result := &Unit{
+		PlayerId:    mStream.ReadInt32(reader),
+		Id:          mStream.ReadInt32(reader),
+		Health:      mStream.ReadInt32(reader),
+		Position:    ReadVec2Float64(reader),
+		Size:        ReadVec2Float64(reader),
+		JumpState:   ReadJumpState(reader),
+		WalkedRight: mStream.ReadBool(reader),
+		Stand:       mStream.ReadBool(reader),
+		OnGround:    mStream.ReadBool(reader),
+		OnLadder:    mStream.ReadBool(reader),
+		Mines:       mStream.ReadInt32(reader),
+	}
+	if mStream.ReadBool(reader) {
+		result.Weapon = ReadWeapon(reader)
 	} else {
 		result.Weapon = nil
 	}
@@ -66,21 +67,21 @@ func ReadUnit(reader io.Reader) *Unit {
 
 //Write -- write Unit to net connections to LocalRunner
 func (value *Unit) Write(writer io.Writer) {
-	WriteInt32(writer, value.PlayerId)
-	WriteInt32(writer, value.Id)
-	WriteInt32(writer, value.Health)
+	mStream.WriteInt32(writer, value.PlayerId)
+	mStream.WriteInt32(writer, value.Id)
+	mStream.WriteInt32(writer, value.Health)
 	value.Position.Write(writer)
 	value.Size.Write(writer)
 	value.JumpState.Write(writer)
-	WriteBool(writer, value.WalkedRight)
-	WriteBool(writer, value.Stand)
-	WriteBool(writer, value.OnGround)
-	WriteBool(writer, value.OnLadder)
-	WriteInt32(writer, value.Mines)
+	mStream.WriteBool(writer, value.WalkedRight)
+	mStream.WriteBool(writer, value.Stand)
+	mStream.WriteBool(writer, value.OnGround)
+	mStream.WriteBool(writer, value.OnLadder)
+	mStream.WriteInt32(writer, value.Mines)
 	if value.Weapon == nil {
-		WriteBool(writer, false)
+		mStream.WriteBool(writer, false)
 	} else {
-		WriteBool(writer, true)
+		mStream.WriteBool(writer, true)
 		(*value.Weapon).Write(writer)
 	}
 }

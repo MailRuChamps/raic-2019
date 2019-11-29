@@ -11,8 +11,8 @@ type Bullet struct {
 	WeaponType      WeaponType
 	UnitId          int32
 	PlayerId        int32
-	Position        Vec2Float64
-	Velocity        Vec2Float64
+	Position        *Vec2Float64
+	Velocity        *Vec2Float64
 	Damage          int32
 	Size            float64
 	ExplosionParams *ExplosionParams
@@ -20,7 +20,7 @@ type Bullet struct {
 
 //NewBullet -- return new bullet of weapons for shooting
 func NewBullet(weaponType WeaponType,
-	unitID int32, playerID int32, position Vec2Float64, velocity Vec2Float64,
+	unitID int32, playerID int32, position *Vec2Float64, velocity *Vec2Float64,
 	damage int32, size float64, explosionParams *ExplosionParams) *Bullet {
 	return &Bullet{
 		WeaponType:      weaponType,
