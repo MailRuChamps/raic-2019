@@ -1,6 +1,12 @@
 package model
 
+/*
+	DO NOT CHANGE this module.
+	Its automatic replaced on games server
+*/
+
 import (
+	"fmt"
 	"io"
 )
 
@@ -12,6 +18,12 @@ type ColoredVertex struct {
 
 //NewColoredVertex -- return link to new ColoredVertex
 func NewColoredVertex(position *Vec2Float32, color *ColorFloat32) *ColoredVertex {
+	if position == nil {
+		panic(fmt.Errorf("NewColoredVertex(): FATAL ERROR position==nil"))
+	}
+	if color == nil {
+		panic(fmt.Errorf("NewColoredVertex(): FATAL ERROR color==nil"))
+	}
 	return &ColoredVertex{
 		Position: position,
 		Color:    color,
@@ -20,9 +32,17 @@ func NewColoredVertex(position *Vec2Float32, color *ColorFloat32) *ColoredVertex
 
 //ReadColoredVertex -- read from net connection ColoredVertex
 func ReadColoredVertex(reader io.Reader) *ColoredVertex {
+	pos := ReadVec2Float32(reader)
+	if pos == nil {
+		panic(fmt.Errorf("ReadColoredVertex(): FATAL ERROR pos==nil"))
+	}
+	col := ReadColorFloat32(reader)
+	if col == nil {
+		panic(fmt.Errorf("ReadColoredVertex(): FATAL ERROR col==nil"))
+	}
 	return &ColoredVertex{
-		Position: ReadVec2Float32(reader),
-		Color:    ReadColorFloat32(reader),
+		Position: pos,
+		Color:    col,
 	}
 }
 
