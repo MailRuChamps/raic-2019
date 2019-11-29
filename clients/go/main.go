@@ -1,8 +1,6 @@
 package main
 
 import (
-	. "aicup2019/model"
-	. "aicup2019/stream"
 	"bufio"
 	"net"
 	"os"
