@@ -1,7 +1,10 @@
 # November 29
 
+- Added CustomData::PlacedText
 - Fixed debug rendering flickering
 - Fixed programming language icons
+- Fixed scores of games on server
+- Fixed some problems with the testing system
 
 # November 28
 
