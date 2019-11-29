@@ -1,14 +1,17 @@
 package model
 
-import "io"
-import . "aicup2019/stream"
+import (
+	"io"
+
+	mStream "../stream"
+)
 
 type PlayerMessageGame interface {
 	Write(writer io.Writer)
 }
 
 func ReadPlayerMessageGame(reader io.Reader) PlayerMessageGame {
-	switch ReadInt32(reader) {
+	switch mStream.ReadInt32(reader) {
 	case 0:
 		return ReadPlayerMessageGameCustomDataMessage(reader)
 	case 1:
@@ -18,10 +21,10 @@ func ReadPlayerMessageGame(reader io.Reader) PlayerMessageGame {
 }
 
 type PlayerMessageGameCustomDataMessage struct {
-	Data CustomData
+	Data ICustomData
 }
 
-func NewPlayerMessageGameCustomDataMessage(data CustomData) PlayerMessageGameCustomDataMessage {
+func NewPlayerMessageGameCustomDataMessage(data ICustomData) PlayerMessageGameCustomDataMessage {
 	return PlayerMessageGameCustomDataMessage{
 		Data: data,
 	}
@@ -32,7 +35,7 @@ func ReadPlayerMessageGameCustomDataMessage(reader io.Reader) PlayerMessageGameC
 	return result
 }
 func (value PlayerMessageGameCustomDataMessage) Write(writer io.Writer) {
-	WriteInt32(writer, 0)
+	mStream.WriteInt32(writer, 0)
 	value.Data.Write(writer)
 }
 
@@ -47,11 +50,11 @@ func NewPlayerMessageGameActionMessage(action map[int32]UnitAction) PlayerMessag
 }
 func ReadPlayerMessageGameActionMessage(reader io.Reader) PlayerMessageGameActionMessage {
 	result := PlayerMessageGameActionMessage{}
-	ActionSize := ReadInt32(reader)
+	ActionSize := mStream.ReadInt32(reader)
 	result.Action = make(map[int32]UnitAction)
 	for i := int32(0); i < ActionSize; i++ {
 		var ActionKey int32
-		ActionKey = ReadInt32(reader)
+		ActionKey = mStream.ReadInt32(reader)
 		var ActionValue UnitAction
 		ActionValue = ReadUnitAction(reader)
 		result.Action[ActionKey] = ActionValue
@@ -59,10 +62,10 @@ func ReadPlayerMessageGameActionMessage(reader io.Reader) PlayerMessageGameActio
 	return result
 }
 func (value PlayerMessageGameActionMessage) Write(writer io.Writer) {
-	WriteInt32(writer, 1)
-	WriteInt32(writer, int32(len(value.Action)))
+	mStream.WriteInt32(writer, 1)
+	mStream.WriteInt32(writer, int32(len(value.Action)))
 	for ActionKey, ActionValue := range value.Action {
-		WriteInt32(writer, ActionKey)
+		mStream.WriteInt32(writer, ActionKey)
 		ActionValue.Write(writer)
 	}
 }

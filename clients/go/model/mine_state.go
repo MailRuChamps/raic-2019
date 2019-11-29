@@ -1,7 +1,9 @@
 package model
 
-import "io"
-import . "aicup2019/stream"
+import (
+	"io"
+	mStream "../stream"
+)
 
 type MineState int32
 
@@ -13,7 +15,7 @@ const (
 )
 
 func ReadMineState(reader io.Reader) MineState {
-	switch ReadInt32(reader) {
+	switch mStream.ReadInt32(reader) {
 	case 0:
 		return MineStatePreparing
 	case 1:

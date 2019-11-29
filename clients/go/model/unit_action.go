@@ -1,7 +1,8 @@
 package model
 
-import "io"
-import . "aicup2019/stream"
+import (
+	"io"
+)
 
 type UnitAction struct {
 	Velocity   float64

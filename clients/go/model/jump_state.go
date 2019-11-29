@@ -1,7 +1,10 @@
 package model
 
-import "io"
-import . "aicup2019/stream"
+import (
+	"io"
+
+	mStream "../stream"
+)
 
 type JumpState struct {
 	CanJump   bool
@@ -10,25 +13,25 @@ type JumpState struct {
 	CanCancel bool
 }
 
-func NewJumpState(canJump bool, speed float64, maxTime float64, canCancel bool) JumpState {
-	return JumpState{
+func NewJumpState(canJump bool, speed float64, maxTime float64, canCancel bool) *JumpState {
+	return &JumpState{
 		CanJump:   canJump,
 		Speed:     speed,
 		MaxTime:   maxTime,
 		CanCancel: canCancel,
 	}
 }
-func ReadJumpState(reader io.Reader) JumpState {
-	result := JumpState{}
-	result.CanJump = ReadBool(reader)
-	result.Speed = ReadFloat64(reader)
-	result.MaxTime = ReadFloat64(reader)
-	result.CanCancel = ReadBool(reader)
-	return result
+func ReadJumpState(reader io.Reader) *JumpState {
+	return &JumpState{
+		CanJump:   mStream.ReadBool(reader),
+		Speed:     mStream.ReadFloat64(reader),
+		MaxTime:   mStream.ReadFloat64(reader),
+		CanCancel: mStream.ReadBool(reader),
+	}
 }
 func (value JumpState) Write(writer io.Writer) {
-	WriteBool(writer, value.CanJump)
-	WriteFloat64(writer, value.Speed)
-	WriteFloat64(writer, value.MaxTime)
-	WriteBool(writer, value.CanCancel)
+	mStream.WriteBool(writer, value.CanJump)
+	mStream.WriteFloat64(writer, value.Speed)
+	mStream.WriteFloat64(writer, value.MaxTime)
+	mStream.WriteBool(writer, value.CanCancel)
 }

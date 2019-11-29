@@ -1,7 +1,10 @@
 package model
 
-import "io"
-import . "aicup2019/stream"
+import (
+	"io"
+
+	mStream "../stream"
+)
 
 type Tile int32
 
@@ -14,7 +17,7 @@ const (
 )
 
 func ReadTile(reader io.Reader) Tile {
-	switch ReadInt32(reader) {
+	switch mStream.ReadInt32(reader) {
 	case 0:
 		return TileEmpty
 	case 1:

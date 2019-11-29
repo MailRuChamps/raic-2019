@@ -1,14 +1,16 @@
 package model
 
-import "io"
-import . "aicup2019/stream"
+import (
+	"io"
+	mStream "../stream"
+)
 
-type Item interface {
+type IItem interface {
 	Write(writer io.Writer)
 }
 
-func ReadItem(reader io.Reader) Item {
-	switch ReadInt32(reader) {
+func ReadItem(reader io.Reader) IItem {
+	switch mStream.ReadInt32(reader) {
 	case 0:
 		return ReadItemHealthPack(reader)
 	case 1:
@@ -30,12 +32,12 @@ func NewItemHealthPack(health int32) ItemHealthPack {
 }
 func ReadItemHealthPack(reader io.Reader) ItemHealthPack {
 	result := ItemHealthPack{}
-	result.Health = ReadInt32(reader)
+	result.Health = mStream.ReadInt32(reader)
 	return result
 }
 func (value ItemHealthPack) Write(writer io.Writer) {
-	WriteInt32(writer, 0)
-	WriteInt32(writer, value.Health)
+	mStream.WriteInt32(writer, 0)
+	mStream.WriteInt32(writer, value.Health)
 }
 
 type ItemWeapon struct {
@@ -53,8 +55,8 @@ func ReadItemWeapon(reader io.Reader) ItemWeapon {
 	return result
 }
 func (value ItemWeapon) Write(writer io.Writer) {
-	WriteInt32(writer, 1)
-	WriteInt32(writer, int32(value.WeaponType))
+	mStream.WriteInt32(writer, 1)
+	mStream.WriteInt32(writer, int32(value.WeaponType))
 }
 
 type ItemMine struct {
@@ -68,5 +70,5 @@ func ReadItemMine(reader io.Reader) ItemMine {
 	return result
 }
 func (value ItemMine) Write(writer io.Writer) {
-	WriteInt32(writer, 2)
+	mStream.WriteInt32(writer, 2)
 }

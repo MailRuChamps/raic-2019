@@ -1,15 +1,17 @@
 package model
 
-import "io"
+import (
+	"io"
+)
 
 //ColoredVertex -- colored vertex for drawing
 type ColoredVertex struct {
-	Position Vec2Float32
-	Color    ColorFloat32
+	Position *Vec2Float32
+	Color    *ColorFloat32
 }
 
 //NewColoredVertex -- return link to new ColoredVertex
-func NewColoredVertex(position Vec2Float32, color ColorFloat32) *ColoredVertex {
+func NewColoredVertex(position *Vec2Float32, color *ColorFloat32) *ColoredVertex {
 	return &ColoredVertex{
 		Position: position,
 		Color:    color,
