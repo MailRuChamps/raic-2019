@@ -2,6 +2,8 @@ package model
 
 import (
 	"io"
+
+	mStream "../stream"
 )
 
 //ColorFloat32 -- 32 bts color for drawing
@@ -25,18 +27,18 @@ func NewColorFloat32(r float32, g float32, b float32, a float32) *ColorFloat32 {
 //ReadColorFloat32 -- read color from net connection from LocalRunner
 func ReadColorFloat32(reader io.Reader) *ColorFloat32 {
 	result := &ColorFloat32{
-		R: ReadFloat32(reader),
-		G: ReadFloat32(reader),
-		B: ReadFloat32(reader),
-		A: ReadFloat32(reader),
+		R: mStream.ReadFloat32(reader),
+		G: mStream.ReadFloat32(reader),
+		B: mStream.ReadFloat32(reader),
+		A: mStream.ReadFloat32(reader),
 	}
 	return result
 }
 
 //Write -- write to net connection color to LocalRunner
 func (value *ColorFloat32) Write(writer io.Writer) {
-	WriteFloat32(writer, value.R)
-	WriteFloat32(writer, value.G)
-	WriteFloat32(writer, value.B)
-	WriteFloat32(writer, value.A)
+	mStream.WriteFloat32(writer, value.R)
+	mStream.WriteFloat32(writer, value.G)
+	mStream.WriteFloat32(writer, value.B)
+	mStream.WriteFloat32(writer, value.A)
 }
