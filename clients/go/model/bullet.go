@@ -20,13 +20,8 @@ type Bullet struct {
 
 //NewBullet -- return new bullet of weapons for shooting
 func NewBullet(weaponType WeaponType,
-	unitID int32,
-	playerID int32,
-	position Vec2Float64,
-	velocity Vec2Float64,
-	damage int32,
-	size float64,
-	explosionParams *ExplosionParams) *Bullet {
+	unitID int32, playerID int32, position Vec2Float64, velocity Vec2Float64,
+	damage int32, size float64, explosionParams *ExplosionParams) *Bullet {
 	return &Bullet{
 		WeaponType:      weaponType,
 		UnitId:          unitID,
@@ -40,19 +35,20 @@ func NewBullet(weaponType WeaponType,
 }
 
 //ReadBullet -- get bullet from net stream from LocalRunner
-func ReadBullet(reader io.Reader) Bullet {
-	result := Bullet{}
-	result.WeaponType = ReadWeaponType(reader)
-	result.UnitId = mStream.ReadInt32(reader)
-	result.PlayerId = mStream.ReadInt32(reader)
-	result.Position = ReadVec2Float64(reader)
-	result.Velocity = ReadVec2Float64(reader)
-	result.Damage = mStream.ReadInt32(reader)
-	result.Size = mStream.ReadFloat64(reader)
+func ReadBullet(reader io.Reader) *Bullet {
+	result := &Bullet{
+		WeaponType: ReadWeaponType(reader),
+		UnitId:     mStream.ReadInt32(reader),
+		PlayerId:   mStream.ReadInt32(reader),
+		Position:   ReadVec2Float64(reader),
+		Velocity:   ReadVec2Float64(reader),
+		Damage:     mStream.ReadInt32(reader),
+		Size:       mStream.ReadFloat64(reader),
+	}
+
 	if mStream.ReadBool(reader) {
-		var ExplosionParamsValue ExplosionParams
-		ExplosionParamsValue = ReadExplosionParams(reader)
-		result.ExplosionParams = &ExplosionParamsValue
+		ExplosionParamsValue := ReadExplosionParams(reader)
+		result.ExplosionParams = ExplosionParamsValue
 	} else {
 		result.ExplosionParams = nil
 	}
