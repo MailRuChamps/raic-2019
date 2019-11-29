@@ -2,6 +2,8 @@ package model
 
 import (
 	"io"
+
+	mStream "../stream"
 )
 
 //Bullet -- type for model bullets of weapons
@@ -41,13 +43,13 @@ func NewBullet(weaponType WeaponType,
 func ReadBullet(reader io.Reader) Bullet {
 	result := Bullet{}
 	result.WeaponType = ReadWeaponType(reader)
-	result.UnitId = ReadInt32(reader)
-	result.PlayerId = ReadInt32(reader)
+	result.UnitId = mStream.ReadInt32(reader)
+	result.PlayerId = mStream.ReadInt32(reader)
 	result.Position = ReadVec2Float64(reader)
 	result.Velocity = ReadVec2Float64(reader)
-	result.Damage = ReadInt32(reader)
-	result.Size = ReadFloat64(reader)
-	if ReadBool(reader) {
+	result.Damage = mStream.ReadInt32(reader)
+	result.Size = mStream.ReadFloat64(reader)
+	if mStream.ReadBool(reader) {
 		var ExplosionParamsValue ExplosionParams
 		ExplosionParamsValue = ReadExplosionParams(reader)
 		result.ExplosionParams = &ExplosionParamsValue
@@ -59,17 +61,17 @@ func ReadBullet(reader io.Reader) Bullet {
 
 //Write -- write bullet to net stream to LocalRunner
 func (value *Bullet) Write(writer io.Writer) {
-	WriteInt32(writer, int32(value.WeaponType))
-	WriteInt32(writer, value.UnitId)
-	WriteInt32(writer, value.PlayerId)
+	mStream.WriteInt32(writer, int32(value.WeaponType))
+	mStream.WriteInt32(writer, value.UnitId)
+	mStream.WriteInt32(writer, value.PlayerId)
 	value.Position.Write(writer)
 	value.Velocity.Write(writer)
-	WriteInt32(writer, value.Damage)
-	WriteFloat64(writer, value.Size)
+	mStream.WriteInt32(writer, value.Damage)
+	mStream.WriteFloat64(writer, value.Size)
 	if value.ExplosionParams == nil {
-		WriteBool(writer, false)
+		mStream.WriteBool(writer, false)
 	} else {
-		WriteBool(writer, true)
+		mStream.WriteBool(writer, true)
 		(*value.ExplosionParams).Write(writer)
 	}
 }
