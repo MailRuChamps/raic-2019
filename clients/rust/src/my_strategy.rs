@@ -72,7 +72,7 @@ impl MyStrategy {
         }
         model::UnitAction {
             velocity: target_pos.x - unit.position.x,
-            jump: target_pos.y > unit.position.y,
+            jump,
             jump_down: target_pos.y < unit.position.y,
             aim,
             shoot: true,
