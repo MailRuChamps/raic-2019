@@ -1,0 +1,78 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 768c844060c7b02f2bd455d08e5f294a679048ee71bf024c971a4316add5ea17
+
+name:           raic19-haskell
+version:        0.0.1.0
+homepage:       https://github.com/#readme
+bug-reports:    https://github.com//issues
+build-type:     Simple
+
+source-repository head
+  type: git
+  location: https://github.com/
+
+library
+  exposed-modules:
+      RAIC.Debug
+      RAIC.Main
+      RAIC.Model.Bullet
+      RAIC.Model.BulletParams
+      RAIC.Model.ColoredVertex
+      RAIC.Model.ColorFloat
+      RAIC.Model.CustomData
+      RAIC.Model.ExplosionParams
+      RAIC.Model.Game
+      RAIC.Model.Item
+      RAIC.Model.JumpState
+      RAIC.Model.Level
+      RAIC.Model.LootBox
+      RAIC.Model.Mine
+      RAIC.Model.MineState
+      RAIC.Model.Player
+      RAIC.Model.PlayerMessageGame
+      RAIC.Model.PlayerView
+      RAIC.Model.Properties
+      RAIC.Model.ServerMessageGame
+      RAIC.Model.TextAlignment
+      RAIC.Model.Tile
+      RAIC.Model.Unit
+      RAIC.Model.UnitAction
+      RAIC.Model.Vec2Double
+      RAIC.Model.Vec2Float
+      RAIC.Model.Weapon
+      RAIC.Model.WeaponParams
+      RAIC.Model.WeaponType
+      RAIC.MyStrategy
+  other-modules:
+      Paths_raic19_haskell
+  hs-source-dirs:
+      src
+  ghc-options: -Wall
+  build-depends:
+      base >=4.7 && <5
+    , bytestring
+    , containers
+    , network
+    , utf8-string
+  default-language: Haskell2010
+
+executable haskell-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_raic19_haskell
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , bytestring
+    , containers
+    , network
+    , raic19-haskell
+    , utf8-string
+  default-language: Haskell2010

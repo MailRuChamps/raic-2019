@@ -1,4 +1,4 @@
-name:                haskell
+name:                raic19-haskell
 version:             0.0.1.0
 github:              ""
 author:              ""
@@ -10,6 +10,10 @@ ghc-options:
 
 dependencies:
 - base >= 4.7 && < 5
+- containers
+- bytestring
+- utf8-string
+- network
 
 library:
   source-dirs: src
@@ -23,4 +27,4 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - haskell
+    - raic19-haskell
