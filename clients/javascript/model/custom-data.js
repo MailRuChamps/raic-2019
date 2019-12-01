@@ -1,21 +1,25 @@
 const Vec2Float = require('./vec2float').Vec2Float;
 const ColorFloat = require('./color-float').ColorFloat;
 const ColoredVertex = require('./colored-vertex').ColoredVertex;
+const TextAlignment = require('./text-alignment').TextAlignment;
 
 class CustomData {
     static async readFrom (stream) {
         const discriminant = await stream.readInt();
         if (discriminant === Log.TAG) {
-            return await CustomData.Log.readFrom(stream);
+            return await Log.readFrom(stream);
         }
         if (discriminant === Rect.TAG) {
-            return await CustomData.Rect.readFrom(stream);
+            return await Rect.readFrom(stream);
         }
         if (discriminant === Line.TAG) {
-            return await CustomData.Line.readFrom(stream);
+            return await Line.readFrom(stream);
         }
         if (discriminant === Polygon.TAG) {
-            return await CustomData.Polygon.readFrom(stream);
+            return await Polygon.readFrom(stream);
+        }
+        if (discriminant === PlacedText.TAG) {
+            return await PlacedText.readFrom(stream);
         }
         throw new Error('Unexpected discriminant value');
     }
@@ -143,11 +147,51 @@ class Polygon extends CustomData {
 }
 Polygon.TAG = 3;
 
+class PlacedText extends CustomData {
+    constructor (text, pos, alignment, size, color) {
+        super();
+        this.text = text;
+        this.pos = pos;
+        this.alignment = alignment;
+        this.size = size;
+        this.color = color;
+    }
+    
+    static async readFrom (stream) {
+        const text = await stream.readString();
+        const pos = await Vec2Float.readFrom(stream);
+        const alignment = await TextAlignment.readFrom(stream);
+        const size = await stream.readFloat();
+        const color = await ColorFloat.readFrom(stream);
+        return new PlacedText(text, pos, alignment, size, color);
+    }
+    
+    async writeTo (stream) {
+        await stream.writeInt(this.TAG);
+        await stream.writeString(this.text);
+        await this.pos.writeTo(stream);
+        await stream.writeInt(this.alignment);
+        await stream.writeFloat(this.size);
+        await this.color.writeTo(stream);
+    }
+
+    toString () {
+        return 'PlacedText(' +
+            this.text + ',' +
+            this.pos + ',' +
+            this.alignment + ',' +
+            this.size + ',' +
+            this.color +
+            ')';
+    }
+}
+PlacedText.TAG = 4;
 
 module.exports = {
     CustomData: CustomData,
     Log: Log,
     Rect: Rect,
     Line: Line,
-    Polygon: Polygon
+    Polygon: Polygon,
+    PlacedText: PlacedText,
 };
