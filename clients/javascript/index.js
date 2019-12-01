@@ -42,7 +42,7 @@ class Runner {
                 actions = {};
                 for (let i = 0, unitsSize = playerView.game.units.length; i < unitsSize; i++) {
                     let unit = playerView.game.units[i];
-                    if (unit.player_id == playerView.my_id) {
+                    if (unit.playerId === playerView.myId) {
                         actions[unit.id] = await strategy.getAction(unit, playerView.game, debug);
                     }
                 }

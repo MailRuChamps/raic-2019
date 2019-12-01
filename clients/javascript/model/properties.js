@@ -72,10 +72,10 @@ class Properties {
         await stream.writeDouble(this.jumpPadJumpSpeed);
         await stream.writeInt(this.unitMaxHealth);
         await stream.writeInt(this.healthPackHealth);
-        await stream.writeInt(this.weaponParams.length);
 
         const weaponParamsKeys = Object.keys(this.weaponParams);
         const weaponParamsKeysSize = weaponParamsKeys.length;
+
         await stream.writeInt(weaponParamsKeysSize);
         for (let i = 0; i < weaponParamsKeysSize; i++) {
             let key = weaponParamsKeys[i];

@@ -26,7 +26,7 @@ class CustomDataMessage extends PlayerMessageGame {
     }
 
     async writeTo (stream) {
-        await stream.writeInt(this.TAG);
+        await stream.writeInt(CustomDataMessage.TAG);
         await this.data.writeTo(stream);
     }
 
@@ -55,9 +55,7 @@ class ActionMessage extends PlayerMessageGame {
     }
     
     async writeTo (stream) {
-        await stream.writeInt(this.TAG);
-        await stream.writeInt(this.action.length);
-
+        await stream.writeInt(ActionMessage.TAG);
         const actionKeys = Object.keys(this.action);
         const actionKeysSize = actionKeys.length;
         await stream.writeInt(actionKeysSize);

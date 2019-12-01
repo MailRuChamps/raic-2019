@@ -37,7 +37,7 @@ class Log extends CustomData {
     }
 
     async writeTo (stream) {
-        await stream.writeInt(this.TAG);
+        await stream.writeInt(Log.TAG);
         await stream.writeString(this.text);
     }
 
@@ -65,7 +65,7 @@ class Rect extends CustomData {
     }
     
     async writeTo (stream) {
-        await stream.writeInt(this.TAG);
+        await stream.writeInt(Rect.TAG);
         await this.pos.writeTo(stream);
         await this.size.writeTo(stream);
         await this.color.writeTo(stream);
@@ -99,7 +99,7 @@ class Line extends CustomData {
     }
     
     async writeTo (stream) {
-        await stream.writeInt(this.TAG);
+        await stream.writeInt(Line.TAG);
         await this.p1.writeTo(stream);
         await this.p2.writeTo(stream);
         await stream.writeFloat(this.width);
@@ -132,9 +132,10 @@ class Polygon extends CustomData {
     }
 
     async writeTo (stream) {
-        await stream.writeInt(this.TAG);
-        await stream.writeInt(this.vertices.length);
-        for (let i = 0, verticesSize = this.vertices.length; i < verticesSize; i++) {
+        await stream.writeInt(Polygon.TAG);
+        const verticesSize = this.vertices.length;
+        await stream.writeInt(verticesSize);
+        for (let i = 0; i < verticesSize; i++) {
             await this.vertices[i].writeTo(stream);
         }
     }
@@ -167,7 +168,7 @@ class PlacedText extends CustomData {
     }
     
     async writeTo (stream) {
-        await stream.writeInt(this.TAG);
+        await stream.writeInt(PlacedText.TAG);
         await stream.writeString(this.text);
         await this.pos.writeTo(stream);
         await stream.writeInt(this.alignment);

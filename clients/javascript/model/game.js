@@ -90,14 +90,14 @@ class Game {
 
     toString () {
         return 'Game(' +
-            this.current_tick + ',' +
+            this.currentTick + ',' +
             this.properties + ',' +
             this.level + ',' +
             this.players + ',' +
             this.units + ',' +
             this.bullets + ',' +
             this.mines + ',' +
-            this.loot_boxes +
+            this.lootBoxes +
             ')';
     }
 }

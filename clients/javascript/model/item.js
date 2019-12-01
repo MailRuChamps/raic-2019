@@ -22,7 +22,7 @@ class HealthPack extends Item {
         this.health = health;
     }
 
-    async readFrom (stream) {
+    static async readFrom (stream) {
         const health = await stream.readInt();
         return new HealthPack(health);
     }
@@ -52,7 +52,7 @@ class Weapon extends Item {
     }
 
     async writeTo (stream) {
-        await stream.writeInt(this.TAG);
+        await stream.writeInt(Weapon.TAG);
         await stream.writeInt(this.weaponType.discriminant);
     }
 
@@ -70,7 +70,7 @@ class Mine extends Item {
     }
 
     async writeTo (stream) {
-        await stream.writeInt(this.TAG);
+        await stream.writeInt(Mine.TAG);
     }
 
     toString () {
