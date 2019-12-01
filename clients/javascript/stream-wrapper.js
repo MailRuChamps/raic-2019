@@ -38,7 +38,7 @@ class StreamWrapper {
                 reject(new Error('timeout waiting for data'));
             }, timeout);
         }).catch(function (error) {
-            console.log('Error while reading data', error);
+            throw new Error('Error while reading data: ' + error.message);
         });
     }
 
@@ -101,7 +101,7 @@ class StreamWrapper {
                 resolve(data);
             });
         }).catch(function (error) {
-            console.log('Error while writing data', error);
+            console.log('Error while writing data ' + error.message);
         });
     }
 

@@ -12,7 +12,7 @@ class Runner {
         this.socket = new Socket({readable: true, writable: true});
         this.socket
             .setNoDelay(true)
-            .on('error', (error) => console.error('Socket error:' + error));
+            .on('error', (error) => console.error('Socket error: ' + error.message));
         this.streamWrapper = new StreamWrapper(this.socket);
         this.host = host;
         this.port = port;
@@ -50,6 +50,7 @@ class Runner {
             }
         } catch (e) {
             console.error(e);
+            process.exit(1);
         }
     }
 }
