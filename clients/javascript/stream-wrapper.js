@@ -21,7 +21,6 @@ class StreamWrapper {
     // Reading primitives
 
     _read (size, timeout = 10000) {
-        // console.trace('Reading ' + size);
         const socket = this.socket;
         return new Promise(function (resolve, reject) {
             let timer;
@@ -98,7 +97,7 @@ class StreamWrapper {
                 if (error) {
                     return reject(error);
                 }
-                resolve(data);
+                resolve(true);
             });
         }).catch(function (error) {
             console.log('Error while writing data ' + error.message);

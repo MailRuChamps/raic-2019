@@ -6,7 +6,7 @@ class Debug {
     }
 
     async draw (data) {
-        await CustomDataMessage(data).writeTo(this.streamWrapper);
+        await (new CustomDataMessage(data)).writeTo(this.streamWrapper);
     }
 }
 

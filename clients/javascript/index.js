@@ -58,7 +58,7 @@ class Runner {
 
 const argv = process.argv;
 const argc = argv.length;
-const host = argc < 3 ? "127.0.0.1" : argv[2];
+const host = argc < 3 ? '127.0.0.1' : argv[2];
 const port = argc < 4 ? 31001 : parseInt(argv[3]);
-const token = argc < 5 ? "0000000000000000" : argv[4];
+const token = argc < 5 ? '0000000000000000' : argv[4];
 (new Runner(host, port, token)).run();

@@ -5,7 +5,7 @@ class MyStrategy {
     async getAction (unit, game, debug) {
         // @todo strategy sample
         console.log('action!');
-        return new UnitAction(1, true, false, new Vec2Double(0, 0), true, false, false);
+        return new UnitAction(0.0, false, false, new Vec2Double(0, 0), false, false, false);
     }
 }
 
