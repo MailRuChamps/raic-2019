@@ -17,6 +17,7 @@ dependencies:
 - io-streams
 - tcp-streams
 - binary
+- wire-streams
 
 library:
   source-dirs: src

@@ -1,11 +1,13 @@
 module RAIC.Main where
 
 import qualified Network.Socket            as Sock
-import           RAIC.StreamWrapper        (writeString, writeBool)
+import           RAIC.StreamWrapper        (writeTo, readFrom)
 import           System.Environment        (getArgs)
 import           System.IO.Streams.Builder (builderStream)
 import           System.IO.Streams.Network (socketToStreams)
 import           System.IO.Streams.TCP     (connectSocket)
+import qualified Data.Binary as Bin
+import Control.Monad (forever, when, mzero)
 
 defaultHost :: String
 defaultHost = "127.0.0.1"
@@ -16,6 +18,7 @@ defaultPort = 31001
 defaultToken :: String
 defaultToken = "0000000000000000"
 
+-- TODO: Rewrite everything with conduit and cereal-conduit
 main :: IO ()
 main = Sock.withSocketsDo $ do
          args <- getArgs
@@ -38,10 +41,13 @@ main = Sock.withSocketsDo $ do
 -- TODO: Consider using 'Vector' over default lists for better performance
 run :: String -> Sock.Socket -> IO ()
 run token sock = do
-  (is, tempos) <- socketToStreams sock
-  os <- builderStream tempos
-  writeString token os
-  writeBool True os
+  (is, os) <- socketToStreams sock
+  writeTo token os
+  writeTo (257 :: Int) os
+--  writeString token os
+--  forever $ do
+--    serverMessage <- readFrom is
+--    when (IsNothing (player_view serverMessage)) mzero
   Sock.close sock
 
 ---- from the "network-run" package.

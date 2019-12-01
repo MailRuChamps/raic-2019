@@ -1,83 +1,73 @@
+{-# LANGUAGE FlexibleInstances    #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 module RAIC.StreamWrapper where
 
-import qualified Data.ByteString               as B
-import qualified Data.ByteString.Builder       as Build
-import           Data.ByteString.Builder.Extra (flush)
-import qualified Data.ByteString.Lazy          as BL
-import qualified Data.ByteString.Lazy.UTF8     as UTF8
-import           Data.Int                      (Int32, Int64)
-import qualified System.IO.Streams             as Streams
-import qualified Data.Binary.Get as Bin
+import           Control.Exception         (throwIO)
+import qualified Data.Binary               as Bin
+import qualified Data.Binary.Get           as Bin.Get
+import qualified Data.Binary.Put           as Bin.Put
+import           Data.Binary.Get.Internal  (getByteString)
+import qualified Data.ByteString           as B
+import qualified Data.ByteString.Lazy      as BL
+import qualified Data.ByteString.Lazy.UTF8 as UTF8
+import           Data.Int                  (Int32, Int64)
+import qualified System.IO.Streams         as Streams
+import           System.IO.Streams.Binary  (DecodeException (..), getFromStream,
+                                            putToStream, decodeFromStream)
 
---class Trans a where
---  read_from :: Streams.InputStream Str.ByteString -> IO (Maybe a)
---  write_to :: a -> Streams.OutputStream Build.Builder -> IO ()
---instance Trans Int - Int32
---instance Trans Integer - Int64
+class Trans a where
+  readFrom :: Streams.InputStream B.ByteString -> IO (Maybe a)
+  writeTo :: a -> Streams.OutputStream B.ByteString -> IO ()
+  readFromUnsafe :: Streams.InputStream B.ByteString -> IO a
+  readFromUnsafe is = do
+    res <- readFrom is
+    case res of
+      Nothing -> throwIO $ DecodeException "" 0 "End Of File exception"
+      (Just value) -> return value
 
-readBool :: Streams.InputStream B.ByteString-> IO Bool
-readBool is = do
-  rawByte <- Streams.readExactly 1 is
-  let word8 = Bin.runGet Bin.getWord8 (BL.fromStrict rawByte)
-  return (word8 /= 0)
+instance Trans Bool where
+  readFrom = getFromStream (Bin.get :: Bin.Get Bool)
+  writeTo x = putToStream (Just x)
 
-readInt :: Streams.InputStream B.ByteString -> IO Int
-readInt is = do
-  rawBytes <- Streams.readExactly 4 is
-  let word32 = Bin.runGet Bin.getWord32le (BL.fromStrict rawBytes)
-  return (fromIntegral word32 :: Int)
 
-readLong :: Streams.InputStream B.ByteString -> IO Integer
-readLong is = do
-  rawBytes <- Streams.readExactly 8 is
-  let word64 = Bin.runGet Bin.getWord64le (BL.fromStrict rawBytes)
-  return (fromIntegral word64 :: Integer)
+newtype Int32le = Int32le { int32le :: Int32 }
+instance Bin.Binary Int32le where
+  get = fmap Int32le Bin.Get.getInt32le
+  put x = Bin.Put.putInt32le (int32le x)
 
-readFloat :: Streams.InputStream B.ByteString -> IO Float
-readFloat is = do
-  rawBytes <- Streams.readExactly 4 is
-  return $ Bin.runGet Bin.getFloatle (BL.fromStrict rawBytes)
+instance Trans Int where
+  readFrom is = fmap (fromIntegral :: Int32 -> Int) <$> decodeFromStream is :: Int32le
+  writeTo x = putToStream (Just (fromIntegral x :: Int32))
 
-readDouble :: Streams.InputStream B.ByteString -> IO Double
-readDouble is = do
-  rawBytes <- Streams.readExactly 8 is
-  return $ Bin.runGet Bin.getDoublele (BL.fromStrict rawBytes)
+instance Trans Integer where
+  readFrom is = fmap (fromIntegral :: Int64 -> Integer) <$> getFromStream (Bin.get :: Bin.Get Int64) is
+  writeTo x = putToStream (Just (fromIntegral x :: Int64))
 
-readString :: Streams.InputStream B.ByteString -> IO String
-readString is = do
-  len <- readInt is
-  rawBytes <- Streams.readExactly len is
-  return $ UTF8.toString (BL.fromStrict rawBytes)
+instance Trans Float where
+  readFrom = getFromStream (Bin.get :: Bin.Get Float)
+  writeTo x = putToStream (Just x)
 
-writeBool :: Bool -> Streams.OutputStream Build.Builder -> IO ()
-writeBool x out = do
-  Streams.write (Just (Build.word8 (if x then 1 else 0))) out
-  Streams.write (Just flush) out
+instance Trans Double where
+  readFrom = getFromStream (Bin.get :: Bin.Get Double)
+  writeTo x = putToStream (Just x)
 
-writeInt :: Int -> Streams.OutputStream Build.Builder -> IO ()
-writeInt x out = do
-  Streams.write  (Just (Build.int32LE (fromIntegral x :: Int32))) out
-  Streams.write (Just flush) out
+-- Wrap type around the default implementation from Binary
+newtype MyBinary = MyBinary { myBinary :: B.ByteString }
 
-writeLong :: Int -> Streams.OutputStream Build.Builder -> IO ()
-writeLong x out = do
-  Streams.write  (Just (Build.int64LE (fromIntegral x :: Int64))) out
-  Streams.write (Just flush) out
+instance Bin.Binary MyBinary where
+  get = fmap MyBinary getBString
+  put x = putBString (myBinary x)
 
-writeFloat :: Float -> Streams.OutputStream Build.Builder -> IO ()
-writeFloat x out = do
-  Streams.write  (Just (Build.floatLE x)) out
-  Streams.write (Just flush) out
+getBString :: Bin.Get B.ByteString
+getBString = Bin.Get.getInt32le >>= \len -> getByteString (fromIntegral len)
 
-writeDouble :: Double -> Streams.OutputStream Build.Builder -> IO ()
-writeDouble x out = do
-  Streams.write  (Just (Build.doubleLE x)) out
-  Streams.write (Just flush) out
+putBString :: B.ByteString -> Bin.Put
+putBString bs = Bin.Put.putInt32le (fromIntegral (B.length bs):: Int32) <> Bin.Put.putByteString bs
 
-writeString :: String -> Streams.OutputStream Build.Builder -> IO ()
-writeString text out = do
-  let bintext = UTF8.fromString text
-  let len = BL.length bintext
-  writeInt (fromIntegral len :: Int) out
-  Streams.write (Just (Build.lazyByteString bintext)) out
-  Streams.write (Just flush) out
+instance Trans String where
+  readFrom is = do
+    raw <- getFromStream (Bin.get :: Bin.Get MyBinary) is
+    return (fmap (UTF8.toString . BL.fromStrict . myBinary) raw)
+  writeTo x os = do
+    let raw = MyBinary ((BL.toStrict . UTF8.fromString) x)
+    putToStream (Just raw) os

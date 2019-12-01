@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2f8da3e8b4d5fe65b891a244e1bedd899fc2804d882525d8d4e10f4a88cd4a1b
+-- hash: 4fcc09e6eac24e82df5922b4566cad307fb0d67ffbc09fa79194e3a5b780f767
 
 name:           raic19-haskell
 version:        0.0.1.0
@@ -63,6 +63,7 @@ library
     , network
     , tcp-streams
     , utf8-string
+    , wire-streams
   default-language: Haskell2010
 
 executable haskell-exe
@@ -82,4 +83,5 @@ executable haskell-exe
     , raic19-haskell
     , tcp-streams
     , utf8-string
+    , wire-streams
   default-language: Haskell2010
