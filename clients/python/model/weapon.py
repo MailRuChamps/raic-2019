@@ -1,8 +1,8 @@
 from .weapon_type import WeaponType
 from .weapon_params import WeaponParams
 class Weapon:
-    def __init__(self, typ, params, magazine, was_shooting, spread, fire_timer, last_angle, last_fire_tick):
-        self.typ = typ
+    def __init__(self, type, params, magazine, was_shooting, spread, fire_timer, last_angle, last_fire_tick):
+        self.typ = type
         self.params = params
         self.magazine = magazine
         self.was_shooting = was_shooting
@@ -29,7 +29,7 @@ class Weapon:
             last_fire_tick = stream.read_int()
         else:
             last_fire_tick = None
-        return Weapon(typ, params, magazine, was_shooting, spread, fire_timer, last_angle, last_fire_tick)
+        return Weapon(type, params, magazine, was_shooting, spread, fire_timer, last_angle, last_fire_tick)
     def write_to(self, stream):
         stream.write_int(self.typ)
         self.params.write_to(stream)
