@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4fcc09e6eac24e82df5922b4566cad307fb0d67ffbc09fa79194e3a5b780f767
+-- hash: 316c4ebd70de233117c9a0172fc13703e87b75a75658fc42b8c5d3d48f827ce1
 
 name:           raic19-haskell
 version:        0.0.1.0
@@ -53,7 +53,8 @@ library
       Paths_raic19_haskell
   hs-source-dirs:
       src
-  ghc-options: -Wall -XOverloadedStrings
+  default-extensions: OverloadedStrings
+  ghc-options: -Wall
   build-depends:
       base >=4.7 && <5
     , binary
@@ -62,7 +63,7 @@ library
     , io-streams
     , network
     , tcp-streams
-    , utf8-string
+    , text
     , wire-streams
   default-language: Haskell2010
 
@@ -72,7 +73,8 @@ executable haskell-exe
       Paths_raic19_haskell
   hs-source-dirs:
       app
-  ghc-options: -Wall -XOverloadedStrings -threaded -rtsopts -with-rtsopts=-N
+  default-extensions: OverloadedStrings
+  ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
     , binary
@@ -82,6 +84,6 @@ executable haskell-exe
     , network
     , raic19-haskell
     , tcp-streams
-    , utf8-string
+    , text
     , wire-streams
   default-language: Haskell2010

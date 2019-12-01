@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module RAIC.Main where
 
 import qualified Network.Socket            as Sock
@@ -8,6 +9,7 @@ import           System.IO.Streams.Network (socketToStreams)
 import           System.IO.Streams.TCP     (connectSocket)
 import qualified Data.Binary as Bin
 import Control.Monad (forever, when, mzero)
+import Data.Text (Text, pack)
 
 defaultHost :: String
 defaultHost = "127.0.0.1"
@@ -34,16 +36,16 @@ main = Sock.withSocketsDo $ do
              then defaultToken
              else args !! 2
          (sock, _addr) <- connectSocket host port
-         run token sock
+         run (pack token) sock
 
 -- TODO: Make the record field names consistent
 -- TODO: Turn on OverloadedStrings, replace [Char] with Text
 -- TODO: Consider using 'Vector' over default lists for better performance
-run :: String -> Sock.Socket -> IO ()
+run :: Text -> Sock.Socket -> IO ()
 run token sock = do
   (is, os) <- socketToStreams sock
-  writeTo token os
-  writeTo (257 :: Int) os
+--  writeTo token os
+  writeTo ("лолкек" :: Text) os
 --  writeString token os
 --  forever $ do
 --    serverMessage <- readFrom is

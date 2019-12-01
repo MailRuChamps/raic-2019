@@ -6,13 +6,16 @@ maintainer:          ""
 copyright:           ""
 
 ghc-options:
-  - -Wall -XOverloadedStrings
+  - -Wall
+
+default-extensions:
+- OverloadedStrings
 
 dependencies:
 - base >= 4.7 && < 5
+- text
 - containers
 - bytestring
-- utf8-string
 - network
 - io-streams
 - tcp-streams
