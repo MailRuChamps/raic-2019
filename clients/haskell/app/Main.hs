@@ -1,6 +1,3 @@
-module Main where
+module Main (main) where
 
-import RAIC.Main (run)
-
-main :: IO ()
-main = run
+import RAIC.Main (main)

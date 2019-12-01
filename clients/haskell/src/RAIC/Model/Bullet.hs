@@ -14,3 +14,9 @@ data Bullet = Bullet {
   size             :: Double,
   explosion_params :: Maybe ExplosionParams
 }
+
+--writeBullet :: Bullet -> OutputStream Builder -> IO ()
+--writeBullet bullet out = do
+--  writeWeaponType (weapon_type bullet) out
+--  writeInt (unit_id bullet) out
+--  
