@@ -14,6 +14,7 @@ import           System.IO.Streams.Binary  (DecodeException (..), getFromStream)
 import Control.Monad (replicateM)
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8, decodeUtf8)
+import Data.Map.Strict (Map, size)
 
 class Trans a where
   put :: a -> Bin.Put
@@ -76,3 +77,7 @@ instance Trans a => Trans (Maybe a) where
     if is_some
       then Just <$> get
       else return Nothing
+
+--instance (Trans k, Trans v) => Trans (Map k v) where
+--  put val = do
+--    put $ size val
