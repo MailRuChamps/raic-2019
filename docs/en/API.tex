@@ -79,8 +79,8 @@ May take one of the following forms:
         \end{itemize}
     \item $Rect$ --- draw a rectangle. Fields:
         \begin{itemize}
-            \item $pos : Vec2 \langle float32 \rangle$ --- rect's position (bottom left corner)
-            \item $size : Vec2 \langle float32 \rangle$ --- rect's size
+            \item $pos : Vec2 \langle float32 \rangle$ --- rectangle position (bottom left corner)
+            \item $size : Vec2 \langle float32 \rangle$ --- rectangle size
             \item $color : Color$ --- filling color
         \end{itemize}
     \item $Line$ --- draw a line segment. Fields:
@@ -94,6 +94,14 @@ May take one of the following forms:
         Each vertex may be colored separately --- color will be interpolated between vertices. Fields:
         \begin{itemize}
             \item $vertices : List \langle ColoredVertex \rangle$ --- list of vertices
+        \end{itemize}
+    \item $PlacedText$ --- text. Fields:
+        \begin{itemize}
+            \item $text : string$ --- text to display
+            \item $pos : Vec2 \langle float32 \rangle$ --- position (in game coordinates)
+            \item $alignment : TextAlignment$ --- text alignment
+            \item $size : float32$ --- text font size in pixels
+            \item $color: Color$ --- text color
         \end{itemize}
 \end{itemize}
 
@@ -110,7 +118,7 @@ Defines current game state. Fields:
     \item $current\_tick : int$ --- current tick index
     \item $properties : Properties$ --- game's properties (constants)
     \item $level : Level$ --- level (map)
-    \item $players : List \langle Player \rangle$ --- list of players (strategies) partitipating in the game
+    \item $players : List \langle Player \rangle$ --- list of players (strategies) participating in the game
     \item $units : List \langle Unit \rangle$ --- list of alive units
     \item $bullets : List \langle Bullet \rangle$ --- list of flying bullets
     \item $mines : List \langle Mine \rangle$ --- list of \textbf{planted} mines
@@ -158,7 +166,7 @@ Defines a loot box. Fields:
 \subsection{Mine}
 Defines a \textbf{planted} mine. Fields:
 \begin{itemize}
-    \item $player\_id : int$ --- id of player whos unit planted the mine
+    \item $player\_id : int$ --- id of player whose unit planted the mine
     \item $position : Vec2 \langle float64 \rangle$ --- mine's position (bottom middle point)
     \item $size : Vec2 \langle float64 \rangle$ --- mine's size
     \item $state : MineState$ --- current mine state
@@ -207,6 +215,14 @@ Defines game's properties (constants). Fields:
     \item $kill\_score : int$ --- score given for each unit killed
 \end{itemize}
 
+\subsection{TextAlignment}
+Defines text alignment (used for debug rendering). Variants:
+\begin{itemize}
+    \item Left
+    \item Center
+    \item Right
+\end{itemize}
+
 \subsection{Tile}
 Defines level's tile. Variants:
 \begin{itemize}
@@ -235,7 +251,7 @@ Defines unit's action. Fields:
 \begin{itemize}
     \item $velocity : float64$ --- target horizontal velocity
     \item $jump : boolean$ --- whether to start/continue jumping or go up ladders
-    \item $jump\_down : boolean$ --- whether to jump down through planforms/go down ladders
+    \item $jump\_down : boolean$ --- whether to jump down through platforms/go down ladders
     \item $aim : Vec2 \langle float64 \rangle$ --- aiming direction. Ignored if length is less than $0.5$
     \item $shoot : boolean$ --- controls shooting/reloading
     \item $swap\_weapon : boolean$ --- whether to swap weapon with the one in a loot box

@@ -14,6 +14,8 @@ public abstract class CustomData {
                 return Line.readFrom(stream);
             case Polygon.TAG:
                 return Polygon.readFrom(stream);
+            case PlacedText.TAG:
+                return PlacedText.readFrom(stream);
             default:
                 throw new java.io.IOException("Unexpected discriminant value");
         }
@@ -136,6 +138,63 @@ public abstract class CustomData {
             for (model.ColoredVertex verticesElement : vertices) {
                 verticesElement.writeTo(stream);
             }
+        }
+    }
+
+    public static class PlacedText extends CustomData {
+        public static final int TAG = 4;
+        private String text;
+        public String getText() { return text; }
+        public void setText(String text) { this.text = text; }
+        private model.Vec2Float pos;
+        public model.Vec2Float getPos() { return pos; }
+        public void setPos(model.Vec2Float pos) { this.pos = pos; }
+        private model.TextAlignment alignment;
+        public model.TextAlignment getAlignment() { return alignment; }
+        public void setAlignment(model.TextAlignment alignment) { this.alignment = alignment; }
+        private float size;
+        public float getSize() { return size; }
+        public void setSize(float size) { this.size = size; }
+        private model.ColorFloat color;
+        public model.ColorFloat getColor() { return color; }
+        public void setColor(model.ColorFloat color) { this.color = color; }
+        public PlacedText() {}
+        public PlacedText(String text, model.Vec2Float pos, model.TextAlignment alignment, float size, model.ColorFloat color) {
+            this.text = text;
+            this.pos = pos;
+            this.alignment = alignment;
+            this.size = size;
+            this.color = color;
+        }
+        public static PlacedText readFrom(java.io.InputStream stream) throws java.io.IOException {
+            PlacedText result = new PlacedText();
+            result.text = StreamUtil.readString(stream);
+            result.pos = model.Vec2Float.readFrom(stream);
+            switch (StreamUtil.readInt(stream)) {
+            case 0:
+                result.alignment = model.TextAlignment.LEFT;
+                break;
+            case 1:
+                result.alignment = model.TextAlignment.CENTER;
+                break;
+            case 2:
+                result.alignment = model.TextAlignment.RIGHT;
+                break;
+            default:
+                throw new java.io.IOException("Unexpected discriminant value");
+            }
+            result.size = StreamUtil.readFloat(stream);
+            result.color = model.ColorFloat.readFrom(stream);
+            return result;
+        }
+        @Override
+        public void writeTo(java.io.OutputStream stream) throws java.io.IOException {
+            StreamUtil.writeInt(stream, TAG);
+            StreamUtil.writeString(stream, text);
+            pos.writeTo(stream);
+            StreamUtil.writeInt(stream, alignment.discriminant);
+            StreamUtil.writeFloat(stream, size);
+            color.writeTo(stream);
         }
     }
 }

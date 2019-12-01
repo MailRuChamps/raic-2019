@@ -1,6 +1,7 @@
 require_relative 'model/vec2_float'
 require_relative 'model/color_float'
 require_relative 'model/colored_vertex'
+require_relative 'model/text_alignment'
 require_relative 'model/custom_data'
 require_relative 'model/vec2_double'
 require_relative 'model/unit_action'

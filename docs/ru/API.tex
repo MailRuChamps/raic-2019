@@ -36,7 +36,7 @@ $float32$ --- 32-битный вещественный тип данных, мо
 \subsection{Bullet}
 Определяет пулю. Поля:
 \begin{itemize}
-    \item $weapon\_type : WeaponType$ --- тип оружия из которого выстрелена пуля
+    \item $weapon\_type : WeaponType$ --- тип оружия из которого была выстрелена пуля
     \item $unit\_id : int$ --- id выстрелившего юнита
     \item $player\_id : int$ --- id игрока выстрелившего юнита
     \item $position : Vec2 \langle float64 \rangle$ --- позиция пули (центр)
@@ -74,7 +74,7 @@ $float32$ --- 32-битный вещественный тип данных, мо
 Тип данных используемый для отправки через объект $Debug$ (используется для отладочной отрисовки).
 Может принимать следующие формы:
 \begin{itemize}
-    \item $Log$ --- логгирование. Поля:
+    \item $Log$ --- логирование. Поля:
         \begin{itemize}
             \item $text : string$ --- текст для отображения
         \end{itemize}
@@ -95,6 +95,14 @@ $float32$ --- 32-битный вещественный тип данных, мо
         Каждая вершина может быть покрашена отдельно --- цвет будет интерполирован между вершинами. Поля:
         \begin{itemize}
             \item $vertices : List \langle ColoredVertex \rangle$ --- список вершин
+        \end{itemize}
+    \item $PlacedText$ --- текст. Поля:
+        \begin{itemize}
+            \item $text : string$ --- текст для отображения
+            \item $pos : Vec2 \langle float32 \rangle$ --- позиция (в игровых координатах)
+            \item $alignment : TextAlignment$ --- способ выравнивания текста
+            \item $size : float32$ --- размер текста в пикселях
+            \item $color: Color$ --- цвет
         \end{itemize}
 \end{itemize}
 
@@ -157,7 +165,7 @@ $float32$ --- 32-битный вещественный тип данных, мо
 \end{itemize}
 
 \subsection{Mine}
-Defines a \textbf{planted} mine. Fields:
+\textbf{Установленная} мина. Поля:
 \begin{itemize}
     \item $player\_id : int$ --- id игрока, установившего мину
     \item $position : Vec2 \langle float64 \rangle$ --- положение (середина нижней границы)
@@ -206,6 +214,14 @@ Defines a \textbf{planted} mine. Fields:
     \item $mine\_trigger\_time : float64$ --- время запуска мины
     \item $mine\_trigger\_radius : float64$ --- радиус запуска мины
     \item $kill\_score : int$ --- очки за уничтожение вражеского юнита
+\end{itemize}
+
+\subsection{TextAlignment}
+Выравнивание текста (используется для отладочной отрисовки). Варианты:
+\begin{itemize}
+    \item Left --- выравнивание по левому краю
+    \item Center --- выравнивание по центру
+    \item Right --- выравнивание по правому краю
 \end{itemize}
 
 \subsection{Tile}
@@ -276,7 +292,7 @@ Defines a \textbf{planted} mine. Fields:
 \end{itemize}
 
 \subsection{WeaponType}
-Variants:
+Варианты:
 \begin{itemize}
     \item Pistol
     \item AssaultRifle

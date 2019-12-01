@@ -5,6 +5,9 @@ require_relative 'vec2_float'
 require_relative 'vec2_float'
 require_relative 'color_float'
 require_relative 'colored_vertex'
+require_relative 'vec2_float'
+require_relative 'text_alignment'
+require_relative 'color_float'
 class CustomData
     def self.read_from(stream)
         discriminant = stream.read_int()
@@ -19,6 +22,9 @@ class CustomData
         end
         if discriminant == CustomData::Polygon::TAG
             return CustomData::Polygon.read_from(stream)
+        end
+        if discriminant == CustomData::PlacedText::TAG
+            return CustomData::PlacedText.read_from(stream)
         end
         raise "Unexpected discriminant value"
     end
@@ -108,6 +114,40 @@ class CustomData
             @vertices.each do |element|
                 element.write_to(stream)
             end
+        end
+    end
+    class PlacedText
+        TAG = 4
+        attr_accessor :text
+        attr_accessor :pos
+        attr_accessor :alignment
+        attr_accessor :size
+        attr_accessor :color
+        def initialize(text, pos, alignment, size, color)
+            @text = text
+            @pos = pos
+            @alignment = alignment
+            @size = size
+            @color = color
+        end
+        def self.read_from(stream)
+            text = stream.read_string()
+            pos = Vec2Float.read_from(stream)
+            alignment = stream.read_int()
+            if alignment < 0 || alignment > 3
+                raise "Unexpected discriminant value"
+            end
+            size = stream.read_float()
+            color = ColorFloat.read_from(stream)
+            PlacedText.new(text, pos, alignment, size, color)
+        end
+        def write_to(stream)
+            stream.write_int(TAG)
+            stream.write_string(@text)
+            @pos.write_to(stream)
+            stream.write_int(@alignment)
+            stream.write_float(@size)
+            @color.write_to(stream)
         end
     end
 end

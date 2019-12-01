@@ -26,6 +26,12 @@
 #include "Vec2Float.hpp"
 #include <stdexcept>
 #include "ColorFloat.hpp"
+#include <stdexcept>
+#include "Vec2Float.hpp"
+#include <stdexcept>
+#include "TextAlignment.hpp"
+#include <stdexcept>
+#include "ColorFloat.hpp"
 #include <unordered_map>
 #include <stdexcept>
 #include "UnitAction.hpp"

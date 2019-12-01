@@ -89,6 +89,47 @@ std::string CustomData::Polygon::toString() const {
         "TODO" + 
         ")";
 }
+
+CustomData::PlacedText::PlacedText() { }
+CustomData::PlacedText::PlacedText(std::string text, Vec2Float pos, TextAlignment alignment, float size, ColorFloat color) : text(text), pos(pos), alignment(alignment), size(size), color(color) { }
+CustomData::PlacedText CustomData::PlacedText::readFrom(InputStream& stream) {
+    CustomData::PlacedText result;
+    result.text = stream.readString();
+    result.pos = Vec2Float::readFrom(stream);
+    switch (stream.readInt()) {
+    case 0:
+        result.alignment = TextAlignment::LEFT;
+        break;
+    case 1:
+        result.alignment = TextAlignment::CENTER;
+        break;
+    case 2:
+        result.alignment = TextAlignment::RIGHT;
+        break;
+    default:
+        throw std::runtime_error("Unexpected discriminant value");
+    }
+    result.size = stream.readFloat();
+    result.color = ColorFloat::readFrom(stream);
+    return result;
+}
+void CustomData::PlacedText::writeTo(OutputStream& stream) const {
+    stream.write(TAG);
+    stream.write(text);
+    pos.writeTo(stream);
+    stream.write((int)(alignment));
+    stream.write(size);
+    color.writeTo(stream);
+}
+std::string CustomData::PlacedText::toString() const {
+    return std::string("CustomData::PlacedText") + "(" +
+        text + 
+        pos.toString() +
+        "TODO" + 
+        std::to_string(size) +
+        color.toString() +
+        ")";
+}
 std::shared_ptr<CustomData> CustomData::readFrom(InputStream& stream) {
     switch (stream.readInt()) {
     case 0:
@@ -99,6 +140,8 @@ std::shared_ptr<CustomData> CustomData::readFrom(InputStream& stream) {
         return std::shared_ptr<CustomData::Line>(new CustomData::Line(CustomData::Line::readFrom(stream)));
     case 3:
         return std::shared_ptr<CustomData::Polygon>(new CustomData::Polygon(CustomData::Polygon::readFrom(stream)));
+    case 4:
+        return std::shared_ptr<CustomData::PlacedText>(new CustomData::PlacedText(CustomData::PlacedText::readFrom(stream)));
     default:
         throw std::runtime_error("Unexpected discriminant value");
     }

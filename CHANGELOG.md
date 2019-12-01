@@ -1,3 +1,11 @@
+# November 29
+
+- Added CustomData::PlacedText
+- Fixed debug rendering flickering
+- Fixed programming language icons
+- Fixed scores of games on server
+- Fixed some problems with the testing system
+
 # November 28
 
 - The app now sets its current directory to the directory of the executable (fix file not found on MacOS)

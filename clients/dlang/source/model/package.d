@@ -1,6 +1,7 @@
 public import vec2_float;
 public import color_float;
 public import colored_vertex;
+public import text_alignment;
 public import custom_data;
 public import vec2_double;
 public import unit_action;
