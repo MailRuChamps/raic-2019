@@ -1,6 +1,4 @@
-FROM python
-
-RUN pip install numpy cython
+FROM node:10.14.0
 
 COPY . /project
 WORKDIR /project
