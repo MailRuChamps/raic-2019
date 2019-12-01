@@ -20,7 +20,7 @@ class StreamWrapper {
 
     // Reading primitives
 
-    _read (size, timeout = 10000) {
+    _read (size, timeout = 30000) {
         const socket = this.socket;
         return new Promise(function (resolve, reject) {
             let timer;
