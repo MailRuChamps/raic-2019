@@ -1,3 +1,7 @@
+# December 2
+
+- Added Scala
+
 # November 29
 
 - Added CustomData::PlacedText
