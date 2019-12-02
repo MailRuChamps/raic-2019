@@ -2,8 +2,8 @@ const WeaponType = require('./weapon-type').WeaponType;
 const WeaponParams = require('./weapon-params').WeaponParams;
 
 class Weapon {
-    constructor (typ, params, magazine, wasShooting, spread, fireTimer, lastAngle, lastFireTick) {
-        this.typ = typ;
+    constructor (type, params, magazine, wasShooting, spread, fireTimer, lastAngle, lastFireTick) {
+        this.type = type;
         this.params = params;
         this.magazine = magazine;
         this.wasShooting = wasShooting;
@@ -14,7 +14,7 @@ class Weapon {
     }
     
     static async readFrom (stream) {
-        const typ = await WeaponType.readFrom(stream);
+        const type = await WeaponType.readFrom(stream);
         const params = await WeaponParams.readFrom(stream);
         const magazine = await stream.readInt();
         const wasShooting = await stream.readBool();
@@ -37,11 +37,11 @@ class Weapon {
         } else {
             lastFireTick = null;
         }
-        return new Weapon(typ, params, magazine, wasShooting, spread, fireTimer, lastAngle, lastFireTick)
+        return new Weapon(type, params, magazine, wasShooting, spread, fireTimer, lastAngle, lastFireTick)
     }
     
     async writeTo (stream) {
-        await stream.writeInt(this.typ.discriminant);
+        await stream.writeInt(this.type.discriminant);
         await this.params.writeTo(stream);
         await stream.writeInt(this.magazine);
         await stream.writeBool(this.wasShooting);
@@ -68,7 +68,7 @@ class Weapon {
 
     toString () {
         return 'Weapon(' +
-            this.typ + ',' +
+            this.type + ',' +
             this.params + ',' +
             this.magazine + ',' +
             this.wasShooting + ',' +
