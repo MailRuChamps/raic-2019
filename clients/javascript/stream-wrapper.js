@@ -11,7 +11,7 @@ const DOUBLE_SIZE = 8;
 class StreamWrapper {
     constructor (socket) {
         this.socket = socket;
-        this.isLittleEndianMachine = (os.endianness() === 'LE');   
+        this.isLittleEndianMachine = (os.endianness() === 'LE');
     }
 
     close () {
@@ -33,8 +33,10 @@ class StreamWrapper {
             socket.once('readable', responseHandler);
 
             timer = setTimeout(() => {
+                // @todo somehow handle situation when we are already connected
+                // @todo but waiting for 'Start' command from server; Currently we just can throw error in case of long wait
                 socket.removeListener('readable', responseHandler);
-                reject(new Error('timeout waiting for data'));
+                reject(new Error(`"readable" event was not fired in ${timeout}ms.`));
             }, timeout);
         }).catch(function (error) {
             throw new Error('Error while reading data: ' + error.message);
