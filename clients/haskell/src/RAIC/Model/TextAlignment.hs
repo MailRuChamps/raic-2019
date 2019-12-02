@@ -1,9 +1,10 @@
 module RAIC.Model.TextAlignment where
 
-import RAIC.StreamWrapper (Trans, put, get)
+import           GHC.Generics       (Generic)
+import           RAIC.StreamWrapper (Trans, get, put)
 
 data TextAlignment = Left | Center | Right
-  deriving (Enum)
+  deriving (Enum, Generic, Show)
 
 instance Trans TextAlignment where
   put = put . fromEnum

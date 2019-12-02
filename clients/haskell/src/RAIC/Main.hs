@@ -1,13 +1,21 @@
 module RAIC.Main where
 
-import           Control.Exception         (bracket)
-import           Control.Monad             (forever, mzero, when)
-import           Data.Text                 (Text, pack)
-import qualified Network.Socket            as Sock
-import           RAIC.StreamWrapper        (readFrom, writeTo)
-import           RAIC.TCPSocket            (runTCPClient)
-import           System.Environment        (getArgs)
-import           System.IO.Streams.Network (socketToStreams)
+import           Control.Exception.Base       (SomeException, catch)
+import           Control.Monad                (forever)
+import           Data.Map.Strict              (fromList)
+import           Data.Text                    (Text, pack)
+import qualified Network.Socket               as Sock
+import           RAIC.Debug                   (Debug (Debug))
+import           RAIC.Model.Game              as Game
+import           RAIC.Model.PlayerMessageGame (PlayerMessageGame (ActionMessage))
+import           RAIC.Model.PlayerView        (game, my_id)
+import           RAIC.Model.ServerMessageGame (ServerMessageGame, player_view)
+import           RAIC.Model.Unit              as Unit
+import           RAIC.MyStrategy              (getAction)
+import           RAIC.StreamWrapper           (readFrom, writeTo)
+import           RAIC.TCPSocket               (runTCPClient)
+import           System.Environment           (getArgs)
+import           System.IO.Streams.Network    (socketToStreams)
 
 defaultHost :: String
 defaultHost = "127.0.0.1"
@@ -45,8 +53,20 @@ run :: Text -> Sock.Socket -> IO ()
 run token sock = do
   (is, os) <- socketToStreams sock
   writeTo token os
---  writeString token os
---  forever $ do
---    serverMessage <- readFrom is
---    when (IsNothing (player_view serverMessage)) mzero
+  catch
+    (forever ((readFrom is :: IO ServerMessageGame) >>= \msg -> runGame msg `writeTo` os))
+    (\e -> print (e :: SomeException) <> putStrLn "Exiting..." <> return ())
   Sock.close sock
+
+runGame :: ServerMessageGame -> PlayerMessageGame
+runGame message = ActionMessage (fromList actions)
+  where
+    maybePlayerView = player_view message
+    playerView = case maybePlayerView of
+                     Nothing  -> error "Game over"
+                     (Just x) -> x
+    myId = my_id playerView
+    curGame = game playerView
+    myUnits = filter (\x -> player_id x== myId) ((units . game) playerView)
+
+    actions = map (\curUnit -> (Unit.id curUnit, getAction curUnit curGame Debug)) myUnits

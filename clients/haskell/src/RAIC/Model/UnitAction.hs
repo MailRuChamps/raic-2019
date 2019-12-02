@@ -1,6 +1,8 @@
 module RAIC.Model.UnitAction where
 
+import           GHC.Generics          (Generic)
 import           RAIC.Model.Vec2Double (Vec2Double)
+import           RAIC.StreamWrapper    (Trans)
 
 data UnitAction = UnitAction {
   velocity    :: Double,
@@ -10,4 +12,6 @@ data UnitAction = UnitAction {
   shoot       :: Bool,
   swap_weapon :: Bool,
   plant_mine  :: Bool
-}
+} deriving (Generic, Show)
+
+instance Trans UnitAction

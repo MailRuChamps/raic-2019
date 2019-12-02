@@ -1,24 +1,66 @@
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeOperators     #-}
+{-# LANGUAGE DefaultSignatures #-}
+{-# LANGUAGE FlexibleContexts #-}
 module RAIC.StreamWrapper where
 
-import           Control.Exception         (throwIO)
-import qualified Data.Binary               as Bin
-import qualified Data.Binary.Get           as Bin.Get
-import qualified Data.Binary.Put           as Bin.Put
-import qualified Data.ByteString           as B
-import qualified Data.ByteString.Lazy      as BL
-import           Data.Int                  (Int32, Int64)
-import           Data.Maybe                (Maybe (Just))
-import qualified System.IO.Streams         as Streams
-import           System.IO.Streams.Binary  (DecodeException (..), getFromStream)
-import Control.Monad (replicateM)
-import Data.Text (Text)
-import Data.Text.Encoding (encodeUtf8, decodeUtf8)
-import Data.Map.Strict (Map, size)
+import           Control.Exception        (throwIO)
+import           Control.Monad            (replicateM)
+import qualified Data.Binary              as Bin
+import qualified Data.Binary.Get          as Bin.Get
+import qualified Data.Binary.Put          as Bin.Put
+import qualified Data.ByteString          as B
+import qualified Data.ByteString.Lazy     as BL
+import           Data.Int                 (Int32, Int64)
+import           Data.Map.Strict          (Map, fromList, size, toList)
+import           Data.Maybe               (Maybe (Just))
+import           Data.Text                (Text)
+import           Data.Text.Encoding       (decodeUtf8, encodeUtf8)
+import qualified GHC.Generics             as G
+import qualified System.IO.Streams        as Streams
+import           System.IO.Streams.Binary (DecodeException (..), getFromStream)
 
 class Trans a where
   put :: a -> Bin.Put
   get :: Bin.Get a
+
+  default put :: (G.Generic a, GTrans (G.Rep a)) => a -> Bin.Put
+  put = gput . G.from
+
+  default get :: (G.Generic a, GTrans (G.Rep a)) => Bin.Get a
+  get = G.to `fmap` gget
+
+-- | Generic version of 'Trans' for GHC.Generics-based deriving
+class GTrans f where
+  gput :: f a -> Bin.Put
+  gget :: Bin.Get (f a)
+
+-- TODO: Add generation for Enum types
+-- Implementation taken from binary package
+-- Type without constructors
+instance GTrans G.V1 where
+    gput _ = pure ()
+    gget   = return undefined
+
+-- Constructor without arguments
+instance GTrans G.U1 where
+    gput G.U1 = pure ()
+    gget    = return G.U1
+
+-- Product: constructor with parameters
+instance (GTrans a, GTrans b) => GTrans (a G.:*: b) where
+    gput (x G.:*: y) = gput x <> gput y
+    gget = (G.:*:) <$> gget <*> gget
+
+-- Metadata (constructor name, etc)
+instance GTrans a => GTrans (G.M1 i c a) where
+    gput = gput . G.unM1
+    gget = G.M1 <$> gget
+
+-- Constants, additional parameters, and rank-1 recursion
+instance Trans a => GTrans (G.K1 i a) where
+    gput = put . G.unK1
+    gget = G.K1 <$> get
 
 -- | Write serializable data to stream
 writeTo :: Trans a => a -> Streams.OutputStream B.ByteString -> IO ()
@@ -78,6 +120,17 @@ instance Trans a => Trans (Maybe a) where
       then Just <$> get
       else return Nothing
 
---instance (Trans k, Trans v) => Trans (Map k v) where
---  put val = do
---    put $ size val
+instance (Trans a, Trans b) => Trans (a, b) where
+  put (x, y) = do
+    put x
+    put y
+  get = do
+    x <- get
+    y <- get
+    return (x, y)
+
+instance (Trans k, Ord k, Trans v) => Trans (Map k v) where
+  put val = do
+    put $ size val
+    put $ toList val
+  get = fromList <$> get

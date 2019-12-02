@@ -1,8 +1,12 @@
 module RAIC.Model.PlayerView where
 
-import RAIC.Model.Game (Game)
+import           GHC.Generics       (Generic)
+import           RAIC.Model.Game    (Game)
+import           RAIC.StreamWrapper (Trans)
 
 data PlayerView = PlayerView {
   my_id :: Int,
-  game :: Game
-}
+  game  :: Game
+} deriving (Generic, Show)
+
+instance Trans PlayerView

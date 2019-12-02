@@ -1,14 +1,11 @@
 module RAIC.Model.ExplosionParams where
 
-import           RAIC.StreamWrapper (Trans, get, put)
+import           GHC.Generics       (Generic)
+import           RAIC.StreamWrapper (Trans)
 
 data ExplosionParams = ExplosionParams {
   radius :: Double,
   damage :: Int
-}
+} deriving (Generic, Show)
 
-instance Trans ExplosionParams where
-  put val = do
-    put . radius $ val
-    put . damage $ val
-  get = ExplosionParams <$> get <*> get
+instance Trans ExplosionParams

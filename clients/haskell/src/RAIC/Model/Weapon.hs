@@ -1,7 +1,9 @@
 module RAIC.Model.Weapon where
 
+import           GHC.Generics            (Generic)
 import           RAIC.Model.WeaponParams (WeaponParams)
 import           RAIC.Model.WeaponType   (WeaponType)
+import           RAIC.StreamWrapper      (Trans)
 
 data Weapon = Weapon {
   weapon_type :: WeaponType,
@@ -10,4 +12,6 @@ data Weapon = Weapon {
   spread      :: Double,
   file_timer  :: Maybe Double,
   last_angle  :: Maybe Double
-}
+} deriving (Generic, Show)
+
+instance Trans Weapon

@@ -10,6 +10,7 @@ ghc-options:
 
 default-extensions:
 - OverloadedStrings
+- DeriveGeneric
 
 dependencies:
 - base >= 4.7 && < 5

@@ -1,9 +1,10 @@
 module RAIC.Model.Item where
 
-import RAIC.StreamWrapper (Trans, put, get)
+import           GHC.Generics       (Generic)
+import           RAIC.StreamWrapper (Trans, get, put)
 
 data Item = HealthPack | Weapon | Mine
-  deriving (Enum)
+  deriving (Enum, Generic, Show)
 
 instance Trans Item where
   put = put . fromEnum

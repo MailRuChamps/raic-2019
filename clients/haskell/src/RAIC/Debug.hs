@@ -1,6 +1,6 @@
 module RAIC.Debug where
 
-data Debug
+data Debug = Debug
 
 --draw :: CustomData -> BinaryWriter ()
 --draw = putStrLn

@@ -1,8 +1,10 @@
 module RAIC.Model.Bullet (Bullet) where
 
+import           GHC.Generics               (Generic)
 import           RAIC.Model.ExplosionParams (ExplosionParams)
 import           RAIC.Model.Vec2Double      (Vec2Double)
 import           RAIC.Model.WeaponType      (WeaponType)
+import           RAIC.StreamWrapper         (Trans)
 
 data Bullet = Bullet {
   weapon_type      :: WeaponType,
@@ -13,4 +15,6 @@ data Bullet = Bullet {
   damage           :: Int,
   size             :: Double,
   explosion_params :: Maybe ExplosionParams
-}
+} deriving (Generic, Show)
+
+instance Trans Bullet
