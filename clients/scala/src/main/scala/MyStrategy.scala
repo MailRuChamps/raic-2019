@@ -39,6 +39,7 @@ class MyStrategy {
       jumpDown = !jump,
       aim = aim,
       shoot = true,
+      reload = false,
       swapWeapon = false,
       plantMine = false)
   }

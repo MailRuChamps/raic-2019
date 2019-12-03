@@ -68,5 +68,6 @@ func (strategy MyStrategy) getAction(unit Unit, game Game, debug Debug) UnitActi
 		SwapWeapon: false,
 		PlantMine:  false,
 		Shoot:      true,
+		Reload:     false,
 	}
 }

@@ -31,7 +31,7 @@ module Runner =
                                                 |> Array.map(fun x -> 
                                                     (x.Id, myStrategy.getAction(x, playerView.Game, debug))) 
                                                 |> Map.ofArray                                                       
-                        (Model.PlayerMessageGame.ActionMessage {Action = actions}).writeTo writer
+                        (Model.PlayerMessageGame.ActionMessage {Action = {Inner = actions}}).writeTo writer
                         writer.Flush()
                         loop()
                     | None -> ()

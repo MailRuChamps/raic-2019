@@ -32,6 +32,7 @@
         <Compile Include="Model/PlayerView.fs" />
         <Compile Include="Model/ServerMessageGame.fs" />
         <Compile Include="Model/UnitAction.fs" />
+        <Compile Include="Model/Versioned.fs" />
         <Compile Include="Model/PlayerMessageGame.fs" />
         <Compile Include="Debug.fs" />
         <Compile Include="MyStrategy.fs" />

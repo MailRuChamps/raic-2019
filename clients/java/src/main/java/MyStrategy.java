@@ -51,6 +51,7 @@ public class MyStrategy {
     action.setJumpDown(!jump);
     action.setAim(aim);
     action.setShoot(true);
+    action.setReload(false);
     action.setSwapWeapon(false);
     action.setPlantMine(false);
     return action;

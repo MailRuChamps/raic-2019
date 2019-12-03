@@ -40,5 +40,6 @@ class MyStrategy:
             jump_down=not jump,
             aim=aim,
             shoot=True,
+            reload=False,
             swap_weapon=False,
             plant_mine=False)

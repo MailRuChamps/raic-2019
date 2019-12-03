@@ -7,15 +7,17 @@ namespace AiCup2019.Model
         public bool JumpDown { get; set; }
         public Model.Vec2Double Aim { get; set; }
         public bool Shoot { get; set; }
+        public bool Reload { get; set; }
         public bool SwapWeapon { get; set; }
         public bool PlantMine { get; set; }
-        public UnitAction(double velocity, bool jump, bool jumpDown, Model.Vec2Double aim, bool shoot, bool swapWeapon, bool plantMine)
+        public UnitAction(double velocity, bool jump, bool jumpDown, Model.Vec2Double aim, bool shoot, bool reload, bool swapWeapon, bool plantMine)
         {
             this.Velocity = velocity;
             this.Jump = jump;
             this.JumpDown = jumpDown;
             this.Aim = aim;
             this.Shoot = shoot;
+            this.Reload = reload;
             this.SwapWeapon = swapWeapon;
             this.PlantMine = plantMine;
         }
@@ -27,6 +29,7 @@ namespace AiCup2019.Model
             result.JumpDown = reader.ReadBoolean();
             result.Aim = Model.Vec2Double.ReadFrom(reader);
             result.Shoot = reader.ReadBoolean();
+            result.Reload = reader.ReadBoolean();
             result.SwapWeapon = reader.ReadBoolean();
             result.PlantMine = reader.ReadBoolean();
             return result;
@@ -38,6 +41,7 @@ namespace AiCup2019.Model
             writer.Write(JumpDown);
             Aim.WriteTo(writer);
             writer.Write(Shoot);
+            writer.Write(Reload);
             writer.Write(SwapWeapon);
             writer.Write(PlantMine);
         }

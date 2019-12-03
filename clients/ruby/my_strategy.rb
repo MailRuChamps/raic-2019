@@ -46,8 +46,9 @@ class MyStrategy
         jump_down = !jump
         aim = aim
         shoot = true
+        reload = false
         swap_weapon = false
         plant_mine = false
-        UnitAction.new(velocity, jump, jump_down, aim, shoot, swap_weapon, plant_mine)
+        UnitAction.new(velocity, jump, jump_down, aim, shoot, reload, swap_weapon, plant_mine)
     end
 end

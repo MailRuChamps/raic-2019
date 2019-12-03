@@ -5,6 +5,7 @@ public import text_alignment;
 public import custom_data;
 public import vec2_double;
 public import unit_action;
+public import versioned;
 public import player_message_game;
 public import weapon_type;
 public import bullet_parameters;

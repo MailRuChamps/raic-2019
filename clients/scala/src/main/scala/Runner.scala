@@ -35,7 +35,7 @@ object Runner extends App {
             .map(x => (x.id, myStrategy.getAction(x, playerView.game, debug)))
             .toMap
 
-          ActionMessage(actions).writeTo(outputStream)
+          ActionMessage(model.Versioned(actions)).writeTo(outputStream)
           outputStream.flush()
       }
     }

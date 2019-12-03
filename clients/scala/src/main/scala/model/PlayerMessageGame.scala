@@ -19,24 +19,16 @@ object PlayerMessageGame {
             )
     }
 
-    case class ActionMessage(action: Map[Int, model.UnitAction]) extends PlayerMessageGame {
+    case class ActionMessage(action: model.Versioned) extends PlayerMessageGame {
         override def writeTo(stream: java.io.OutputStream) {
             StreamUtil.writeInt(stream, ActionMessage.TAG)
-            StreamUtil.writeInt(stream, action.size)
-            action.foreach { case (key, value) =>
-                StreamUtil.writeInt(stream, key)
-                value.writeTo(stream)
-            }
+            action.writeTo(stream)
         }
     }
     object ActionMessage {
         val TAG: Int = 1
         def readFrom(stream: java.io.InputStream): ActionMessage = ActionMessage(
-            (0 until StreamUtil.readInt(stream)).map { _ => (
-                StreamUtil.readInt(stream)
-                ,
-                model.UnitAction.readFrom(stream)
-            )}.toMap
+            model.Versioned.readFrom(stream)
             )
     }
 

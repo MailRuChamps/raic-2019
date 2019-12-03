@@ -5,6 +5,6 @@ pub enum PlayerMessageGame {
         data: CustomData,
     },
     ActionMessage {
-        action: std::collections::HashMap<i32, UnitAction>,
+        action: Versioned,
     },
 }

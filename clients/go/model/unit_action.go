@@ -9,16 +9,18 @@ type UnitAction struct {
     JumpDown bool
     Aim Vec2Float64
     Shoot bool
+    Reload bool
     SwapWeapon bool
     PlantMine bool
 }
-func NewUnitAction(velocity float64, jump bool, jumpDown bool, aim Vec2Float64, shoot bool, swapWeapon bool, plantMine bool) UnitAction {
+func NewUnitAction(velocity float64, jump bool, jumpDown bool, aim Vec2Float64, shoot bool, reload bool, swapWeapon bool, plantMine bool) UnitAction {
     return UnitAction {
         Velocity: velocity,
         Jump: jump,
         JumpDown: jumpDown,
         Aim: aim,
         Shoot: shoot,
+        Reload: reload,
         SwapWeapon: swapWeapon,
         PlantMine: plantMine,
     }
@@ -30,6 +32,7 @@ func ReadUnitAction(reader io.Reader) UnitAction {
     result.JumpDown = ReadBool(reader)
     result.Aim = ReadVec2Float64(reader)
     result.Shoot = ReadBool(reader)
+    result.Reload = ReadBool(reader)
     result.SwapWeapon = ReadBool(reader)
     result.PlantMine = ReadBool(reader)
     return result
@@ -40,6 +43,7 @@ func (value UnitAction) Write(writer io.Writer) {
     WriteBool(writer, value.JumpDown)
     value.Aim.Write(writer)
     WriteBool(writer, value.Shoot)
+    WriteBool(writer, value.Reload)
     WriteBool(writer, value.SwapWeapon)
     WriteBool(writer, value.PlantMine)
 }

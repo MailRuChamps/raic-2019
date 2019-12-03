@@ -76,6 +76,7 @@ impl MyStrategy {
             jump_down: target_pos.y < unit.position.y,
             aim,
             shoot: true,
+            reload: false,
             swap_weapon: false,
             plant_mine: false,
         }

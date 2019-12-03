@@ -5,6 +5,7 @@ from .text_alignment import TextAlignment
 from .custom_data import CustomData
 from .vec2_double import Vec2Double
 from .unit_action import UnitAction
+from .versioned import Versioned
 from .player_message_game import PlayerMessageGame
 from .weapon_type import WeaponType
 from .bullet_params import BulletParams

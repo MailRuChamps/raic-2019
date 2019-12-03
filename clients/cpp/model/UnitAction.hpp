@@ -13,10 +13,11 @@ public:
     bool jumpDown;
     Vec2Double aim;
     bool shoot;
+    bool reload;
     bool swapWeapon;
     bool plantMine;
     UnitAction();
-    UnitAction(double velocity, bool jump, bool jumpDown, Vec2Double aim, bool shoot, bool swapWeapon, bool plantMine);
+    UnitAction(double velocity, bool jump, bool jumpDown, Vec2Double aim, bool shoot, bool reload, bool swapWeapon, bool plantMine);
     static UnitAction readFrom(InputStream& stream);
     void writeTo(OutputStream& stream) const;
     std::string toString() const;

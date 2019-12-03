@@ -12,21 +12,13 @@ type PlayerMessageGameCustomDataMessage = {
     }
 
 type PlayerMessageGameActionMessage = {
-    Action: Map<int, UnitAction>;
+    Action: Versioned;
     } with
     member this.writeTo(writer: System.IO.BinaryWriter) =
         writer.Write 1
-        writer.Write this.Action.Count
-        this.Action |> Map.iter (fun key value ->
-            writer.Write key
-            value.writeTo writer
-        )
+        this.Action.writeTo writer
     static member readFrom(reader: System.IO.BinaryReader) = {
-        Action = [for _ in 1 .. reader.ReadInt32() do
-            let key = reader.ReadInt32()
-            let value = UnitAction.readFrom reader
-            yield (key, value)
-            ] |> Map.ofList
+        Action = Versioned.readFrom reader
     }
 type PlayerMessageGame = 
     | CustomDataMessage of PlayerMessageGameCustomDataMessage

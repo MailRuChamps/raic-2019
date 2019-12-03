@@ -41,31 +41,19 @@ abstract class PlayerMessageGame {
 
     static class ActionMessage : PlayerMessageGame {
         static const int TAG = 1;
-        UnitAction[int] action;
+        Versioned action;
         this() {}
-        this(UnitAction[int] action) {
+        this(Versioned action) {
             this.action = action;
         }
         static ActionMessage readFrom(Stream reader) {
             auto result = new ActionMessage();
-            int actionSize = reader.readInt();
-            result.action.clear();
-            for (int i = 0; i < actionSize; i++) {
-                int actionKey;
-                actionKey = reader.readInt();
-                UnitAction actionValue;
-                actionValue = UnitAction.readFrom(reader);
-                result.action[actionKey] = actionValue;
-            }
+            result.action = Versioned.readFrom(reader);
             return result;
         }
         override void writeTo(Stream writer) const {
             writer.write(TAG);
-            writer.write(cast(int)(action.length));
-            foreach (actionKey, actionValue; action) {
-                writer.write(actionKey);
-                actionValue.writeTo(writer);
-            }
+            action.writeTo(writer);
         }
         override string toString() const {
             return "ActionMessage" ~ "(" ~

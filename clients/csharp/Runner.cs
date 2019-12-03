@@ -42,7 +42,7 @@ namespace AiCup2019
                         actions.Add(unit.Id, myStrategy.GetAction(unit, playerView.Game, debug));
                     }
                 }
-                new Model.PlayerMessageGame.ActionMessage(actions).WriteTo(writer);
+                new Model.PlayerMessageGame.ActionMessage(new Model.Versioned(actions)).WriteTo(writer);
                 writer.Flush();
             }
         }

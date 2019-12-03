@@ -1,5 +1,5 @@
 require_relative 'custom_data'
-require_relative 'unit_action'
+require_relative 'versioned'
 class PlayerMessageGame
     def self.read_from(stream)
         discriminant = stream.read_int()
@@ -34,21 +34,12 @@ class PlayerMessageGame
             @action = action
         end
         def self.read_from(stream)
-            action = Hash.new
-            stream.read_int().times do |_|
-                action_key = stream.read_int()
-                action_value = UnitAction.read_from(stream)
-                action[action_key] = action_value
-            end
+            action = Versioned.read_from(stream)
             ActionMessage.new(action)
         end
         def write_to(stream)
             stream.write_int(TAG)
-            stream.write_int(@action.length())
-            @action.each do |key, value|
-                stream.write_int(key)
-                value.write_to(stream)
-            end
+            @action.write_to(stream)
         end
     end
 end

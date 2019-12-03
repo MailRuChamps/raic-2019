@@ -41,38 +41,22 @@ namespace AiCup2019.Model
         public class ActionMessage : PlayerMessageGame
         {
             public const int TAG = 1;
-            public System.Collections.Generic.IDictionary<int, Model.UnitAction> Action { get; set; }
+            public Model.Versioned Action { get; set; }
             public ActionMessage() {}
-            public ActionMessage(System.Collections.Generic.IDictionary<int, Model.UnitAction> action)
+            public ActionMessage(Model.Versioned action)
             {
                 this.Action = action;
             }
             public static new ActionMessage ReadFrom(System.IO.BinaryReader reader)
             {
                 var result = new ActionMessage();
-                int ActionSize = reader.ReadInt32();
-                result.Action = new System.Collections.Generic.Dictionary<int, Model.UnitAction>(ActionSize);
-                for (int i = 0; i < ActionSize; i++)
-                {
-                    int ActionKey;
-                    ActionKey = reader.ReadInt32();
-                    Model.UnitAction ActionValue;
-                    ActionValue = Model.UnitAction.ReadFrom(reader);
-                    result.Action.Add(ActionKey, ActionValue);
-                }
+                result.Action = Model.Versioned.ReadFrom(reader);
                 return result;
             }
             public override void WriteTo(System.IO.BinaryWriter writer)
             {
                 writer.Write(TAG);
-                writer.Write(Action.Count);
-                foreach (var ActionEntry in Action)
-                {
-                    var ActionKey = ActionEntry.Key;
-                    var ActionValue = ActionEntry.Value;
-                    writer.Write(ActionKey);
-                    ActionValue.WriteTo(writer);
-                }
+                Action.WriteTo(writer);
             }
         }
     }

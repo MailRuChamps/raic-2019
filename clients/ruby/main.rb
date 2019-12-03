@@ -55,7 +55,7 @@ class Runner
                     actions[unit.id] = strategy.get_action(unit, player_view.game, debug)
                 end
             end
-            PlayerMessageGame::ActionMessage.new(actions).write_to(@writer)
+            PlayerMessageGame::ActionMessage.new(Versioned.new(actions)).write_to(@writer)
             @writer.flush()
         end
     end

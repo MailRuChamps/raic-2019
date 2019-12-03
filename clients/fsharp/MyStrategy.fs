@@ -41,6 +41,7 @@ type MyStrategy() =
             JumpDown = not jump
             Aim = aim
             Shoot = true
+            Reload = false
             SwapWeapon = false
             PlantMine = false
         }          
