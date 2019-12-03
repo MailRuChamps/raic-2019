@@ -41,11 +41,11 @@ impl MyStrategy {
                 )
                 .unwrap()
             });
-        let mut target_pos = unit.position.clone();
+        let mut target_pos = unit.position;
         if let (&None, Some(weapon)) = (&unit.weapon, nearest_weapon) {
-            target_pos = weapon.position.clone();
+            target_pos = weapon.position;
         } else if let Some(enemy) = nearest_enemy {
-            target_pos = enemy.position.clone();
+            target_pos = enemy.position;
         }
         debug.draw(model::CustomData::Log {
             text: format!("Target pos: {:?}", target_pos),
