@@ -1,5 +1,5 @@
 const CustomData = require('./custom-data').CustomData;
-const UnitAction = require('./unit-action').UnitAction;
+const Versioned = require('./versioned').Versioned;
 
 class PlayerMessageGame {
     static async readFrom (stream) {
@@ -45,25 +45,13 @@ class ActionMessage extends PlayerMessageGame {
     }
 
     static async readFrom (stream) {
-        const action = {};
-        for (let i = 0, actionsSize = await stream.readInt(); i < actionsSize; i++) {
-            const actionKey = await stream.readInt();
-            const actionValue = await UnitAction.readFrom(stream);
-            action[actionKey] = actionValue;
-        }
+        const action = await Versioned.readFrom(stream);
         return new ActionMessage(action);
     }
     
     async writeTo (stream) {
         await stream.writeInt(ActionMessage.TAG);
-        const actionKeys = Object.keys(this.action);
-        const actionKeysSize = actionKeys.length;
-        await stream.writeInt(actionKeysSize);
-        for (let i = 0; i < actionKeysSize; i++) {
-            let key = actionKeys[i];
-            await stream.writeInt(key);
-            await this.action[key].writeTo(stream);
-        }
+        await this.action.writeTo(stream);
     }
 
     toString () {

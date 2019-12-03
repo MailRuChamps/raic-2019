@@ -1,12 +1,13 @@
 const Vec2Double = require('./vec2double').Vec2Double;
 
 class UnitAction {
-    constructor (velocity, jump, jumpDown, aim, shoot, swapWeapon, plantMine) {
+    constructor (velocity, jump, jumpDown, aim, shoot, reload, swapWeapon, plantMine) {
         this.velocity = velocity;
         this.jump = jump;
         this.jumpDown = jumpDown;
         this.aim = aim;
         this.shoot = shoot;
+        this.reload = reload;
         this.swapWeapon = swapWeapon;
         this.plantMine = plantMine;
     }
@@ -17,9 +18,10 @@ class UnitAction {
         const jumpDown = await stream.readBool();
         const aim = await Vec2Double.readFrom(stream);
         const shoot = await stream.readBool();
+        const reload = await stream.readBool();
         const swapWeapon = await stream.readBool();
         const plantMine = await stream.readBool();
-        return new UnitAction(velocity, jump, jumpDown, aim, shoot, swapWeapon, plantMine);
+        return new UnitAction(velocity, jump, jumpDown, aim, shoot, reload, swapWeapon, plantMine);
     }
     
     async writeTo (stream) {
@@ -28,6 +30,7 @@ class UnitAction {
         await stream.writeBool(this.jumpDown);
         await this.aim.writeTo(stream);
         await stream.writeBool(this.shoot);
+        await stream.writeBool(this.reload);
         await stream.writeBool(this.swapWeapon);
         await stream.writeBool(this.plantMine);
     }
@@ -39,6 +42,7 @@ class UnitAction {
             this.jumpDown + ',' +
             this.aim + ',' +
             this.shoot + ',' +
+            this.reload + ',' +
             this.swapWeapon + ',' +
             this.plantMine +
             ')';

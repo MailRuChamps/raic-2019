@@ -2,8 +2,10 @@
 
 const StreamWrapper = require('./stream-wrapper').StreamWrapper;
 const Socket = require('net').Socket;
+
 const ServerMessageGame = require('./model/server-message-game').ServerMessageGame;
 const ActionMessage = require('./model/player-message-game').ActionMessage;
+const Versioned = require('./model/versioned').Versioned;
 const MyStrategy = require('./my-strategy').MyStrategy;
 const Debug = require('./debug').Debug;
 
@@ -49,7 +51,7 @@ class Runner {
                         actions[unit.id] = await strategy.getAction(unit, playerView.game, debug);
                     }
                 }
-                await (new ActionMessage(actions)).writeTo(this.streamWrapper);
+                await (new ActionMessage(new Versioned(actions)).writeTo(this.streamWrapper));
             }
         } catch (e) {
             console.error(e);
