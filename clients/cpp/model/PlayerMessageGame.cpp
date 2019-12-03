@@ -19,32 +19,19 @@ std::string PlayerMessageGame::CustomDataMessage::toString() const {
 }
 
 PlayerMessageGame::ActionMessage::ActionMessage() { }
-PlayerMessageGame::ActionMessage::ActionMessage(std::unordered_map<int, UnitAction> action) : action(action) { }
+PlayerMessageGame::ActionMessage::ActionMessage(Versioned action) : action(action) { }
 PlayerMessageGame::ActionMessage PlayerMessageGame::ActionMessage::readFrom(InputStream& stream) {
     PlayerMessageGame::ActionMessage result;
-    size_t actionSize = stream.readInt();
-    result.action = std::unordered_map<int, UnitAction>();
-    result.action.reserve(actionSize);
-    for (size_t i = 0; i < actionSize; i++) {
-        int actionKey;
-        actionKey = stream.readInt();
-        UnitAction actionValue;
-        actionValue = UnitAction::readFrom(stream);
-        result.action.emplace(std::make_pair(actionKey, actionValue));
-    }
+    result.action = Versioned::readFrom(stream);
     return result;
 }
 void PlayerMessageGame::ActionMessage::writeTo(OutputStream& stream) const {
     stream.write(TAG);
-    stream.write((int)(action.size()));
-    for (const auto& actionEntry : action) {
-        stream.write(actionEntry.first);
-        actionEntry.second.writeTo(stream);
-    }
+    action.writeTo(stream);
 }
 std::string PlayerMessageGame::ActionMessage::toString() const {
     return std::string("PlayerMessageGame::ActionMessage") + "(" +
-        "TODO" + 
+        action.toString() +
         ")";
 }
 std::shared_ptr<PlayerMessageGame> PlayerMessageGame::readFrom(InputStream& stream) {

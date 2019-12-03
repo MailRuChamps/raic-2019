@@ -38,36 +38,22 @@ public abstract class PlayerMessageGame {
 
     public static class ActionMessage extends PlayerMessageGame {
         public static final int TAG = 1;
-        private java.util.Map<Integer, model.UnitAction> action;
-        public java.util.Map<Integer, model.UnitAction> getAction() { return action; }
-        public void setAction(java.util.Map<Integer, model.UnitAction> action) { this.action = action; }
+        private model.Versioned action;
+        public model.Versioned getAction() { return action; }
+        public void setAction(model.Versioned action) { this.action = action; }
         public ActionMessage() {}
-        public ActionMessage(java.util.Map<Integer, model.UnitAction> action) {
+        public ActionMessage(model.Versioned action) {
             this.action = action;
         }
         public static ActionMessage readFrom(java.io.InputStream stream) throws java.io.IOException {
             ActionMessage result = new ActionMessage();
-            int actionSize = StreamUtil.readInt(stream);
-            result.action = new java.util.HashMap<>(actionSize);
-            for (int i = 0; i < actionSize; i++) {
-                int actionKey;
-                actionKey = StreamUtil.readInt(stream);
-                model.UnitAction actionValue;
-                actionValue = model.UnitAction.readFrom(stream);
-                result.action.put(actionKey, actionValue);
-            }
+            result.action = model.Versioned.readFrom(stream);
             return result;
         }
         @Override
         public void writeTo(java.io.OutputStream stream) throws java.io.IOException {
             StreamUtil.writeInt(stream, TAG);
-            StreamUtil.writeInt(stream, action.size());
-            for (java.util.Map.Entry<Integer, model.UnitAction> actionEntry : action.entrySet()) {
-                int actionKey = actionEntry.getKey();
-                model.UnitAction actionValue = actionEntry.getValue();
-                StreamUtil.writeInt(stream, actionKey);
-                actionValue.writeTo(stream);
-            }
+            action.writeTo(stream);
         }
     }
 }

@@ -34,7 +34,7 @@ internal constructor(host: String, port: Int, token: String) {
                     actions[unit.id] = myStrategy.getAction(unit, playerView.game, debug)
                 }
             }
-            model.PlayerMessageGame.ActionMessage(actions).writeTo(outputStream)
+            model.PlayerMessageGame.ActionMessage(model.Versioned(actions)).writeTo(outputStream)
             outputStream.flush()
         }
     }

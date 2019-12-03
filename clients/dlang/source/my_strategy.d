@@ -56,6 +56,7 @@ class MyStrategy {
         action.jumpDown = !jump;
         action.aim = aim;
         action.shoot = true;
+        action.reload = false;
         action.swapWeapon = false;
         action.plantMine = false;
         return action;

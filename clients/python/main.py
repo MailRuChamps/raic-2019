@@ -33,7 +33,7 @@ class Runner:
                     actions[unit.id] = strategy.get_action(
                         unit, player_view.game, debug)
             model.PlayerMessageGame.ActionMessage(
-                actions).write_to(self.writer)
+                model.Versioned(actions)).write_to(self.writer)
             self.writer.flush()
 
 

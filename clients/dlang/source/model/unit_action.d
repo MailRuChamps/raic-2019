@@ -9,14 +9,16 @@ struct UnitAction {
     bool jumpDown;
     Vec2Double aim;
     bool shoot;
+    bool reload;
     bool swapWeapon;
     bool plantMine;
-    this(double velocity, bool jump, bool jumpDown, Vec2Double aim, bool shoot, bool swapWeapon, bool plantMine) {
+    this(double velocity, bool jump, bool jumpDown, Vec2Double aim, bool shoot, bool reload, bool swapWeapon, bool plantMine) {
         this.velocity = velocity;
         this.jump = jump;
         this.jumpDown = jumpDown;
         this.aim = aim;
         this.shoot = shoot;
+        this.reload = reload;
         this.swapWeapon = swapWeapon;
         this.plantMine = plantMine;
     }
@@ -27,6 +29,7 @@ struct UnitAction {
         result.jumpDown = reader.readBool();
         result.aim = Vec2Double.readFrom(reader);
         result.shoot = reader.readBool();
+        result.reload = reader.readBool();
         result.swapWeapon = reader.readBool();
         result.plantMine = reader.readBool();
         return result;
@@ -37,6 +40,7 @@ struct UnitAction {
         writer.write(jumpDown);
         aim.writeTo(writer);
         writer.write(shoot);
+        writer.write(reload);
         writer.write(swapWeapon);
         writer.write(plantMine);
     }
@@ -47,6 +51,7 @@ struct UnitAction {
             to!string(jumpDown) ~
             to!string(aim) ~
             to!string(shoot) ~
+            to!string(reload) ~
             to!string(swapWeapon) ~
             to!string(plantMine) ~
             ")";

@@ -33,7 +33,7 @@ public:
               myStrategy.getAction(unit, playerView->game, debug)));
         }
       }
-      PlayerMessageGame::ActionMessage(actions).writeTo(*outputStream);
+      PlayerMessageGame::ActionMessage(Versioned(actions)).writeTo(*outputStream);
       outputStream->flush();
     }
   }

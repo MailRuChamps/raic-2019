@@ -62,6 +62,7 @@ namespace AiCup2019
             action.JumpDown = !jump;
             action.Aim = aim;
             action.Shoot = true;
+            action.Reload = false;
             action.SwapWeapon = false;
             action.PlantMine = false;
             return action;

@@ -5,14 +5,16 @@ class UnitAction
     attr_accessor :jump_down
     attr_accessor :aim
     attr_accessor :shoot
+    attr_accessor :reload
     attr_accessor :swap_weapon
     attr_accessor :plant_mine
-    def initialize(velocity, jump, jump_down, aim, shoot, swap_weapon, plant_mine)
+    def initialize(velocity, jump, jump_down, aim, shoot, reload, swap_weapon, plant_mine)
         @velocity = velocity
         @jump = jump
         @jump_down = jump_down
         @aim = aim
         @shoot = shoot
+        @reload = reload
         @swap_weapon = swap_weapon
         @plant_mine = plant_mine
     end
@@ -22,9 +24,10 @@ class UnitAction
         jump_down = stream.read_bool()
         aim = Vec2Double.read_from(stream)
         shoot = stream.read_bool()
+        reload = stream.read_bool()
         swap_weapon = stream.read_bool()
         plant_mine = stream.read_bool()
-        UnitAction.new(velocity, jump, jump_down, aim, shoot, swap_weapon, plant_mine)
+        UnitAction.new(velocity, jump, jump_down, aim, shoot, reload, swap_weapon, plant_mine)
     end
     def write_to(stream)
         stream.write_double(@velocity)
@@ -32,6 +35,7 @@ class UnitAction
         stream.write_bool(@jump_down)
         @aim.write_to(stream)
         stream.write_bool(@shoot)
+        stream.write_bool(@reload)
         stream.write_bool(@swap_weapon)
         stream.write_bool(@plant_mine)
     end

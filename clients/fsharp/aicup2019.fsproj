@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Model/Vec2Single.fs" />
+        <Compile Include="Model/Vec2Double.fs" />
+        <Compile Include="Model/BulletParameters.fs" />
+        <Compile Include="Model/ExplosionParameters.fs" />
+        <Compile Include="Model/WeaponType.fs" />
+        <Compile Include="Model/Bullet.fs" />
+        <Compile Include="Model/ColorSingle.fs" />
+        <Compile Include="Model/ColoredVertex.fs" />
+        <Compile Include="Model/TextAlignment.fs" />
+        <Compile Include="Model/CustomData.fs" />
+        <Compile Include="Model/WeaponParameters.fs" />
+        <Compile Include="Model/Properties.fs" />
+        <Compile Include="Model/Tile.fs" />
+        <Compile Include="Model/Level.fs" />
+        <Compile Include="Model/Player.fs" />
+        <Compile Include="Model/JumpState.fs" />
+        <Compile Include="Model/MineState.fs" />
+        <Compile Include="Model/Mine.fs" />
+        <Compile Include="Model/Weapon.fs" />
+        <Compile Include="Model/Unit.fs" />
+        <Compile Include="Model/Item.fs" />
+        <Compile Include="Model/LootBox.fs" />
+        <Compile Include="Model/Game.fs" />
+        <Compile Include="Model/PlayerView.fs" />
+        <Compile Include="Model/ServerMessageGame.fs" />
+        <Compile Include="Model/UnitAction.fs" />
+        <Compile Include="Model/Versioned.fs" />
+        <Compile Include="Model/PlayerMessageGame.fs" />
+        <Compile Include="Debug.fs" />
+        <Compile Include="MyStrategy.fs" />
+        <Compile Include="Runner.fs" />
+    </ItemGroup>
+
+</Project>

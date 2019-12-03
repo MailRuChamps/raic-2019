@@ -73,7 +73,9 @@ impl Runner {
                     strategy.get_action(unit, &player_view.game, &mut Debug(&mut self.writer));
                 actions.insert(unit.id, action);
             }
-            let message = model::PlayerMessageGame::ActionMessage { action: actions };
+            let message = model::PlayerMessageGame::ActionMessage {
+                action: model::Versioned { inner: actions },
+            };
             message.write_to(&mut self.writer)?;
             self.writer.flush()?;
         }

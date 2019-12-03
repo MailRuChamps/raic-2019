@@ -32,6 +32,8 @@
 #include "TextAlignment.hpp"
 #include <stdexcept>
 #include "ColorFloat.hpp"
+#include <stdexcept>
+#include "Versioned.hpp"
 #include <unordered_map>
 #include <stdexcept>
 #include "UnitAction.hpp"
@@ -64,9 +66,9 @@ class PlayerMessageGame::ActionMessage : public PlayerMessageGame {
 public:
     static const int TAG = 1;
 public:
-    std::unordered_map<int, UnitAction> action;
+    Versioned action;
     ActionMessage();
-    ActionMessage(std::unordered_map<int, UnitAction> action);
+    ActionMessage(Versioned action);
     static ActionMessage readFrom(InputStream& stream);
     void writeTo(OutputStream& stream) const;
     std::string toString() const override;

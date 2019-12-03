@@ -128,7 +128,7 @@ The level is represented by a grid of tiles. Each tile can be one of:
       \item Wall --- blocks all movement and bullets.
       \item Platform --- can be used to stand on, but can be moved through.
       \item Ladder --- can be used to freely move vertically.
-            Unit is considered to be on ladder if the line from center of unit to top middle point of unit intersects with the tile.
+            Unit is considered to be on ladder if the line from center of unit to bottom middle point of unit intersects with the tile.
       \item Jump pad --- gives higher jump. Activated if unit is intersecting with the tile.
             Jumps off jump pads are not cancellable.
 \end{itemize}
@@ -210,10 +210,8 @@ These parameters are constant for each weapon type. There are also varying param
             For the first tick upon picking a weapon, this value is absent.
 \end{itemize}
 
-Reloading a weapon happens automatically. First, when the weapon is just picked up.
-Then, if ammo in current magazine reaches zero,
-or if your strategy tells the unit to stop shooting while the magazine is not full,
-unit also reloads the weapon.
+When weapon is first picked up, it starts with being reloaded.
+Reloading a weapon also happens automatically if ammo in current magazine reaches zero.
 
 \section{Mines}
 

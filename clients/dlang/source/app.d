@@ -58,7 +58,7 @@ class Runner {
                     actions[unit.id] = myStrategy.getAction(unit, playerView.game, debugger);
                 }
             }
-            new PlayerMessageGame.ActionMessage(actions).writeTo(stream);
+            new PlayerMessageGame.ActionMessage(Versioned(actions)).writeTo(stream);
             stream.flush();
         }
     }

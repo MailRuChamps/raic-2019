@@ -20,6 +20,9 @@ pub use self::vec2_f64::*;
 mod unit_action;
 pub use self::unit_action::*;
 
+mod versioned;
+pub use self::versioned::*;
+
 mod player_message_game;
 pub use self::player_message_game::*;
 

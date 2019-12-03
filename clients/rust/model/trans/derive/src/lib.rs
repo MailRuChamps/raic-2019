@@ -5,12 +5,47 @@ use quote::quote;
 
 use proc_macro2::TokenStream;
 
-#[proc_macro_derive(Trans)]
+#[proc_macro_derive(Trans, attributes(trans))]
 pub fn derive_trans(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input: TokenStream = input.into();
     let result: TokenStream = {
         let ast: syn::DeriveInput = syn::parse_str(&input.to_string()).unwrap();
         let input_type = &ast.ident;
+        let mut magic: Option<syn::Expr> = None;
+        for attr in &ast.attrs {
+            if let Ok(syn::Meta::List(syn::MetaList {
+                path: ref meta_path,
+                nested: ref nested,
+                ..
+            })) = attr.parse_meta()
+            {
+                if meta_path.is_ident("trans") {
+                    for inner in nested {
+                        if let syn::NestedMeta::Meta(syn::Meta::NameValue(syn::MetaNameValue {
+                            path: ref meta_path,
+                            lit: syn::Lit::Str(ref lit),
+                            ..
+                        })) = *inner
+                        {
+                            if meta_path.is_ident("magic") {
+                                magic = Some(syn::parse_str(&lit.value()).unwrap());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        let (magic_write, magic_read) = match magic {
+            Some(magic) => (
+                quote! {
+                    trans::Trans::write_to(&#magic, &mut writer)?;
+                },
+                quote! {
+                    assert_eq!(<i32 as trans::Trans>::read_from(&mut reader)?, #magic);
+                },
+            ),
+            None => (quote! {}, quote! {}),
+        };
         match ast.data {
             syn::Data::Struct(syn::DataStruct { ref fields, .. }) => {
                 let field_tys: Vec<_> = fields.iter().map(|field| &field.ty).collect();
@@ -40,10 +75,12 @@ pub fn derive_trans(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
                 let expanded = quote! {
                     impl #impl_generics trans::Trans for #input_type #ty_generics #where_clause {
                         fn write_to(&self, mut writer: impl std::io::Write) -> std::io::Result<()> {
+                            #magic_write
                             #(trans::Trans::write_to(&self.#field_names, &mut writer)?;)*
                             Ok(())
                         }
                         fn read_from(mut reader: impl std::io::Read) -> std::io::Result<Self> {
+                            #magic_read
                             Ok(Self {
                                 #(#field_names: trans::Trans::read_from(&mut reader)?),*
                             })

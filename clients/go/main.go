@@ -51,7 +51,9 @@ func (runner Runner) Run() {
             }
         }
         PlayerMessageGameActionMessage {
-            Action: actions,
+            Action: Versioned {
+                Inner: actions,
+            },
         }.Write(runner.writer)
         err := runner.writer.Flush()
         if err != nil {
