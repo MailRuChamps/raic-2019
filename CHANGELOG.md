@@ -1,5 +1,6 @@
 # December 4
 
+- Show player names when viewing game
 - Teleportation feature disabled.
 
 # December 3
