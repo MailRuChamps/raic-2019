@@ -1,3 +1,7 @@
+# December 4
+
+- Teleportation feature disabled.
+
 # December 3
 
 - Weapon can now be reloaded manually (`UnitAction.reload`)
