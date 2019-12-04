@@ -1,7 +1,7 @@
 module RAIC.Model.Player where
 
 import           GHC.Generics       (Generic)
-import           RAIC.StreamWrapper (Trans)
+import           RAIC.Utils.StreamWrapper (Trans)
 
 data Player = Player {
   id    :: Int,

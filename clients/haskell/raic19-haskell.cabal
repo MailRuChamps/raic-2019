@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 0f3b0be71405e151bd9622d0576ffba8e9c0c3114f78401b5c21aaabf92abf52
+-- hash: 10170527e6af2ddcce0c8cf0dfbf5e47d47b9aeb2c29cccf02f085cdd34869c8
 
 name:           raic19-haskell
 version:        0.0.1.0
@@ -48,8 +48,8 @@ library
       RAIC.Model.WeaponParams
       RAIC.Model.WeaponType
       RAIC.MyStrategy
-      RAIC.StreamWrapper
-      RAIC.TCPSocket
+      RAIC.Utils.StreamWrapper
+      RAIC.Utils.TCPSocket
   other-modules:
       Paths_raic19_haskell
   hs-source-dirs:

@@ -12,8 +12,8 @@ import           RAIC.Model.PlayerView        (game, my_id)
 import           RAIC.Model.ServerMessageGame (ServerMessageGame, player_view)
 import           RAIC.Model.Unit              as Unit
 import           RAIC.MyStrategy              (getAction)
-import           RAIC.StreamWrapper           (readFrom, writeTo)
-import           RAIC.TCPSocket               (runTCPClient)
+import           RAIC.Utils.StreamWrapper           (readFrom, writeTo)
+import           RAIC.Utils.TCPSocket               (runTCPClient)
 import           System.Environment           (getArgs)
 import           System.IO.Streams.Network    (socketToStreams)
 

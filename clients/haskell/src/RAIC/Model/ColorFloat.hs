@@ -1,7 +1,7 @@
 module RAIC.Model.ColorFloat where
 
 import           GHC.Generics       (Generic)
-import           RAIC.StreamWrapper (Trans)
+import           RAIC.Utils.StreamWrapper (Trans)
 
 data ColorFloat = ColorFloat {
   r :: Float,

@@ -4,7 +4,7 @@ import           Data.Binary           (Get)
 import           Data.Map.Strict       (Map)
 import           RAIC.Model.CustomData (CustomData)
 import           RAIC.Model.UnitAction (UnitAction)
-import           RAIC.StreamWrapper    (Trans, get, put)
+import           RAIC.Utils.StreamWrapper    (Trans, get, put)
 
 data PlayerMessageGame =
   CustomData {

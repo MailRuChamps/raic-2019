@@ -6,7 +6,7 @@ import           RAIC.Model.ExplosionParams (ExplosionParams)
 import           RAIC.Model.Vec2Double      (Vec2Double)
 import           RAIC.Model.WeaponParams    (WeaponParams)
 import           RAIC.Model.WeaponType      (WeaponType)
-import           RAIC.StreamWrapper         (Trans)
+import           RAIC.Utils.StreamWrapper         (Trans)
 
 data Properties = Properties {
   max_tick_count            :: Int,

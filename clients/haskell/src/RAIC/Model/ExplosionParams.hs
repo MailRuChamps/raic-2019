@@ -1,7 +1,7 @@
 module RAIC.Model.ExplosionParams where
 
 import           GHC.Generics       (Generic)
-import           RAIC.StreamWrapper (Trans)
+import           RAIC.Utils.StreamWrapper (Trans)
 
 data ExplosionParams = ExplosionParams {
   radius :: Double,

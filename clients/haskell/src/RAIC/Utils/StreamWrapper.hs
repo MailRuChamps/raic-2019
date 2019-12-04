@@ -2,7 +2,7 @@
 {-# LANGUAGE TypeOperators     #-}
 {-# LANGUAGE DefaultSignatures #-}
 {-# LANGUAGE FlexibleContexts #-}
-module RAIC.StreamWrapper where
+module RAIC.Utils.StreamWrapper where
 
 import           Control.Exception        (throwIO)
 import           Control.Monad            (replicateM)

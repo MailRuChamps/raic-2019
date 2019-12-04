@@ -1,7 +1,7 @@
 module RAIC.Model.Vec2Float where
 
 import           GHC.Generics       (Generic)
-import           RAIC.StreamWrapper (Trans)
+import           RAIC.Utils.StreamWrapper (Trans)
 
 data Vec2Float = Vec2Float {
   x :: Float,

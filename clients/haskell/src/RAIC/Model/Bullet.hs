@@ -4,7 +4,7 @@ import           GHC.Generics               (Generic)
 import           RAIC.Model.ExplosionParams (ExplosionParams)
 import           RAIC.Model.Vec2Double      (Vec2Double)
 import           RAIC.Model.WeaponType      (WeaponType)
-import           RAIC.StreamWrapper         (Trans)
+import           RAIC.Utils.StreamWrapper         (Trans)
 
 data Bullet = Bullet {
   weapon_type      :: WeaponType,

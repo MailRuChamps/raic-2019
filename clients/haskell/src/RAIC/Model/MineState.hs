@@ -1,6 +1,6 @@
 module RAIC.Model.MineState where
 import           GHC.Generics       (Generic)
-import           RAIC.StreamWrapper (Trans, get, put)
+import           RAIC.Utils.StreamWrapper (Trans, get, put)
 
 data MineState = Preparing | Idle | Triggered
   deriving (Enum, Generic, Show)

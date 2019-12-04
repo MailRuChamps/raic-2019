@@ -7,7 +7,7 @@ import           RAIC.Model.ColoredVertex (ColoredVertex)
 import           RAIC.Model.ColorFloat    (ColorFloat)
 import           RAIC.Model.TextAlignment (TextAlignment)
 import           RAIC.Model.Vec2Float     (Vec2Float)
-import           RAIC.StreamWrapper       (Trans, get, put)
+import           RAIC.Utils.StreamWrapper       (Trans, get, put)
 
 data CustomData
   = Log {

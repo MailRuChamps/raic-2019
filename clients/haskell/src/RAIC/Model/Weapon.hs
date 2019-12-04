@@ -3,7 +3,7 @@ module RAIC.Model.Weapon where
 import           GHC.Generics            (Generic)
 import           RAIC.Model.WeaponParams (WeaponParams)
 import           RAIC.Model.WeaponType   (WeaponType)
-import           RAIC.StreamWrapper      (Trans)
+import           RAIC.Utils.StreamWrapper      (Trans)
 
 data Weapon = Weapon {
   weapon_type :: WeaponType,

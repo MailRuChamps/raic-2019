@@ -8,7 +8,7 @@ import           RAIC.Model.Mine       (Mine)
 import           RAIC.Model.Player     (Player)
 import           RAIC.Model.Properties (Properties)
 import           RAIC.Model.Unit       (Unit)
-import           RAIC.StreamWrapper    (Trans)
+import           RAIC.Utils.StreamWrapper    (Trans)
 
 data Game = Game {
   current_tick :: Int,

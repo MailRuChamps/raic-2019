@@ -1,7 +1,7 @@
 module RAIC.Model.Item where
 
 import           GHC.Generics       (Generic)
-import           RAIC.StreamWrapper (Trans, get, put)
+import           RAIC.Utils.StreamWrapper (Trans, get, put)
 
 data Item = HealthPack | Weapon | Mine
   deriving (Enum, Generic, Show)

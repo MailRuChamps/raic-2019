@@ -3,7 +3,7 @@ module RAIC.Model.LootBox where
 import           GHC.Generics          (Generic)
 import           RAIC.Model.Item       (Item)
 import           RAIC.Model.Vec2Double (Vec2Double)
-import           RAIC.StreamWrapper    (Trans)
+import           RAIC.Utils.StreamWrapper    (Trans)
 
 data LootBox = LootBox {
   position :: Vec2Double,

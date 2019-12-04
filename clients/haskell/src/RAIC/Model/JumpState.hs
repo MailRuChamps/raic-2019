@@ -1,7 +1,7 @@
 module RAIC.Model.JumpState where
 
 import           GHC.Generics       (Generic)
-import           RAIC.StreamWrapper (Trans)
+import           RAIC.Utils.StreamWrapper (Trans)
 
 data JumpState = JumpState {
   can_jump   :: Bool,

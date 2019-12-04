@@ -3,7 +3,7 @@ module RAIC.Model.WeaponParams where
 import           GHC.Generics               (Generic)
 import           RAIC.Model.BulletParams    (BulletParams)
 import           RAIC.Model.ExplosionParams (ExplosionParams)
-import           RAIC.StreamWrapper         (Trans)
+import           RAIC.Utils.StreamWrapper         (Trans)
 
 data WeaponParams = WeaponParams {
   magazine_size :: Int,

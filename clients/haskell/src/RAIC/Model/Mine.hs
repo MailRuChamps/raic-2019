@@ -4,7 +4,7 @@ import           GHC.Generics               (Generic)
 import           RAIC.Model.ExplosionParams (ExplosionParams)
 import           RAIC.Model.MineState
 import           RAIC.Model.Vec2Double      (Vec2Double)
-import           RAIC.StreamWrapper         (Trans)
+import           RAIC.Utils.StreamWrapper         (Trans)
 
 data Mine = Mine {
   player_id        :: Int,

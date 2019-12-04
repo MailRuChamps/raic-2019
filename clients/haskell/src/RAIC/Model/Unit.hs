@@ -4,7 +4,7 @@ import           GHC.Generics          (Generic)
 import           RAIC.Model.JumpState  (JumpState)
 import           RAIC.Model.Vec2Double (Vec2Double)
 import           RAIC.Model.Weapon     (Weapon)
-import           RAIC.StreamWrapper    (Trans)
+import           RAIC.Utils.StreamWrapper    (Trans)
 
 data Unit = Unit {
   player_id  :: Int,

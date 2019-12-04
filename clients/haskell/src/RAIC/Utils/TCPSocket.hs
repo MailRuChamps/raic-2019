@@ -1,4 +1,4 @@
-module RAIC.TCPSocket where
+module RAIC.Utils.TCPSocket where
 
 import           Control.Exception (bracket)
 import           Network.Socket
