@@ -18,10 +18,10 @@ dependencies:
 - containers
 - bytestring
 - network
+- network-simple
 - io-streams
-- tcp-streams
-- binary
-- wire-streams
+- attoparsec
+- lens
 
 library:
   source-dirs: src
