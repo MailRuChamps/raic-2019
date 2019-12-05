@@ -1,3 +1,7 @@
+# December 5
+
+- Add JavaScript
+
 # December 4
 
 - Show player names when viewing game
