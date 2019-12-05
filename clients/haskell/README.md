@@ -17,6 +17,7 @@ RAIC - is root directory of the package
 * MyStrategy - define Player's strategy
 
 ### TODO:
+* Implement default strategy in `getAction`
 * Output debug messages from `getAction` function
 * refactor `Model`'s names
 * Consider adding `lens` support
