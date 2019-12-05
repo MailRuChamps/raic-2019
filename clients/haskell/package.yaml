@@ -1,0 +1,38 @@
+name:                raic19-haskell
+version:             0.0.1.0
+github:              ""
+author:              ""
+maintainer:          ""
+copyright:           ""
+
+ghc-options:
+  - -Wall
+
+default-extensions:
+- OverloadedStrings
+- DeriveGeneric
+
+dependencies:
+- base >= 4.7 && < 5
+- text
+- containers
+- bytestring
+- network
+- io-streams
+- binary
+- wire-streams
+- lens
+
+library:
+  source-dirs: src
+
+executables:
+  haskell-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - raic19-haskell
