@@ -1,6 +1,7 @@
 # December 5
 
 - Add JavaScript
+- Added "seed" parameter to app's config
 
 # December 4
 
