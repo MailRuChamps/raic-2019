@@ -77,26 +77,26 @@ void Properties::writeTo(OutputStream& stream) const {
 }
 std::string Properties::toString() const {
     return std::string("Properties") + "(" +
-        std::to_string(maxTickCount) +
-        std::to_string(teamSize) +
-        std::to_string(ticksPerSecond) +
-        std::to_string(updatesPerTick) +
-        lootBoxSize.toString() +
-        unitSize.toString() +
-        std::to_string(unitMaxHorizontalSpeed) +
-        std::to_string(unitFallSpeed) +
-        std::to_string(unitJumpTime) +
-        std::to_string(unitJumpSpeed) +
-        std::to_string(jumpPadJumpTime) +
-        std::to_string(jumpPadJumpSpeed) +
-        std::to_string(unitMaxHealth) +
-        std::to_string(healthPackHealth) +
-        "TODO" + 
-        mineSize.toString() +
-        mineExplosionParams.toString() +
-        std::to_string(minePrepareTime) +
-        std::to_string(mineTriggerTime) +
-        std::to_string(mineTriggerRadius) +
+        std::to_string(maxTickCount) + "," +
+        std::to_string(teamSize) + "," +
+        std::to_string(ticksPerSecond) + "," +
+        std::to_string(updatesPerTick) + "," +
+        lootBoxSize.toString() + "," +
+        unitSize.toString() + "," +
+        std::to_string(unitMaxHorizontalSpeed) + "," +
+        std::to_string(unitFallSpeed) + "," +
+        std::to_string(unitJumpTime) + "," +
+        std::to_string(unitJumpSpeed) + "," +
+        std::to_string(jumpPadJumpTime) + "," +
+        std::to_string(jumpPadJumpSpeed) + "," +
+        std::to_string(unitMaxHealth) + "," +
+        std::to_string(healthPackHealth) + "," +
+        "TODO" + "," +
+        mineSize.toString() + "," +
+        mineExplosionParams.toString() + "," +
+        std::to_string(minePrepareTime) + "," +
+        std::to_string(mineTriggerTime) + "," +
+        std::to_string(mineTriggerRadius) + "," +
         std::to_string(killScore) +
         ")";
 }
