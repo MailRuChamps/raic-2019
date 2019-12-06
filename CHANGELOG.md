@@ -1,6 +1,9 @@
-# December 5
+# December 6
 
 - Added local repeat mode to the app
+
+# December 5
+
 - Added .Net Core 3.1 support
 - Add JavaScript
 - Added "seed" parameter to app's config
