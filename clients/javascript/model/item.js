@@ -39,7 +39,7 @@ class Weapon extends Item {
     }
     static async readFrom(stream) {
         let weaponType;
-        weaponType = stream.readInt();
+        weaponType = await stream.readInt();
         return new Weapon(weaponType);
     }
     async writeTo(stream) {

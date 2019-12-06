@@ -143,7 +143,7 @@ class PlacedText extends CustomData {
         let pos;
         pos = await Vec2Float.readFrom(stream);
         let alignment;
-        alignment = stream.readInt();
+        alignment = await stream.readInt();
         let size;
         size = await stream.readFloat();
         let color;

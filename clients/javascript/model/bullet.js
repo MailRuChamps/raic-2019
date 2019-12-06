@@ -13,7 +13,7 @@ class Bullet {
     }
     static async readFrom(stream) {
         let weaponType;
-        weaponType = stream.readInt();
+        weaponType = await stream.readInt();
         let unitId;
         unitId = await stream.readInt();
         let playerId;

@@ -18,7 +18,7 @@ class Mine {
         let size;
         size = await Vec2Double.readFrom(stream);
         let state;
-        state = stream.readInt();
+        state = await stream.readInt();
         let timer;
         if (await stream.readBool()) {
             timer = await stream.readDouble();
