@@ -12,7 +12,7 @@ class Weapon {
     }
     static async readFrom(stream) {
         let typ;
-        typ = stream.readInt();
+        typ = await stream.readInt();
         let params;
         params = await WeaponParams.readFrom(stream);
         let magazine;
