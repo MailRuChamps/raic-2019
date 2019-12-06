@@ -53,6 +53,7 @@ Weapon.TAG = 1;
 class Mine extends Item {
     constructor() {
         super();
+		this.Mine=undefined;//He Hy kak TO HADO y3HaTb 4TO ETO MuHA
     }
     static async readFrom(stream) {
         return new Mine();
