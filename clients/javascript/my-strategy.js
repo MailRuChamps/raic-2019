@@ -3,6 +3,8 @@ const Vec2Double = require('./model/vec2-double').Vec2Double;
 const Item = require('./model/item').Item;
 const Tile = require('./model/tile');
 const CustomData = require('./model/custom-data').CustomData;
+const Vec2Float = require('./model/vec2-float').Vec2Float;
+const ColorFloat = require('./model/color-float').ColorFloat;
 
 class MyStrategy {
     async getAction (unit, game, debug) {
