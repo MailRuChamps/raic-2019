@@ -118,11 +118,11 @@ In the beginning of each game, units are placed on their spawn points and have n
 Loot boxes spawn on the level containing weapons, health packs and mines.
 
 Game is being updated several times each tick.
-Each update advances game time by $\frac{1}{ticks per second * updated per tick}$.
+Each update advances game time by $\frac{1}{ticks\_per\_second \times updated\_per\_tick}$.
 
 \section{Level}
 
-The level is represented by a grid of tiles. Each tile can be one of:
+The level is represented by a grid of tiles. Each tile is of size $1 \times 1$. Each tile can be one of:
 \begin{itemize}
       \item Empty.
       \item Wall --- blocks all movement and bullets.
@@ -192,18 +192,20 @@ If unit has a weapon, it can aim and shoot enemies. Each weapon type has followi
             If present, bullets explode, dealing explosion's damage in given radius.
 \end{itemize}
 
-Bullets are squares, and they hit other units if they intersect with them.
-Bullets can also hit wall tiles of the level.
+Bullets are squares. They spawn at the center of unit who made the shot.
+They hit other units if they intersect with them (but a bullet can't hit the unit who made the shot).
+Bullets can also hit wall tiles of the level and mines.
 In any case, bullet disappears immediately, dealing damage if hit a unit.
+If a mine was hit, it will be exploded.
 Also, if explosion parameters are present, an explosion is created,
 dealing damage to all units that intersect with a square with center at the bullet's position and given radius
-(so, size of explosion's square is twice the radius).
+(so, size of explosion's square is twice the radius). Explosions can also hit and explode other mines.
 
 These parameters are constant for each weapon type. There are also varying parameters of a weapon:
 \begin{itemize}
       \item Magazine --- ammo left in current magazine.
       \item Spread --- current spread. Initially is equal to min spread.
-            Bullets' angle is modified randomly in range $[-spread, spread]$.
+            Bullets' angle is modified randomly, uniformly in range $[-spread, spread]$.
       \item Fire timer --- time until next shot. May be absent if shooting is already possible.
       \item Last angle --- last aiming angle. When you change aiming direction,
             current spread value increases by the angle difference.
@@ -219,6 +221,7 @@ Mines can only be planted if unit is currently on ground.
 Upon planting, some time is required to prepare. During this time the mine can't be triggered.
 Then mine goes to idle state, waiting for a unit to come close (within its trigger radius).
 After been triggered, some time will pass and then the mine will explode, dealing damage to all units in specified explosion radius.
+Explosions can also hit and explode other mines.
 
 \section{Control}
 
@@ -233,6 +236,8 @@ By setting $jump\_down$ to $true$, unit starts moving down ladders and jumping d
 
 The $aim$ property controls where the unit is aiming. If unit has no weapon, this property does nothing.
 Set $shoot$ to $true$ to start shooting.
+
+If $reload$ is set to $true$, unit starts reloading its weapon.
 
 Setting $swap\_weapon$ to $true$ will make unit swap its current weapon with the one in the loot box near it, if any.
 
