@@ -14,7 +14,7 @@ void Vec2Double::writeTo(OutputStream& stream) const {
 }
 std::string Vec2Double::toString() const {
     return std::string("Vec2Double") + "(" +
-        std::to_string(x) +
+        std::to_string(x) + ", " +
         std::to_string(y) +
         ")";
 }
