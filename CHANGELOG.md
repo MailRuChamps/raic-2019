@@ -1,5 +1,6 @@
 # December 7
 
+- Decreased max game time to 3600 ticks
 - Reduced max spread for weapons
 - Increased rocket launcher aim speed
 - Mines and be exploded when hit by bullets or explosions
