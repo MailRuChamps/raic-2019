@@ -4,6 +4,7 @@
 - Reduced max spread for weapons
 - Increased rocket launcher aim speed
 - Mines and be exploded when hit by bullets or explosions
+- Mine's explosion is now placed at the center of the mine
 - The end of beta: rating was reset
 
 # December 6
