@@ -59,7 +59,7 @@ class Properties {
         for (let i = await stream.readInt(); i > 0; i--) {
             let weaponParamsKey;
             let weaponParamsValue;
-            weaponParamsKey = stream.readInt();
+            weaponParamsKey = await stream.readInt();
             weaponParamsValue = await WeaponParams.readFrom(stream);
             weaponParams.set(weaponParamsKey, weaponParamsValue);
         }

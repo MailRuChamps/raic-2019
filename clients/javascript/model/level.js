@@ -10,7 +10,7 @@ class Level {
             tilesElement = [];
             for (let j = await stream.readInt(); j > 0; j--) {
                 let tilesElementElement;
-                tilesElementElement = stream.readInt();
+                tilesElementElement = await stream.readInt();
                 tilesElement.push(tilesElementElement);
             }
             tiles.push(tilesElement);
