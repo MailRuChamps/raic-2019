@@ -1,3 +1,10 @@
+# December 7
+
+- Reduced max spread for weapons
+- Increased rocket launcher aim speed
+- Mines and be exploded when hit by bullets or explosions
+- The end of beta: rating was reset
+
 # December 6
 
 - Added local repeat mode to the app
