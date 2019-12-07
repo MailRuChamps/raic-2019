@@ -38,12 +38,12 @@ The ``crashed’’ strategy can no longer control its units. The strategy is co
 The tournament is held in several stages preceded by a qualification in the Sandbox.
 Sandbox is a competition that takes place throughout the championship.
 The player has a certain rating value -- an indicator of how successful
-his strategy is involved in games within each stage.
+their strategy is involved in games within each stage.
 
 The initial value of the rating in the Sandbox is $1200$. At the end of the game this value can both be increased and decreased. At the same time victory
 over a weak (with a low rating) opponent gives a small increase, also the defeat from a strong opponent slightly decreases your
 rating. Over time the rating in the Sandbox becomes more and more inert, which makes it possible to decrease the impact of random long series of victories or
-defeats on the participant's place, but at the same time makes it difficult to change his position with a significant improvement in strategy. To cancel such effect
+defeats on the participant's place, but at the same time makes it difficult to change their position with a significant improvement in strategy. To cancel such effect
 the participant can reset the variability of the rating to the initial state when sending a new strategy, including the corresponding
 option. If the new strategy is adopted, the rating system of the participant will fall dramatically after the next game in the Sandbox, however,
 further participation in games will quickly recover and even become higher if your strategy has really become more effective. It is not recommended
@@ -70,7 +70,7 @@ Games in the Sandbox are held according to a set of rules corresponding to the r
 one game. The Sandbox starts before the start of the first stage of the tournament and ends after some time after the final stage (see the schedule
 of stages to clarify the details). In addition, the Sandbox is frozen during the stages of the tournament. Following the results of the games in the Sandbox
 there is a selection for participation in Round 1, which will involve $1080$ of participants with the highest rating at the beginning of this stage of the tournament
-(if the rating is equal, priority is given to the player who previously sent the latest version of his strategy), as well as an additional selection to
+(if the rating is equal, priority is given to the player who previously sent the latest version of their strategy), as well as an additional selection to
 the next stages of the tournament, including the Finals.
 
 Tournament stages:
@@ -104,7 +104,7 @@ All finalists are ranked according to the non-increase in the rating after the e
 ordering.
 
 After the completion of the Sandbox, all its participants, except for the Finals winners, are ranked according to the non-increase in the rating. If the ratings are equal 
-a higher place is taken by the participant who sent the latest version of his strategy earlier. Prizes for the Sandbox are distributed on the basis of
+a higher place is taken by the participant who sent the latest version of their strategy earlier. Prizes for the Sandbox are distributed on the basis of
 occupied place after this ordering.
 
 \section{Description of the game world}
@@ -144,7 +144,7 @@ On game update, your unit's $X$ position is changing by velocity set, until ther
 Vertical movement is a little more complicated. Unit can be either in falling, or in jumping state.
 Jumping can be cancelled any time unless jumped off a jump pad.
 
-If the unit is in falling state, he moves down with constant speed.
+If the unit is in falling state, it moves down with constant speed.
 If falling is blocked by some level tile or other unit, falling stops.
 Which tiles are blocking depends on whether you set ``jump\_down'' or not.
 If set, only walls block falling. If not set, platforms and ladders also block.
@@ -152,7 +152,7 @@ If falling is blocked, unit goes into jumping state.
 When on ladder, falling state is always changed to jumping state.
 Jumping state may be reverted immediately if ``jump'' is not set in your strategy.
 
-If unit is in jumping state, he moves up with constant speed.
+If unit is in jumping state, it moves up with constant speed.
 Jumping state is limited by certain time. After that time state is changed to falling.
 When jumping, unit's $Y$ position is changing by constant velocity.
 If jumping is blocked by wall tile or other unit, state is changed to falling.
@@ -178,7 +178,7 @@ Loot box can be interacted with if it intersects with the unit.
 
 \section{Shooting}
 
-If unit has a weapon, he can aim and shoot enemies. Each weapon type has following parameters:
+If unit has a weapon, it can aim and shoot enemies. Each weapon type has following parameters:
 \begin{itemize}
       \item Magazine size. Weapons have infinite ammo, but they should be reloaded once magazine is used.
       \item Fire rate. Time between shots.
@@ -234,6 +234,6 @@ By setting $jump\_down$ to $true$, unit starts moving down ladders and jumping d
 The $aim$ property controls where the unit is aiming. If unit has no weapon, this property does nothing.
 Set $shoot$ to $true$ to start shooting.
 
-Setting $swap\_weapon$ to $true$ will make unit swap his current weapon with the one in the loot box near him, if any.
+Setting $swap\_weapon$ to $true$ will make unit swap its current weapon with the one in the loot box near it, if any.
 
-Finally, $plant\_mine$ will cause unit to plant a mine in his current position, if unit has mines in inventory.
+Finally, $plant\_mine$ will cause unit to plant a mine in its current position, if unit has mines in inventory.
