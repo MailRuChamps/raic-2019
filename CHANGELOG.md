@@ -1,3 +1,7 @@
+# December 9
+
+- Seed in --save-results
+
 # December 7
 
 - Decreased max game time to 3600 ticks
