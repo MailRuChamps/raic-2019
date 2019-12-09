@@ -1,5 +1,6 @@
 # December 9
 
+- Show time consumed in online games
 - Seed in --save-results
 
 # December 7
