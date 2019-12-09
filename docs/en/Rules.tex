@@ -16,7 +16,7 @@ Time in the game is discrete and is measured in ``ticks’’.
 At the beginning of each tick, the game simulator transmits the world state data to the participants' strategies,
 receives actions from them and updates the state of the world in accordance with these actions and the limitations of the world.
 Then makes calculation of the change of the world and objects in it for this tick, and the process is repeated again with the updated data.
-The maximum duration of any game is equal to $10000$ ticks, but the game can be terminated prematurely if all strategies have ``crashed’’.
+The maximum duration of any game is equal to $3600$ ticks, but the game can be terminated prematurely if all strategies have ``crashed’’.
 
 The ``crashed’’ strategy can no longer control its units. The strategy is considered as ``crashed’’ in the following cases:
 \begin{itemize}
@@ -218,7 +218,7 @@ Reloading a weapon also happens automatically if ammo in current magazine reache
 \section{Mines}
 
 Mines can only be planted if unit is currently on ground.
-Upon planting, some time is required to prepare. During this time the mine can't be triggered.
+Upon planting, some time is required to prepare. During this time the mine can't be triggered by itself.
 Then mine goes to idle state, waiting for a unit to come close (within its trigger radius).
 After been triggered, some time will pass and then the mine will explode, dealing damage to all units in specified explosion radius.
 Explosions can also hit and explode other mines.
