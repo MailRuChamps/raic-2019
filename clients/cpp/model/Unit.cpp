@@ -36,10 +36,10 @@ void Unit::writeTo(OutputStream& stream) const {
     stream.write(onLadder);
     stream.write(mines);
     if (weapon) {
-        stream.write(false);
-    } else {
         stream.write(true);
         (*weapon).writeTo(stream);
+    } else {
+        stream.write(false);
     }
 }
 std::string Unit::toString() const {

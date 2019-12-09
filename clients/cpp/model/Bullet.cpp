@@ -40,10 +40,10 @@ void Bullet::writeTo(OutputStream& stream) const {
     stream.write(damage);
     stream.write(size);
     if (explosionParams) {
-        stream.write(false);
-    } else {
         stream.write(true);
         (*explosionParams).writeTo(stream);
+    } else {
+        stream.write(false);
     }
 }
 std::string Bullet::toString() const {

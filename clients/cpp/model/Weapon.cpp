@@ -48,22 +48,22 @@ void Weapon::writeTo(OutputStream& stream) const {
     stream.write(wasShooting);
     stream.write(spread);
     if (fireTimer) {
-        stream.write(false);
-    } else {
         stream.write(true);
         stream.write((*fireTimer));
+    } else {
+        stream.write(false);
     }
     if (lastAngle) {
-        stream.write(false);
-    } else {
         stream.write(true);
         stream.write((*lastAngle));
+    } else {
+        stream.write(false);
     }
     if (lastFireTick) {
-        stream.write(false);
-    } else {
         stream.write(true);
         stream.write((*lastFireTick));
+    } else {
+        stream.write(false);
     }
 }
 std::string Weapon::toString() const {

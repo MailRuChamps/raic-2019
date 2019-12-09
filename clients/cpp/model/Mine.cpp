@@ -39,10 +39,10 @@ void Mine::writeTo(OutputStream& stream) const {
     size.writeTo(stream);
     stream.write((int)(state));
     if (timer) {
-        stream.write(false);
-    } else {
         stream.write(true);
         stream.write((*timer));
+    } else {
+        stream.write(false);
     }
     stream.write(triggerRadius);
     explosionParams.writeTo(stream);

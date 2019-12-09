@@ -30,10 +30,10 @@ void WeaponParams::writeTo(OutputStream& stream) const {
     stream.write(aimSpeed);
     bullet.writeTo(stream);
     if (explosion) {
-        stream.write(false);
-    } else {
         stream.write(true);
         (*explosion).writeTo(stream);
+    } else {
+        stream.write(false);
     }
 }
 std::string WeaponParams::toString() const {
