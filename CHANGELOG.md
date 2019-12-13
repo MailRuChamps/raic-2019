@@ -1,3 +1,10 @@
+# December 13
+
+- Added sounds
+- Configure 2 player game from UI
+- App saves your viewing preferences between runs
+- Added Empty view mode (only debug rendering showing)
+
 # December 9
 
 - Show time consumed in online games
