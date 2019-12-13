@@ -16,7 +16,7 @@ class MyStrategy {
                 return u.playerId !== unit.playerId;
             })
             .reduce(function (prev, u) {
-                let currentDistance = distanceSqr(u, unit);
+                let currentDistance = distanceSqr(u.position, unit.position);
                 if (currentDistance < minDistance) {
                     minDistance = currentDistance;
                     return u;
@@ -30,7 +30,7 @@ class MyStrategy {
                 return box.item instanceof Item.Weapon;
             })
             .reduce(function (prev, box) {
-                let currentDistance = distanceSqr(box, unit);
+                let currentDistance = distanceSqr(box.position, unit.position);
                 if (currentDistance < minDistance) {
                     minDistance = currentDistance;
                     return box;
@@ -55,11 +55,11 @@ class MyStrategy {
         }
 
         let jump = targetPos.y > unit.position.y;
-        if (targetPos.x > unit.position.x && game.level.tiles[parseInt(unit.position.x + 1)][parseInt(unit.position.y)] === Tile.WALL) {
+        if (targetPos.x > unit.position.x && game.level.tiles[parseInt(unit.position.x + 1)][parseInt(unit.position.y)] === Tile.Wall) {
             jump = true;
         }
             
-        if (targetPos.x < unit.position.x && game.level.tiles[parseInt(unit.position.x - 1)][parseInt(unit.position.y)] === Tile.WALL) {
+        if (targetPos.x < unit.position.x && game.level.tiles[parseInt(unit.position.x - 1)][parseInt(unit.position.y)] === Tile.Wall) {
             jump = true;
         }
 
