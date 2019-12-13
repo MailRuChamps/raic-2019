@@ -55,11 +55,11 @@ class MyStrategy {
         }
 
         let jump = targetPos.y > unit.position.y;
-        if (targetPos.x > unit.position.x && game.level.tiles[parseInt(unit.position.x + 1)][parseInt(unit.position.y)] === Tile.WALL) {
+        if (targetPos.x > unit.position.x && game.level.tiles[parseInt(unit.position.x + 1)][parseInt(unit.position.y)] === Tile.Wall) {
             jump = true;
         }
             
-        if (targetPos.x < unit.position.x && game.level.tiles[parseInt(unit.position.x - 1)][parseInt(unit.position.y)] === Tile.WALL) {
+        if (targetPos.x < unit.position.x && game.level.tiles[parseInt(unit.position.x - 1)][parseInt(unit.position.y)] === Tile.Wall) {
             jump = true;
         }
 
