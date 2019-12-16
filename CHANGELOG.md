@@ -1,3 +1,9 @@
+# December 16
+
+- Fixed bullets not disappearing when hitting mines
+- Fixed incorrect "testing system failure" verdict
+- Added more precise control over spawning positions for txt levels
+
 # December 13
 
 - Added sounds
