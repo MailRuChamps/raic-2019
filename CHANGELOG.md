@@ -1,3 +1,7 @@
+# December 20
+
+- Complex levels now available
+
 # December 16
 
 - Fixed bullets not disappearing when hitting mines
