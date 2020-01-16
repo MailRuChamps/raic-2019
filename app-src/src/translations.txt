@@ -1,0 +1,41 @@
+en=keyboard
+ru=клавиатура
+
+en=Keyboard player
+ru=Игрок с клавиатуры
+
+en=Quickstart strategy
+ru=Стратегия быстрого старта
+
+en=random
+ru=случайный
+
+en=thinking speed
+ru=скорость действий
+
+en=Level:
+ru=Уровень:
+
+en=level editor
+ru=редактор уровней
+
+en=save
+ru=сохранить
+
+en=score
+ru=счёт
+
+en=simple
+ru=простой
+
+en=versus
+ru=против
+
+en=Player
+ru=Игрок
+
+en=Team size:
+ru=Размер команды:
+
+en=complex
+ru=сложный
