@@ -5,4 +5,4 @@ edition = "2018"
 
 [dependencies]
 model = { path = "model", package = "aicup2019-model" }
-trans = { path = "model/trans" }
+trans = "0.1"

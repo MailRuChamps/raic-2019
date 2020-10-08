@@ -96,24 +96,24 @@ impl Default for ActionWrapper {
 }
 
 impl Trans for ActionWrapper {
-    fn read_from(mut reader: impl std::io::Read) -> std::io::Result<Self> {
-        let x = i32::read_from(&mut reader)?;
+    fn read_from(reader: &mut dyn std::io::Read) -> std::io::Result<Self> {
+        let x = i32::read_from(reader)?;
         Ok(match x {
             ActionWrapper::MAGIC => Self::V1 {
-                actions: Trans::read_from(&mut reader)?,
+                actions: Trans::read_from(reader)?,
             },
             _ => {
                 let mut actions = HashMap::new();
                 for _ in 0..x {
-                    let key = Id::read_from(&mut reader)?;
-                    let value = OldUnitAction::read_from(&mut reader)?;
+                    let key = Id::read_from(reader)?;
+                    let value = OldUnitAction::read_from(reader)?;
                     actions.insert(key, value);
                 }
                 Self::V0 { actions }
             }
         })
     }
-    fn write_to(&self, mut writer: impl std::io::Write) -> std::io::Result<()> {
+    fn write_to(&self, writer: &mut dyn std::io::Write) -> std::io::Result<()> {
         unimplemented!("Not used")
     }
 }

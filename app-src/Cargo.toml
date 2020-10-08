@@ -1,18 +1,21 @@
 [package]
 name = "aicup2019"
-version = "1.3.0"
+version = "1.3.1"
 authors = ["kuviman <kuviman@gmail.com>"]
 edition = "2018"
 default-run = "aicup2019"
+
+# [lib]
+# crate-type = ["cdylib"]
 
 [features]
 default = ["rendering"]
 rendering = ["codegame/rendering"]
 
 [dependencies]
-codegame = { git = "https://github.com/codeforces/codegame", default-features = false }
+codegame = { version = "0.3", default-features = false }
 serde = "1"
-trans-gen = { git = "https://github.com/kuviman/trans-gen" }
+trans-gen = "0.1"
 structopt = "0.3"
 
 [dev-dependencies]

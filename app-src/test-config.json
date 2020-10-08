@@ -1,0 +1,14 @@
+{
+    "options_preset": "Round1",
+    "players": [
+        "Quickstart",
+        {
+            "Tcp": {
+                "host": "0.0.0.0",
+                "port": 31001,
+                "accept_timeout": 30.0,
+                "timeout": 1.0
+            }
+        }
+    ]
+}

@@ -349,8 +349,6 @@ pub fn run() {
         logger::init()
     }
     .expect("Failed to initialize logger");
-    #[cfg(feature = "rendering")]
-    logger::add_logger(Box::new(geng::logger()));
     add_translations(include_str!("translations.txt"));
     if let Some(lang) = &opt.lang {
         set_locale(lang);
