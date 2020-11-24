@@ -14,7 +14,7 @@ void Vec2Float::writeTo(OutputStream& stream) const {
 }
 std::string Vec2Float::toString() const {
     return std::string("Vec2Float") + "(" +
-        std::to_string(x) +
+        std::to_string(x) + ", " +
         std::to_string(y) +
         ")";
 }
